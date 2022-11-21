@@ -1,0 +1,32 @@
+[
+  {
+    "icon": "dashboard",
+    "text": "Dashboard",
+    "href": "/"
+  },
+  {
+    "icon": "article",
+    "text": "Published Posts",
+    "href": "/posts"
+  },
+  {
+    "icon": "auto_awesome",
+    "text": "Featured Posts",
+    "href": "/featured"
+  },
+  {
+    "icon": "content_copy",
+    "text": "Drafts",
+    "href": "/drafts"
+  },
+  {
+    "icon": "comment_bank",
+    "text": "Comments",
+    "href": "/comments"
+  },
+  {
+    "icon": "settings",
+    "text": "Settings",
+    "href": "/settings"
+  }
+]
