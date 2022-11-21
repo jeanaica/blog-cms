@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 module.exports = {
   content: [
     './app/**/*.{js,ts,jsx,tsx}',
@@ -62,9 +64,17 @@ module.exports = {
         },
       }),
       fontFamily: {
-        sans: ['"Roboto Flex"', 'sans-serif'],
-        heading: ['"Learning Curve"', 'cursive'],
-        'indie-flower': ['"Indie Flower"', 'cursive'],
+        Poppins: ['Poppins', ...defaultTheme.fontFamily.sans],
+        PoppinsLight: ['PoppinsLight', ...defaultTheme.fontFamily.sans],
+        PoppinsSemiBold: ['PoppinsSemiBold', ...defaultTheme.fontFamily.sans],
+        PoppinsThin: ['PoppinsThin', ...defaultTheme.fontFamily.sans],
+        PoppinsExtraLight: [
+          'PoppinsExtraLight',
+          ...defaultTheme.fontFamily.sans,
+        ],
+        ClickerScript: ['ClickerScript'],
+        sans: ['"Poppins"', 'sans-serif'],
+        heading: ['"ClickerScript"', 'cursive'],
       },
       borderColor: {
         DEFAULT: '#cecbd2',

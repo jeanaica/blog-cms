@@ -3,3 +3,33 @@
 @tailwind utilities;
 
 @import 'material-icons/iconfont/material-icons.css';
+
+@font-face {
+  font-family: 'ClickerScript';
+  src: url('../public/fonts/ClickerScript/ClickerScript-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../public/fonts/Poppins/Poppins-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'PoppinsLight';
+  src: url('../public/fonts/Poppins/Poppins-Light.ttf');
+}
+
+@font-face {
+  font-family: 'PoppinsExtraLight';
+  src: url('../public/fonts/Poppins/Poppins-ExtraLight.ttf');
+}
+
+@font-face {
+  font-family: 'PoppinsSemiBold';
+  src: url('../public/fonts/Poppins/Poppins-SemiBold.ttf');
+}
+
+@font-face {
+  font-family: 'PoppinsThin';
+  src: url('../public/fonts/Poppins/Poppins-Thin.ttf');
+}
