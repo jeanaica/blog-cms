@@ -3,11 +3,11 @@ import { InferGetServerSidePropsType } from 'next';
 
 import Dashboard from 'components/layout/Dashboard';
 import protectedRoute from 'lib/routes/protectedRoute';
-import Post from 'features/post/Post';
+import Drafts from 'features/post/Drafts';
 
 const Page = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
-) => <Post />;
+) => <Drafts />;
 
 Page.Layout = Dashboard;
 

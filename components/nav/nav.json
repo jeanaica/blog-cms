@@ -1,32 +1,32 @@
 [
   {
-    "icon": "dashboard",
-    "text": "Dashboard",
-    "href": "/"
-  },
-  {
-    "icon": "article",
-    "text": "Published Posts",
-    "href": "/posts"
+    "icon": "home",
+    "text": "Home",
+    "href": "/",
+    "isAction": false
   },
   {
     "icon": "auto_awesome",
-    "text": "Featured Posts",
-    "href": "/featured"
-  },
-  {
-    "icon": "content_copy",
-    "text": "Drafts",
-    "href": "/drafts"
+    "text": "Posts",
+    "href": "/post/drafts",
+    "isAction": false
   },
   {
     "icon": "comment_bank",
     "text": "Comments",
-    "href": "/comments"
+    "href": "/comment",
+    "isAction": false
   },
   {
     "icon": "settings",
     "text": "Settings",
-    "href": "/settings"
+    "href": "/setting",
+    "isAction": false
+  },
+  {
+    "icon": "post_add",
+    "text": "New Post",
+    "href": "/new-post",
+    "isAction": true
   }
 ]

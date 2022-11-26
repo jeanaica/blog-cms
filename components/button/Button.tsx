@@ -30,14 +30,14 @@ const Button: FC<Props> = ({
     <button
       type={type}
       className={classNames(
-        'flex items-center rounded duration-300 font-semibold justify-center',
+        'flex items-center rounded duration-300 font-semibold justify-center px-8 py-2',
         className,
         {
-          'px-8 py-2 text-xl bg-primary-500 text-primary-100 hover:bg-primary-600':
+          'text-xl bg-primary-500 text-primary-100 hover:bg-primary-600':
             !outlined,
           'border border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-primary-100':
             outlined || icon,
-          'px-2 py-1 text-sm': !large,
+          'text-sm': !large,
           'px-4 py-2 text-sm': large,
           'cursor-not-allowed opacity-50': disabled || isLoading,
           'border-0 bg-transparent': icon,

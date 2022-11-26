@@ -9,17 +9,28 @@ type Props = {
   icon: string;
   className?: string;
   text: string;
+  isAction?: boolean;
 };
 
-const NavLink: FC<Props> = ({ href, icon, className, text }) => {
+const NavLink: FC<Props> = ({
+  href,
+  icon,
+  className,
+  text,
+  isAction = false,
+}) => {
   const router = useRouter();
 
   return (
     <Link
       href={href}
-      className={classnames('flex w-full items-center px-8 py-4', {
-        'bg-secondary-100 text-white': router.pathname === href,
-      })}>
+      className={classnames(
+        'flex w-full items-center px-8 py-4 hover:bg-gray-300',
+        {
+          'bg-gray-200': router.pathname === href,
+          'border-y': isAction,
+        }
+      )}>
       <span
         className={classnames(
           'material-icons-outlined text-xl mr-4',
