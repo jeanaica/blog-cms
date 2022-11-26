@@ -5,8 +5,8 @@ import * as z from 'zod';
 
 import Input from 'components/form/input/Input';
 import Button from 'components/button/Button';
-import Shared from 'components/layout/shared/Shared';
-import publicRoute from 'lib/publicRoute';
+import Shared from 'components/layout/Shared';
+import publicRoute from 'lib/routes/publicRoute';
 
 const schema = z.object({
   email: z.string().email().min(1, { message: 'Required' }),

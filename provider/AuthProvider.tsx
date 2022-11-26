@@ -2,8 +2,8 @@ import { ReactNode, useEffect, useState } from 'react';
 import nookies from 'nookies';
 import { onIdTokenChanged, User } from 'firebase/auth';
 
-import { AuthContext } from '../context/AuthContext';
-import { auth } from '../firebaseClient';
+import { AuthContext } from 'lib/context/AuthContext';
+import { auth } from 'lib/firebase/client';
 
 type Props = {
   children: ReactNode;

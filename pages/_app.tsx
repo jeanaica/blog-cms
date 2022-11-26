@@ -2,7 +2,7 @@ import { AppProps } from 'next/app';
 
 import { AuthProvider } from 'provider/AuthProvider';
 import LayoutType from 'components/layout/LayoutType';
-import Dashboard from 'components/layout/dashboard/Dashboard';
+import Dashboard from 'components/layout/Dashboard';
 
 import '../styles/globals.css';
 

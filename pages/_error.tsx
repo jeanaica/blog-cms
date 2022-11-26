@@ -1,5 +1,6 @@
-import Shared from 'components/layout/shared/Shared';
 import { NextPageContext } from 'next';
+
+import Shared from 'components/layout/Shared';
 
 type Props = {
   statusCode?: number;

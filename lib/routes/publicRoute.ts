@@ -1,6 +1,7 @@
 import nookies from 'nookies';
 import { GetServerSideProps } from 'next';
-import { firebaseAdmin } from '../firebaseAdmin';
+
+import admin from 'lib/firebase/admin';
 
 const publicRoute: (
   inner?: GetServerSideProps
@@ -8,7 +9,7 @@ const publicRoute: (
   return async context => {
     try {
       const cookies = nookies.get(context);
-      const token = await firebaseAdmin.auth().verifyIdToken(cookies.token);
+      const token = await admin.auth().verifyIdToken(cookies.token);
 
       // the user is authenticated!
       const { uid, email } = token;
