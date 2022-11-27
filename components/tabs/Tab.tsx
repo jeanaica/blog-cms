@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
 
@@ -23,7 +24,7 @@ const Tab: FC<Props> = ({
 
   return (
     <li>
-      <a
+      <Link
         href={href}
         className={classNames(
           'inline-flex items-center p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 group',
@@ -42,7 +43,7 @@ const Tab: FC<Props> = ({
           </span>
         )}
         {text}
-      </a>
+      </Link>
     </li>
   );
 };
