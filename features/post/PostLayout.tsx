@@ -7,7 +7,7 @@ type Props = {
 };
 
 const PostLayout = ({ children }: Props) => (
-  <div className='h-full w-full drop-shadow-md bg-white'>
+  <div className='h-full w-full drop-shadow-md bg-white overflow-hidden flex flex-col'>
     <Tabs
       tabs={[
         {

@@ -21,8 +21,9 @@ const Dashboard = ({ children }: Props) => {
     <div className='h-screen w-screen grid overflow-hidden grid-cols-[auto,1fr] grid-rows-[1fr,auto]'>
       <Nav />
       <div className='overflow-y-auto h-full'>
-        <div className='h-full w-full p-8 bg-slate-100'>{componentChild}</div>
-        <Footer />
+        <div className='h-full w-full px-16 py-12 bg-slate-100'>
+          {componentChild}
+        </div>
       </div>
     </div>
   );

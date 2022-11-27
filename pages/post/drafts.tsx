@@ -5,12 +5,12 @@ import Dashboard from 'components/layout/Dashboard';
 import protectedRoute from 'lib/routes/protectedRoute';
 import Drafts from 'features/post/Drafts';
 
-const Page = (
+const DraftPage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) => <Drafts />;
 
-Page.Layout = Dashboard;
+DraftPage.Layout = Dashboard;
 
-export default Page;
+export default DraftPage;
 
 export const getServerSideProps = protectedRoute();
