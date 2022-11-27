@@ -33,3 +33,24 @@
   font-family: 'PoppinsThin';
   src: url('../public/fonts/Poppins/Poppins-Thin.ttf');
 }
+
+.ql-container {
+  height: 300px !important;
+}
+
+.quill.error {
+  border: 1px solid #c0334d !important;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+}

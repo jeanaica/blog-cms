@@ -20,7 +20,7 @@ const Button: FC<Props> = ({
   type = 'button',
   outlined,
   icon,
-  large,
+  large = false,
   children,
   className,
   disabled,

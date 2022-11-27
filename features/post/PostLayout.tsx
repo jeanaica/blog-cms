@@ -16,6 +16,7 @@ const PostLayout = ({ children }: Props) => {
   return (
     <div className='h-full w-full drop-shadow-md bg-white overflow-hidden flex flex-col'>
       <Tabs
+        isPage
         tabs={[
           {
             text: 'Drafts',

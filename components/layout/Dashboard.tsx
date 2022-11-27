@@ -31,7 +31,7 @@ const Dashboard = ({ children }: Props) => {
   };
 
   return (
-    <div className='h-screen w-screen grid overflow-hidden grid-cols-[auto,1fr] grid-rows-[1fr,auto]'>
+    <div className='h-screen w-screen grid overflow-hidden grid-cols-[auto,1fr] grid-rows-[1fr,auto] bg-slate-100'>
       <Nav />
       <div className='overflow-y-auto h-full'>
         {isPageLoading && !lastPath ? (
@@ -39,9 +39,7 @@ const Dashboard = ({ children }: Props) => {
             <Loading size='lg' />
           </div>
         ) : (
-          <div className='h-full w-full px-16 py-12 bg-slate-100'>
-            {componentChild()}
-          </div>
+          <div className='h-full w-full px-16 py-12'>{componentChild()}</div>
         )}
       </div>
     </div>

@@ -26,7 +26,7 @@
   {
     "icon": "post_add",
     "text": "New Post",
-    "href": "/new-post",
+    "href": "/article/new",
     "isAction": true
   }
 ]
