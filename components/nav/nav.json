@@ -14,7 +14,7 @@
   {
     "icon": "comment_bank",
     "text": "Comments",
-    "href": "/comment",
+    "href": "/comment/unread",
     "isAction": false
   },
   {
