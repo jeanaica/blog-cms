@@ -37,3 +37,5 @@ next-env.d.ts
 
 # firebase
 secrets.json
+.firebase
+firebase-debug.log

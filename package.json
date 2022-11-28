@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "firebase deploy --only functions,hosting",
+    "complete": "npm run build && npm run deploy"
   },
   "dependencies": {
     "@hookform/resolvers": "2.9.10",
