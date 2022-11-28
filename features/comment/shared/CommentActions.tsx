@@ -6,21 +6,28 @@ type Props = {
 };
 
 const CommentActions: FC<Props> = ({ hasEdit = false }) => (
-  <>
-    <Button icon='delete' />
+  <div className='flex gap-1 ml-4'>
+    <Button
+      icon='forum'
+      tooltip='View Comment/Thread'
+    />
     {!hasEdit && (
       <Button
         icon='quickreply'
-        className='ml-4'
+        tooltip='Reply to Comment'
       />
     )}
     {hasEdit && (
       <Button
         icon='edit'
-        className='ml-4'
+        tooltip='Edit Comment'
       />
     )}
-  </>
+    <Button
+      icon='delete'
+      tooltip='Delete Comment'
+    />
+  </div>
 );
 
 export default CommentActions;

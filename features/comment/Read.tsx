@@ -3,46 +3,24 @@ import { FC } from 'react';
 import List from 'components/list/List';
 import ListItem from 'components/list/ListItem';
 import CommentActions from './shared/CommentActions';
-import ListContent from './shared/ListComment';
+import ListComment from './shared/ListComment';
+
+import commentJson from './shared/comments.json';
 
 const Read: FC = () => (
   <List>
     <>
-      <ListItem actions={<CommentActions />}>
-        <ListContent
-          title='Story Title'
-          comment='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-          date='January 23, 2023'
-        />
-      </ListItem>
-      <ListItem actions={<CommentActions />}>
-        <ListContent
-          title='Story Title'
-          comment='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-          date='January 23, 2023'
-        />
-      </ListItem>
-      <ListItem actions={<CommentActions />}>
-        <ListContent
-          title='Story Title'
-          comment='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-          date='January 23, 2023'
-        />
-      </ListItem>
-      <ListItem actions={<CommentActions />}>
-        <ListContent
-          title='Story Title'
-          comment='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-          date='January 23, 2023'
-        />
-      </ListItem>
-      <ListItem actions={<CommentActions />}>
-        <ListContent
-          title='Story Title'
-          comment='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-          date='January 23, 2023'
-        />
-      </ListItem>
+      {commentJson.map(({ title, comment, date }, index) => (
+        <ListItem
+          actions={<CommentActions />}
+          key={index}>
+          <ListComment
+            title={title}
+            comment={comment}
+            date={date}
+          />
+        </ListItem>
+      ))}
     </>
   </List>
 );
