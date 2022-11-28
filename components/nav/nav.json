@@ -18,12 +18,6 @@
     "isAction": false
   },
   {
-    "icon": "settings",
-    "text": "Settings",
-    "href": "/setting",
-    "isAction": false
-  },
-  {
     "icon": "post_add",
     "text": "New Post",
     "href": "/article/new",

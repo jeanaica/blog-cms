@@ -8,7 +8,7 @@ import PostActions from './shared/PostActions';
 
 import postJson from './shared/posts.json';
 
-const Published: FC = () => (
+const Unpublished: FC = () => (
   <List>
     <>
       {postJson.map(({ title, content, date }, index) => (
@@ -26,4 +26,4 @@ const Published: FC = () => (
   </List>
 );
 
-export default Published;
+export default Unpublished;

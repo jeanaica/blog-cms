@@ -6,44 +6,22 @@ import ListItem from 'components/list/ListItem';
 import ListContent from './shared/ListContent';
 import PostActions from './shared/PostActions';
 
+import postJson from './shared/posts.json';
+
 const Scheduled: FC = () => (
   <List>
     <>
-      <ListItem actions={<PostActions />}>
-        <ListContent
-          title='Story Title'
-          content='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-          date='January 23, 2023'
-        />
-      </ListItem>
-      <ListItem actions={<PostActions />}>
-        <ListContent
-          title='Story Title'
-          content='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-          date='January 23, 2023'
-        />
-      </ListItem>
-      <ListItem actions={<PostActions />}>
-        <ListContent
-          title='Story Title'
-          content='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-          date='January 23, 2023'
-        />
-      </ListItem>
-      <ListItem actions={<PostActions />}>
-        <ListContent
-          title='Story Title'
-          content='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-          date='January 23, 2023'
-        />
-      </ListItem>
-      <ListItem actions={<PostActions />}>
-        <ListContent
-          title='Story Title'
-          content='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-          date='January 23, 2023'
-        />
-      </ListItem>
+      {postJson.map(({ title, content, date }, index) => (
+        <ListItem
+          actions={<PostActions />}
+          key={index}>
+          <ListContent
+            title={title}
+            content={content}
+            date={date}
+          />
+        </ListItem>
+      ))}
     </>
   </List>
 );

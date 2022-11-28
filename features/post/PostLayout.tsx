@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import { ReactElement } from 'react';
 
 import Loading from 'components/loading/Loading';
@@ -25,14 +24,19 @@ const PostLayout = ({ children }: Props) => {
             indexHref: '/post',
           },
           {
+            text: 'Scheduled',
+            icon: 'event',
+            href: '/post/scheduled',
+          },
+          {
             text: 'Published',
             icon: 'assignment_turned_in',
             href: '/post/published',
           },
           {
-            text: 'Scheduled',
+            text: 'Unpublished',
             icon: 'event',
-            href: '/post/scheduled',
+            href: '/post/unpublished',
           },
         ]}
       />
