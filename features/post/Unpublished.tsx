@@ -1,29 +1,56 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import List from 'components/list/List';
 import ListItem from 'components/list/ListItem';
+import EmptyList from 'components/list/EmptyList';
+
+import { Posts } from 'lib/firebase/post/types';
+import { getUnpublishedPosts } from 'lib/firebase/post/get';
 
 import ListContent from './shared/ListContent';
 import PostActions from './shared/PostActions';
 
-import postJson from './shared/posts.json';
+const Unpublished: FC = () => {
+  const [posts, setPosts] = useState<Posts>([]);
 
-const Unpublished: FC = () => (
-  <List>
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  const fetchPosts = async () => {
+    try {
+      const drafts = await getUnpublishedPosts({});
+
+      setPosts(drafts);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
     <>
-      {postJson.map(({ title, content, date }, index) => (
-        <ListItem
-          actions={<PostActions />}
-          key={index}>
-          <ListContent
-            title={title}
-            content={content}
-            date={date}
-          />
-        </ListItem>
-      ))}
+      {posts?.length ? (
+        <List>
+          <>
+            {posts.map(({ id, title, content, publishedDate }) => (
+              <ListItem
+                actions={<PostActions />}
+                key={id}>
+                <ListContent
+                  title={title}
+                  content={content}
+                  date={publishedDate}
+                  label='Last published date'
+                />
+              </ListItem>
+            ))}
+          </>
+        </List>
+      ) : (
+        <EmptyList />
+      )}
     </>
-  </List>
-);
+  );
+};
 
 export default Unpublished;
