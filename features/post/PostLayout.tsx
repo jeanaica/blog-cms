@@ -3,6 +3,7 @@ import { ReactElement } from 'react';
 import Loading from 'components/loading/Loading';
 import Tabs from 'components/tabs/Tabs';
 import TabSection from 'components/tabs/TabSection';
+
 import { usePageLoading } from 'lib/hooks/usePageLoading';
 
 type Props = {
@@ -43,7 +44,10 @@ const PostLayout = ({ children }: Props) => {
       <TabSection>
         {isPageLoading ? (
           <div className='flex justify-center h-full items-center'>
-            <Loading size='lg' />
+            <Loading
+              size='lg'
+              className='text-gray-200'
+            />
           </div>
         ) : (
           children

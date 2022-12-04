@@ -3,8 +3,10 @@ import { ReactElement } from 'react';
 
 import Nav from 'components/nav/Nav';
 import Loading from 'components/loading/Loading';
-import PostLayout from 'features/post/PostLayout';
+
 import { usePageLoading } from 'lib/hooks/usePageLoading';
+
+import PostLayout from 'features/post/PostLayout';
 import CommentLayout from 'features/comment/CommentLayout';
 
 type Props = {

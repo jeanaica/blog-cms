@@ -8,6 +8,7 @@ type Props = {
   onClick?(): void;
   icon: string;
   className?: string;
+  iconClassName?: string;
   disabled?: boolean;
   isLoading?: boolean;
   tooltip?: string;
@@ -17,6 +18,7 @@ const IconButton: FC<Props> = ({
   onClick,
   icon,
   className,
+  iconClassName,
   disabled,
   isLoading,
   tooltip,
@@ -36,7 +38,7 @@ const IconButton: FC<Props> = ({
     {isLoading && <Loading />}
     <Icon
       icon={icon}
-      className='text-3xl text-sky-700'
+      className={classNames('text-3xl text-sky-700', iconClassName)}
     />
   </button>
 );

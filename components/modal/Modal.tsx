@@ -9,9 +9,10 @@ type Props = {
   showModal?: boolean;
   children?: ReactNode;
   onClose?(): void;
+  disabled?: boolean;
 };
 
-const Modal: FC<Props> = ({ showModal, children, onClose }) => (
+const Modal: FC<Props> = ({ showModal, children, onClose, disabled }) => (
   <ReactPortal wrapperId='react-portal-modal-container'>
     <div
       tabIndex={-1}
@@ -30,6 +31,7 @@ const Modal: FC<Props> = ({ showModal, children, onClose }) => (
             className='absolute top-3 right-2.5 rounded-full hover:bg-gray-200'
             iconClassName='text-2xl'
             tooltip='Close Modal'
+            disabled={disabled}
             onClick={onClose}
           />
           <div className='p-6 text-center'>{children}</div>

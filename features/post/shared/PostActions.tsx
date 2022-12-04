@@ -4,9 +4,22 @@ import { FC } from 'react';
 import IconButton from 'components/icon/IconButton';
 import IconLink from 'components/icon/IconLink';
 
-const PostActions: FC = () => {
+type Props = {
+  id: string;
+  onActiveId(id: string): void;
+  onDelete?(): void;
+  onCancel?(): void;
+  onUnpublish?(): void;
+};
+
+const PostActions: FC<Props> = ({
+  id,
+  onDelete,
+  onActiveId,
+  onCancel,
+  onUnpublish,
+}) => {
   const router = useRouter();
-  const id = 'asdwdasdas';
   const isDraft = router.pathname.includes('draft');
   const isPublished = router.pathname.includes('published');
   const isUnpublished = router.pathname.includes('unpublished');
@@ -26,21 +39,26 @@ const PostActions: FC = () => {
         <IconButton
           icon='disabled_visible'
           tooltip='Unpublish Post'
-          onClick={() => {}}
-        />
-      )}
-      {isUnpublished && (
-        <IconButton
-          icon='publish'
-          tooltip='Publish Post'
-          onClick={() => {}}
+          onClick={() => {
+            onActiveId(id);
+
+            if (onUnpublish) {
+              onUnpublish();
+            }
+          }}
         />
       )}
       {isScheduled && (
         <IconButton
           icon='cancel_schedule_send'
           tooltip='Cancel Schedule Post'
-          onClick={() => {}}
+          onClick={() => {
+            onActiveId(id);
+
+            if (onCancel) {
+              onCancel();
+            }
+          }}
         />
       )}
       <IconButton
@@ -48,10 +66,17 @@ const PostActions: FC = () => {
         tooltip='Edit Post'
         onClick={() => router.push(`/article/${id}/edit`)}
       />
-      {(isDraft || isUnpublished) && (
+      {isDraft && (
         <IconButton
           icon='delete'
           tooltip='Delete Post'
+          onClick={() => {
+            onActiveId(id);
+
+            if (onDelete) {
+              onDelete();
+            }
+          }}
         />
       )}
     </div>

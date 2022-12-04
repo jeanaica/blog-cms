@@ -7,22 +7,18 @@ type Props = {
   type?: 'page' | 'button';
 };
 
-const Loading: FC<Props> = ({ size = 'sm', className, type = 'button' }) => {
-  return (
-    <div>
-      <span
-        className={classNames(
-          'animate-spin material-icons-outlined ',
-          className,
-          { 'text-primary-300': type === 'page' }
-        )}
-        style={{
-          fontSize: size === 'lg' ? '5rem' : '24px',
-        }}>
-        timelapse
-      </span>
-    </div>
-  );
-};
+const Loading: FC<Props> = ({ size = 'sm', className, type = 'button' }) => (
+  <span
+    className={classNames(
+      'animate-spin material-icons-outlined ',
+      { 'text-primary-300': type === 'page' },
+      className
+    )}
+    style={{
+      fontSize: size === 'lg' ? '5rem' : '24px',
+    }}>
+    timelapse
+  </span>
+);
 
 export default Loading;
