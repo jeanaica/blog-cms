@@ -3,6 +3,7 @@ import { ReactElement } from 'react';
 import Loading from 'components/loading/Loading';
 import Tabs from 'components/tabs/Tabs';
 import TabSection from 'components/tabs/TabSection';
+
 import { usePageLoading } from 'lib/hooks/usePageLoading';
 
 type Props = {
@@ -28,7 +29,7 @@ const CommentLayout = ({ children }: Props) => {
             href: '/comment/read',
           },
           {
-            text: 'Replies',
+            text: 'My Replies',
             icon: 'forum',
             href: '/comment/replies',
           },
