@@ -9,7 +9,7 @@ import { Comments } from 'lib/firebase/comment/types';
 
 import CommentActions from './shared/CommentActions';
 import ListComment from './shared/ListComment';
-import CommentModal from './shared/CommentModal';
+import DeleteModal from './shared/DeleteModal';
 import ViewModal from './shared/ViewModal';
 
 const Read: FC = () => {
@@ -100,7 +100,7 @@ const Read: FC = () => {
             </ListItem>
           )
         )}
-        <CommentModal
+        <DeleteModal
           showModal={showModal === 'delete'}
           action='delete'
           isLoading={isActionLoading}

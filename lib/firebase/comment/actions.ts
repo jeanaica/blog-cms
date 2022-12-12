@@ -1,10 +1,30 @@
-import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { deleteDoc, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 
 import { db } from '../client';
+import { Comment } from './types';
 
 export const deleteComment = async (id: string) => {
   try {
     await deleteDoc(doc(db, 'comment', id));
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const replyComment = async ({ postId, postTitle, comment }: Comment) => {
+  try {
+    const postDocRef = doc(db, 'comment', postId);
+    const dateServer = serverTimestamp();
+    await updateDoc(postDocRef, {
+      name: 'Jeanaica Suplido',
+      postTitle,
+      comment,
+      modifiedDate: dateServer,
+      publishedDate: dateServer,
+      postedDate: dateServer,
+      isUnread: false,
+      isReply: true,
+    });
   } catch (error) {
     throw error;
   }

@@ -5,7 +5,7 @@ import Modal from 'components/modal/Modal';
 import Loading from 'components/loading/Loading';
 
 import { getComment, getPostComments } from 'lib/firebase/comment/get';
-import { Comments } from 'lib/firebase/comment/types';
+import { Comments, Comment } from 'lib/firebase/comment/types';
 
 type Props = {
   postId: string;
@@ -44,9 +44,19 @@ const ViewModal: FC<Props> = ({
       });
 
       const comment = [await getComment(activeId)];
-      var reduced = commentList
+      const reduced = commentList
         .filter(aitem => !comment.find(bitem => aitem['id'] === bitem['id']))
-        .concat(comment);
+        .concat(comment)
+        .sort((a: Comment, b: Comment) => {
+          if (b.postedDate && a.postedDate) {
+            const postedDateA = new Date(a.postedDate);
+            const postedDateB = new Date(b.postedDate);
+
+            return postedDateB < postedDateA ? 1 : -1;
+          }
+
+          return 1;
+        });
 
       setComments(reduced);
     } catch (error) {

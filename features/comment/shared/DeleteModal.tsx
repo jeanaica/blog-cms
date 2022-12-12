@@ -11,7 +11,7 @@ type Props = {
   onModalAction(): void;
 };
 
-const CommentModal: FC<Props> = ({
+const DeleteModal: FC<Props> = ({
   showModal,
   action,
   isLoading,
@@ -44,4 +44,4 @@ const CommentModal: FC<Props> = ({
   </Modal>
 );
 
-export default CommentModal;
+export default DeleteModal;

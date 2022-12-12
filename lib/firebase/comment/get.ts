@@ -68,9 +68,8 @@ export const getPostComments = async ({
   const q = query(
     collection(db, 'comment'),
     where('postId', '==', postId),
-    where('publishedDate', '!=', null),
-    orderBy('publishedDate', 'desc'),
-    orderBy(sort, 'desc'),
+    where('isUnread', '==', false),
+    orderBy(sort, 'asc'),
     startAfter(nextItem),
     limit(max)
   ) as CollectionReference<CommentAPI>;

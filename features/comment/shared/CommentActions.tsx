@@ -7,7 +7,7 @@ type Props = {
   postId: string;
   onActiveId(id: string, postId: string): void;
   onDelete?(modal: string): void;
-  onReply?(): void;
+  onReply?(modal: string): void;
   onEdit?(): void;
   onView?(modal: string): void;
 };
@@ -47,7 +47,7 @@ const CommentActions: FC<Props> = ({
             onActiveId(id, postId);
 
             if (onReply) {
-              onReply();
+              onReply('reply');
             }
           }}
         />
