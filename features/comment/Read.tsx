@@ -85,8 +85,7 @@ const Read: FC = () => {
                   id={id}
                   postId={postId}
                   onActiveId={handleActiveId}
-                  onDelete={handleShowModal}
-                  onView={handleShowModal}
+                  onModalShow={handleShowModal}
                 />
               }
               key={id}>

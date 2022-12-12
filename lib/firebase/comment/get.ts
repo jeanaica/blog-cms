@@ -69,6 +69,8 @@ export const getPostComments = async ({
     collection(db, 'comment'),
     where('postId', '==', postId),
     where('isUnread', '==', false),
+    where('publishedDate', '!=', null),
+    orderBy('publishedDate', 'desc'),
     orderBy(sort, 'asc'),
     startAfter(nextItem),
     limit(max)
@@ -113,6 +115,7 @@ export const getRead = async ({
   const q = query(
     collection(db, 'comment'),
     where('isUnread', '==', false),
+    where('isReply', '==', false),
     orderBy(sort, 'desc'),
     startAfter(nextItem),
     limit(max)

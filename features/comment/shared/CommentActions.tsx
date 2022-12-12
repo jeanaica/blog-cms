@@ -1,26 +1,18 @@
-import Button from 'components/icon/IconButton';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
+
+import Button from 'components/icon/IconButton';
 
 type Props = {
   id: string;
   postId: string;
   onActiveId(id: string, postId: string): void;
-  onDelete?(modal: string): void;
-  onReply?(modal: string): void;
+
   onEdit?(): void;
-  onView?(modal: string): void;
+  onModalShow(modal: string): void;
 };
 
-const CommentActions: FC<Props> = ({
-  id,
-  postId,
-  onDelete,
-  onActiveId,
-  onReply,
-  onEdit,
-  onView,
-}) => {
+const CommentActions: FC<Props> = ({ id, postId, onActiveId, onModalShow }) => {
   const router = useRouter();
   const isRead = router.pathname.includes('read');
   const isUnread = router.pathname.includes('unread');
@@ -34,21 +26,17 @@ const CommentActions: FC<Props> = ({
         onClick={() => {
           onActiveId(id, postId);
 
-          if (onView) {
-            onView('view');
-          }
+          onModalShow('view');
         }}
       />
-      {(isRead || isUnread) && (
+      {isUnread && (
         <Button
           icon='quickreply'
           tooltip='Reply to Comment'
           onClick={() => {
             onActiveId(id, postId);
 
-            if (onReply) {
-              onReply('reply');
-            }
+            onModalShow('reply');
           }}
         />
       )}
@@ -59,9 +47,7 @@ const CommentActions: FC<Props> = ({
           onClick={() => {
             onActiveId(id, postId);
 
-            if (onEdit) {
-              onEdit();
-            }
+            onModalShow('reply');
           }}
         />
       )}
@@ -71,9 +57,7 @@ const CommentActions: FC<Props> = ({
         onClick={() => {
           onActiveId(id, postId);
 
-          if (onDelete) {
-            onDelete('delete');
-          }
+          onModalShow('delete');
         }}
       />
     </div>

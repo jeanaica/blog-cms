@@ -11,6 +11,7 @@ import CommentActions from './shared/CommentActions';
 import ListComment from './shared/ListComment';
 import DeleteModal from './shared/DeleteModal';
 import ViewModal from './shared/ViewModal';
+import ReplyModal from './shared/ReplyModal';
 
 const Replies: FC = () => {
   const [comments, setComments] = useState<Comments>([]);
@@ -85,8 +86,7 @@ const Replies: FC = () => {
                   id={id}
                   postId={postId}
                   onActiveId={handleActiveId}
-                  onDelete={handleShowModal}
-                  onView={handleShowModal}
+                  onModalShow={handleShowModal}
                 />
               }
               key={id}>
@@ -114,6 +114,14 @@ const Replies: FC = () => {
           showModal={showModal === 'view'}
           isLoading={isActionLoading}
           onClose={handleClose}
+        />
+        <ReplyModal
+          postId={postId}
+          activeId={activeId}
+          showModal={showModal === 'reply'}
+          isLoading={isActionLoading}
+          onClose={handleClose}
+          action='edit'
         />
       </>
     </List>
