@@ -3,8 +3,6 @@ import { DragEvent, FC, useState } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import classNames from 'classnames';
 
-// TODO: Add temp upload
-
 type Props = {
   label: string;
   helperText?: string;
@@ -26,7 +24,7 @@ const File: FC<Props> = ({
     register,
     watch,
     setValue,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useFormContext();
   const fileUploaded = watch(name);
   const [dragActive, setDragActive] = useState(false);
@@ -49,7 +47,6 @@ const File: FC<Props> = ({
     setDragActive(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       // at least one file has been dropped so do something
-      // handleFiles(e.dataTransfer.files);
       setValue(name, e.dataTransfer.files[0]);
     }
   };
@@ -77,8 +74,11 @@ const File: FC<Props> = ({
           {fileUploaded ? (
             <Image
               id={`${name}-preview`}
-              src={fileUploaded}
+              src={URL.createObjectURL(fileUploaded)}
               alt='Image Preview'
+              className='w-80 h-52'
+              width={300}
+              height={200}
               priority
             />
           ) : (
@@ -108,11 +108,11 @@ const File: FC<Props> = ({
               type='file'
               accept='image/*'
               onChange={event => {
-                if (event.target.value) {
-                  onChange(event.target.value);
+                if (event.target.files && event.target.files[0]) {
+                  onChange(event.target.files[0]);
                 }
               }}
-              disabled={disabled}
+              disabled={disabled || isSubmitting}
             />
           )}
         />

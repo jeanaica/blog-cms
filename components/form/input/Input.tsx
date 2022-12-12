@@ -25,7 +25,7 @@ const Input: FC<Props> = ({
 }) => {
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useFormContext();
 
   return (
@@ -48,7 +48,7 @@ const Input: FC<Props> = ({
             className,
             {
               'bg-secondary-100 focus:ring-0 cursor-not-allowed border-secondary-300 focus:border-secondary-300':
-                readOnly,
+                readOnly || isSubmitting,
               'focus:ring-error-300 border-error-300 focus:border-error-300':
                 !readOnly && errors[name],
               'focus:ring-primary-500 border-secondary-300 focus:border-primary-500':
@@ -57,6 +57,7 @@ const Input: FC<Props> = ({
           )}
           placeholder={placeholder}
           aria-describedby={name}
+          disabled={isSubmitting}
         />
 
         {errors[name] && (

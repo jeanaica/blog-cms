@@ -43,7 +43,7 @@ const Editor: FC<Props> = ({
 }) => {
   const {
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useFormContext();
 
   return (
@@ -62,7 +62,7 @@ const Editor: FC<Props> = ({
               theme='snow'
               placeholder={'Write Content'}
               value={value}
-              readOnly={readOnly}
+              readOnly={readOnly || isSubmitting || isLoading || disabled}
               modules={modules}
               className={classNames({
                 error: errors[name],

@@ -27,7 +27,7 @@ const MetaSection: FC<Props> = ({ active }) => {
           <File
             label='Banner'
             name='banner'
-            helperText='SVG, PNG, JPG or GIF (MAX. 800x400px).'
+            helperText='PNG, JPG or JPEG (MAX. 10MB).'
           />
         </>
       </TabSection>

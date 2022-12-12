@@ -42,7 +42,7 @@ const Pill: FC<Props> = ({
 }) => {
   const {
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useFormContext();
 
   return (
@@ -62,7 +62,7 @@ const Pill: FC<Props> = ({
               instanceId={name}
               isMulti
               value={value}
-              isDisabled={disabled || readOnly}
+              isDisabled={disabled || readOnly || isSubmitting}
               isLoading={isLoading}
               closeMenuOnSelect={false}
               styles={pillStyles}

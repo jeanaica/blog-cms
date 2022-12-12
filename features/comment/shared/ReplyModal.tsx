@@ -11,8 +11,7 @@ import TextArea from 'components/textarea/TextArea';
 import { getComment } from 'lib/firebase/comment/get';
 import { Comment } from 'lib/firebase/comment/types';
 import { editComment, replyComment } from 'lib/firebase/comment/actions';
-
-import schema from 'features/shared/form/schema';
+import schema from './schema';
 
 type Props = {
   postId: string;
