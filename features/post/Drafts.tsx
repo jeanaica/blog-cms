@@ -58,6 +58,7 @@ const Drafts: FC = () => {
       setError('Failed to delete draft.');
     } finally {
       setIsActionLoading(false);
+      setShowModal(false);
     }
   };
 

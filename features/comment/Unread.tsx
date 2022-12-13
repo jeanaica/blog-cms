@@ -63,6 +63,7 @@ const Unread: FC = () => {
       setError('Failed to delete comment.');
     } finally {
       setIsActionLoading(false);
+      setShowModal('');
     }
   };
 

@@ -57,6 +57,7 @@ const Scheduled: FC = () => {
       setError('Failed to unschedule post.');
     } finally {
       setIsActionLoading(false);
+      setShowModal(false);
     }
   };
 

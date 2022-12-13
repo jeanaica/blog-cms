@@ -58,6 +58,7 @@ const Published: FC = () => {
       setError('Failed to unpublish post.');
     } finally {
       setIsActionLoading(false);
+      setShowModal(false);
     }
   };
 

@@ -62,6 +62,7 @@ const Read: FC = () => {
       setError('Failed to delete comment.');
     } finally {
       setIsActionLoading(false);
+      setShowModal('');
     }
   };
 
