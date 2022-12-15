@@ -90,6 +90,7 @@ const ReplyModal: FC<Props> = ({
           postId,
           postTitle,
           comment,
+          commentId: activeId,
         });
       }
     } catch (error) {

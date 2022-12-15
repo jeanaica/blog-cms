@@ -25,9 +25,9 @@ export const editComment = async ({
   comment,
 }: Comment) => {
   try {
-    const postDocRef = doc(db, 'comment', id);
+    const commentDocRef = doc(db, 'comment', id);
     const dateServer = serverTimestamp();
-    await updateDoc(postDocRef, {
+    await updateDoc(commentDocRef, {
       name: 'Jeanaica',
       postId,
       postTitle,
@@ -45,15 +45,20 @@ export const replyComment = async ({
   postId,
   postTitle,
   comment,
+  commentId,
 }: {
   postId: string;
   postTitle: string;
   comment: string;
+  commentId: string;
 }) => {
   try {
-    const commentDocRef = collection(db, 'comment');
+    const newCommentDocRef = collection(db, 'comment');
+    const commentDocRef = doc(db, 'comment', commentId);
+
     const dateServer = serverTimestamp();
-    await addDoc(commentDocRef, {
+
+    await addDoc(newCommentDocRef, {
       name: 'Jeanaica',
       postId,
       postTitle,
@@ -63,6 +68,11 @@ export const replyComment = async ({
       postedDate: dateServer,
       isUnread: false,
       isReply: true,
+    });
+
+    await updateDoc(commentDocRef, {
+      publishedDate: dateServer,
+      isUnread: false,
     });
   } catch (error) {
     throw error;
