@@ -64,7 +64,15 @@ const PostActions: FC<Props> = ({
       <IconButton
         icon='edit'
         tooltip='Edit Post'
-        onClick={() => router.push(`/article/${id}/edit`)}
+        onClick={() =>
+          router.push(
+            {
+              pathname: `/article/${id}/edit`,
+              query: { id, isDraft, isPublished, isUnpublished, isScheduled },
+            },
+            `/article/${id}/edit`
+          )
+        }
       />
       {isDraft && (
         <IconButton

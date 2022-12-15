@@ -15,6 +15,7 @@ export const unschedulePost = async (id: string) => {
     const postDocRef = doc(db, 'post', id);
 
     await updateDoc(postDocRef, {
+      isDraft: true,
       isScheduled: false,
       postDate: null,
     });

@@ -1,12 +1,17 @@
+import { ArticleForm } from 'features/article/shared/types';
 import { doc, getDoc } from 'firebase/firestore';
-import { convertSecondsToTimeStamp } from 'lib/utils/dateConverter';
+import {
+  convertSecondsToTimeStamp,
+  convertTimeStampToForm,
+} from 'lib/utils/dateConverter';
 
 import { db } from '../client';
 import { ArticleAPI, Categories, Tags } from './types';
 
 export const getArticle = async (id: string) => {
   if (!id) throw new Error('');
-  const docRef = doc(db, 'article', id);
+
+  const docRef = doc(db, 'post', id);
 
   const docSnap = await getDoc(docRef);
   const {
@@ -19,6 +24,10 @@ export const getArticle = async (id: string) => {
     modifiedDate,
     publishedDate,
     postDate,
+    meta,
+    isDraft,
+    isPublished,
+    isScheduled,
   } = docSnap.data() as ArticleAPI;
 
   return {
@@ -26,13 +35,20 @@ export const getArticle = async (id: string) => {
     title,
     banner,
     content,
-    createdDate,
+    createdDate: convertSecondsToTimeStamp(createdDate),
     category,
     tags,
+    slug: meta.slug,
+    description: meta.description,
+    author: meta.author,
+    url: meta.url,
     modifiedDate: convertSecondsToTimeStamp(modifiedDate),
     publishedDate: convertSecondsToTimeStamp(publishedDate),
-    postDate: convertSecondsToTimeStamp(postDate),
-  };
+    postDate: convertTimeStampToForm(postDate),
+    isDraft,
+    isPublished,
+    isScheduled,
+  } as ArticleForm;
 };
 
 export const getCategories = async () => {

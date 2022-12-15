@@ -1,5 +1,12 @@
 import { Timestamp } from 'firebase/firestore';
 
+export enum ArticleTypes {
+  isDraft = 'isDraft',
+  isPublished = 'isPublished',
+  isScheduled = 'isScheduled',
+  isUnpublished = 'isUnpublished',
+}
+
 export interface Option {
   label: string;
   value: string;
@@ -16,6 +23,7 @@ export interface Article {
   modifiedDate: string;
   publishedDate?: string;
   postDate: string;
+  meta: Meta;
 }
 
 export interface ArticleAPI {
@@ -32,6 +40,7 @@ export interface ArticleAPI {
   isDraft: boolean;
   isPublished: boolean;
   isScheduled: boolean;
+  meta: Meta;
 }
 
 export interface Meta {

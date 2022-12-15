@@ -16,12 +16,17 @@ const schema = z.object({
     .max(155, 'Maximum length: 155 characters'),
   banner: z
     .any()
-    .refine(file => file?.size >= MAX_FILE_SIZE, `Max image size is 10MB.`)
     .refine(file => {
-      if (file) {
+      if (typeof file !== 'undefined' && typeof file !== 'string') {
+        return file?.size >= MAX_FILE_SIZE;
+      }
+    }, `Max image size is 10MB.`)
+    .refine(file => {
+      if (typeof file !== 'undefined' && typeof file !== 'string') {
         return ACCEPTED_IMAGE_TYPES.includes(file.type);
       }
-    }, 'Only .jpg, .jpeg, and .png formats are supported.'),
+    }, 'Only .jpg, .jpeg, and .png formats are supported.')
+    .or(z.string().min(1, { message: 'Required' })),
   author: z.string().min(1, { message: 'Required' }),
   postDate: z.string().min(1, { message: 'Required' }),
   category: z

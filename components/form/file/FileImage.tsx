@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { DragEvent, FC, useState } from 'react';
+import { DragEvent, FC, useEffect, useState } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import classNames from 'classnames';
 
@@ -12,7 +12,7 @@ type Props = {
   defaultValue?: string;
 };
 
-const File: FC<Props> = ({
+const FileImage: FC<Props> = ({
   label,
   helperText = '',
   name,
@@ -71,10 +71,14 @@ const File: FC<Props> = ({
           }
         )}>
         <div className='flex flex-col items-center justify-center pt-5 pb-6'>
-          {fileUploaded ? (
+          {typeof fileUploaded !== 'undefined' ? (
             <Image
               id={`${name}-preview`}
-              src={URL.createObjectURL(fileUploaded)}
+              src={
+                typeof fileUploaded === 'string'
+                  ? fileUploaded
+                  : URL.createObjectURL(fileUploaded)
+              }
               alt='Image Preview'
               className='w-80 h-52'
               width={300}
@@ -124,4 +128,4 @@ const File: FC<Props> = ({
   );
 };
 
-export default File;
+export default FileImage;

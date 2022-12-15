@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import Tabs from 'components/tabs/Tabs';
 
@@ -7,6 +8,13 @@ import MetaSection from './MetaSection';
 
 const FormTabs: FC = () => {
   const [active, setActive] = useState('content');
+  const contentFields = ['content'];
+  const metaFields = ['slug', 'description', 'banner'];
+
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
 
   const handleClick = (activeTab: string) => {
     setActive(activeTab);
@@ -21,10 +29,14 @@ const FormTabs: FC = () => {
           {
             name: 'content',
             text: 'Content',
+            hasError: Object.keys(errors).some(key =>
+              contentFields.includes(key)
+            ),
           },
           {
             name: 'meta',
             text: 'Meta',
+            hasError: Object.keys(errors).some(key => metaFields.includes(key)),
           },
         ]}
       />

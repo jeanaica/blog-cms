@@ -1,49 +1,78 @@
-import { BaseSyntheticEvent, FC } from 'react';
-
-import Input from 'components/form/input/Input';
-import Button from 'components/button/Button';
+import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import Input from 'components/form/input/Input';
+import Dropdown from 'components/button/Dropdown';
+
+import { isToday } from 'lib/utils/dateHelpers';
+
 type Props = {
-  onSubmit:
-    | ((e?: BaseSyntheticEvent<object, any, any> | undefined) => any)
-    | undefined;
-  onSubmitDraft:
-    | ((e?: BaseSyntheticEvent<object, any, any> | undefined) => any)
-    | undefined;
+  showButtons: {
+    isDraft?: boolean;
+    isScheduled?: boolean;
+    isPublished?: boolean;
+  };
+  onSubmit(type: string): void;
 };
 
-const FormHeader: FC<Props> = ({ onSubmit, onSubmitDraft }) => {
+const FormHeader: FC<Props> = ({ showButtons, onSubmit }) => {
   const {
+    watch,
     formState: { isSubmitting },
   } = useFormContext();
+  const { isDraft, isPublished, isScheduled } = showButtons;
+  const isPostDateToday = isToday(watch('postDate'));
 
   return (
-    <form className='flex gap-10 justify-between'>
-      <Input
-        label=''
-        name='title'
-        className='text-2xl font-PoppinsSemiBold'
-        placeholder='Tell your story...'
-      />
-      <div className='flex gap-4 mt-1'>
-        <Button
-          outlined
-          large
-          type='submit'
-          className='flex-1 h-[50px] w-[200px]'
-          onClick={onSubmitDraft}
-          disabled={isSubmitting}>
-          <span>Save As Draft</span>
-        </Button>
-        <Button
-          large
-          type='submit'
+    <form className='flex gap-12 justify-between'>
+      <div className='flex-[3]'>
+        <Input
+          label=''
+          name='title'
+          className='text-2xl font-PoppinsSemiBold '
+          placeholder='Tell your story...'
+        />
+      </div>
+      <div className='flex gap-4 mt-1 flex-1'>
+        <Dropdown
+          text='Save'
           className='flex-1 h-[50px]'
-          onClick={onSubmit}
-          disabled={isSubmitting}>
-          Save
-        </Button>
+          disabled={isSubmitting}
+          options={[
+            {
+              text: 'Save as Draft',
+              action: () => onSubmit('isDraft'),
+              hide: !isDraft,
+            },
+            {
+              text: 'Schedule Post',
+              action: () => onSubmit('isScheduled'),
+              hide: !isDraft || isPublished || isPostDateToday,
+            },
+            {
+              text: 'Publish Now',
+              action: () => onSubmit('isPublished'),
+              hide: isPublished,
+            },
+            {
+              text: 'Update Article',
+              action: () => onSubmit('isPublished'),
+              hide: !isPublished,
+            },
+          ]}
+          separateOptions={[
+            {
+              text: 'Unpublish',
+              action: () => onSubmit('isUnpublished'),
+              hide: !isPublished,
+            },
+            {
+              text: 'Move to Drafts',
+              action: () => onSubmit('isDraft'),
+              hide: !isScheduled,
+            },
+          ]}
+        />
       </div>
     </form>
   );

@@ -12,6 +12,7 @@ type Props = {
     icon?: string;
     indexHref?: string;
     name?: string;
+    hasError?: boolean;
   }>;
 };
 
@@ -28,12 +29,13 @@ const Tabs: FC<Props> = ({ tabs, isPage, active, onClick }) => (
               indexHref={indexHref}
             />
           ))
-        : tabs?.map(({ text, icon, name }, index) => (
+        : tabs?.map(({ text, icon, name, hasError }, index) => (
             <Tab
               key={index}
               text={text}
               icon={icon}
               active={active === name}
+              hasError={hasError}
               name={name}
               onClick={onClick}
             />

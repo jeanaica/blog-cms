@@ -1,9 +1,8 @@
 import { FC } from 'react';
 
 import TabSection from 'components/tabs/TabSection';
-import Editor from 'components/form/editor/Editor';
 import Input from 'components/form/input/Input';
-import File from 'components/form/file/File';
+import FileImage from 'components/form/file/FileImage';
 
 type Props = {
   active?: boolean;
@@ -24,7 +23,7 @@ const MetaSection: FC<Props> = ({ active }) => {
             label='Description'
             name='description'
           />
-          <File
+          <FileImage
             label='Banner'
             name='banner'
             helperText='PNG, JPG or JPEG (MAX. 10MB).'
