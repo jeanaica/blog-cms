@@ -18,4 +18,5 @@ export interface ArticleForm {
   isDraft?: boolean;
   isScheduled?: boolean;
   isPublished?: boolean;
+  isUnpublished?: boolean;
 }

@@ -30,6 +30,7 @@ export const unpublishPost = async (id: string) => {
 
     await updateDoc(postDocRef, {
       isPublished: false,
+      isUnpublished: true,
     });
   } catch (error) {
     throw error;

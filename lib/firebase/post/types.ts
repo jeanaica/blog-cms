@@ -32,6 +32,7 @@ export interface PostAPI {
   isDraft: boolean;
   isPublished: boolean;
   isScheduled: boolean;
+  isUnpublished: boolean;
 }
 
 export interface Meta {

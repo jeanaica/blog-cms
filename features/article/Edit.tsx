@@ -26,10 +26,12 @@ const Edit: FC = () => {
     isDraft?: boolean;
     isScheduled?: boolean;
     isPublished?: boolean;
+    isUnpublished?: boolean;
   }>({
     isDraft: false,
     isPublished: false,
     isScheduled: false,
+    isUnpublished: false,
   });
 
   const {
@@ -69,6 +71,7 @@ const Edit: FC = () => {
         isDraft: article.isDraft,
         isPublished: article.isPublished,
         isScheduled: article.isScheduled,
+        isUnpublished: article.isUnpublished,
       });
 
       setPublishedDate(article.publishedDate);

@@ -28,6 +28,7 @@ export const getArticle = async (id: string) => {
     isDraft,
     isPublished,
     isScheduled,
+    isUnpublished,
   } = docSnap.data() as ArticleAPI;
 
   return {
@@ -48,6 +49,7 @@ export const getArticle = async (id: string) => {
     isDraft,
     isPublished,
     isScheduled,
+    isUnpublished,
   } as ArticleForm;
 };
 

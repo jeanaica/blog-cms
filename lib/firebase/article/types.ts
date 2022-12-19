@@ -40,6 +40,7 @@ export interface ArticleAPI {
   isDraft: boolean;
   isPublished: boolean;
   isScheduled: boolean;
+  isUnpublished: boolean;
   meta: Meta;
 }
 

@@ -14,12 +14,12 @@ type Props = {
   text: string;
   options: Array<{
     text: string;
-    action: (e?: BaseSyntheticEvent<object, any, any> | undefined) => any;
+    action(): void;
     hide?: boolean;
   }>;
   separateOptions?: Array<{
     text: string;
-    action: (e?: BaseSyntheticEvent<object, any, any> | undefined) => any;
+    action(): void;
     hide?: boolean;
   }>;
 } & ButtonHTMLAttributes<HTMLButtonElement>;

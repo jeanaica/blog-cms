@@ -40,6 +40,11 @@ export const saveArticle = async ({
   type: ArticleTypes;
 }) => {
   try {
+    const isDraft = type === ArticleTypes.isDraft;
+    const isPublished = type === ArticleTypes.isPublished;
+    const isUnpublished = type === ArticleTypes.isUnpublished;
+    const isScheduled = type === ArticleTypes.isScheduled;
+
     const postDocRef = collection(db, 'post');
     const dateServer = serverTimestamp();
     const isPostedDateToday = article.postDate && isToday(article.postDate);
@@ -63,10 +68,11 @@ export const saveArticle = async ({
         ? null
         : article.postDate && Timestamp.fromDate(new Date(article.postDate)),
       modifiedDate: dateServer,
-      isDraft: type === 'isDraft',
-      isPublished: type === 'isPublished',
-      isScheduled: type === 'isScheduled',
-      publishedDate: type === 'isPublished' ? dateServer : null,
+      isDraft: isDraft,
+      isPublished: isPublished,
+      isScheduled: isScheduled,
+      isUnpublished: isUnpublished,
+      publishedDate: isPublished ? dateServer : null,
       meta: {
         slug: article.slug,
         author: article.author,
@@ -109,6 +115,12 @@ export const updateArticle = async ({
         ? null
         : Timestamp.fromDate(new Date(article.postDate));
 
+    if (isUnpublished) {
+      await unpublishArticle(id);
+
+      return;
+    }
+
     await addTags(article.tags);
 
     await updateDoc(postDocRef, {
@@ -123,10 +135,8 @@ export const updateArticle = async ({
       isDraft: isDraft,
       isPublished: isPublished,
       isScheduled: isScheduled,
-      publishedDate:
-        !isDraft || !isPublished || !isScheduled
-          ? dateServer
-          : article.publishedDate,
+      isUnpublished: isUnpublished,
+      publishedDate: !isUnpublished ? dateServer : null,
       meta: {
         slug: article.slug,
         author: article.author,
@@ -135,6 +145,19 @@ export const updateArticle = async ({
         title: article.title,
         url: `${process.env.NEXT_PUBLIC_DOMAIN}/${article.slug}`,
       },
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const unpublishArticle = async (id: string) => {
+  try {
+    const postDocRef = doc(db, 'post', id);
+
+    await updateDoc(postDocRef, {
+      isPublished: false,
+      isUnpublished: true,
     });
   } catch (error) {
     throw error;

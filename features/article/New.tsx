@@ -83,6 +83,7 @@ const New: FC = () => {
               isDraft: true,
               isPublished: false,
               isScheduled: false,
+              isUnpublished: false,
             }}
           />
           <div className='flex mt-12 gap-12'>
