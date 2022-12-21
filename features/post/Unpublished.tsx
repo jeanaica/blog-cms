@@ -4,10 +4,11 @@ import List from 'components/list/List';
 import ListItem from 'components/list/ListItem';
 
 import { Posts } from 'lib/firebase/post/types';
-import { getUnpublishedPosts } from 'lib/firebase/post/get';
 
 import ListContent from './shared/ListContent';
 import PostActions from './shared/PostActions';
+
+import postsJson from 'mock/posts.json';
 
 const Unpublished: FC = () => {
   const [posts, setPosts] = useState<Posts>([]);
@@ -22,13 +23,19 @@ const Unpublished: FC = () => {
     try {
       setIsLoading(true);
 
-      const unpublished = await getUnpublishedPosts({});
+      const unpublished = postsJson.filter(
+        ({ isUnpublished }) => isUnpublished
+      );
 
       setPosts(unpublished);
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoading(false);
+      const loadingTimeout = setTimeout(() => {
+        setIsLoading(false);
+
+        clearTimeout(loadingTimeout);
+      }, 1000);
     }
   };
 

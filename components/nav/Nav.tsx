@@ -1,11 +1,8 @@
 import { FC } from 'react';
-import { signOut } from 'firebase/auth';
 
 import NavLink from 'components/nav/NavLink';
 import NavItem from 'components/nav/NavItem';
 import Logo from 'components/logo/Logo';
-
-import { auth } from 'lib/firebase/client';
 
 import navJson from './nav.json';
 import { useRouter } from 'next/router';
@@ -21,9 +18,9 @@ const Nav: FC = () => {
   const router = useRouter();
 
   const handleLogout = async () => {
-    await signOut(auth).then(() => {
+    setTimeout(() => {
       router.push('/login');
-    });
+    }, 1000);
   };
 
   return (

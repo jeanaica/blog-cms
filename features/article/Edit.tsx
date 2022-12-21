@@ -13,10 +13,12 @@ import schema from 'features/shared/form/schema';
 
 import { updateArticle } from 'lib/firebase/article/actions';
 import { getArticle } from 'lib/firebase/article/get';
-
-import { ArticleForm } from './shared/types';
 import { getTodayFormValue } from 'lib/utils/dateConverter';
 import { ArticleTypes } from 'lib/firebase/article/types';
+
+import { ArticleForm } from './shared/types';
+
+import articleJson from 'mock/article.json';
 
 const Edit: FC = () => {
   const router = useRouter();
@@ -61,11 +63,7 @@ const Edit: FC = () => {
 
   const fetchFields = async () => {
     try {
-      const article = await getArticle(id);
-
-      if (article.isDraft) {
-        article.postDate = new Date().toISOString().slice(0, 10);
-      }
+      const article = articleJson;
 
       setShowButtons({
         isDraft: article.isDraft,
@@ -78,7 +76,7 @@ const Edit: FC = () => {
 
       reset({
         ...article,
-        postDate: article?.postDate ? article?.postDate : getTodayFormValue(),
+        postDate: getTodayFormValue(),
       });
     } catch (error) {
       console.error(error);
@@ -93,15 +91,6 @@ const Edit: FC = () => {
         if (type === ArticleTypes.isPublished) {
           data.postDate = null;
         }
-
-        await updateArticle({
-          article: {
-            ...data,
-            publishedDate,
-          },
-          id,
-          type,
-        });
 
         reset();
 

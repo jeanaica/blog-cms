@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 import { FC } from 'react';
 
 import IconButton from 'components/icon/IconButton';
-import IconLink from 'components/icon/IconLink';
 
 type Props = {
   id: string;
@@ -27,14 +26,14 @@ const PostActions: FC<Props> = ({
 
   return (
     <div className='flex gap-1 ml-4'>
-      {
+      {/* {
         <IconLink
           icon='preview'
           tooltip='Preview Post'
           href={`${`/article/${id}/view`}`}
           target='_blank'
         />
-      }
+      } */}
       {isPublished && !isUnpublished && (
         <IconButton
           icon='disabled_visible'

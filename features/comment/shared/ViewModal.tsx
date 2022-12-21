@@ -4,8 +4,9 @@ import classNames from 'classnames';
 import Modal from 'components/modal/Modal';
 import Loading from 'components/loading/Loading';
 
-import { getComment, getPostComments } from 'lib/firebase/comment/get';
 import { Comments, Comment } from 'lib/firebase/comment/types';
+
+import commentsJson from 'mock/comments.json';
 
 type Props = {
   postId: string;
@@ -39,31 +40,17 @@ const ViewModal: FC<Props> = ({
   const fetchComments = async () => {
     try {
       setIsCommentLoading(true);
-      let commentList = await getPostComments({
-        postId,
-      });
 
-      const comment = [await getComment(activeId)];
-      const reduced = commentList
-        .filter(aitem => !comment.find(bitem => aitem['id'] === bitem['id']))
-        .concat(comment)
-        .sort((a: Comment, b: Comment) => {
-          if (b.postedDate && a.postedDate) {
-            const postedDateA = new Date(a.postedDate);
-            const postedDateB = new Date(b.postedDate);
-
-            return postedDateB < postedDateA ? 1 : -1;
-          }
-
-          return 1;
-        });
-
-      setComments(reduced);
+      setComments(commentsJson);
     } catch (error) {
       console.log(error);
       setError('Failed to fetch comment. Please try again.');
     } finally {
-      setIsCommentLoading(false);
+      const loadingTimeout = setTimeout(() => {
+        setIsCommentLoading(false);
+
+        clearTimeout(loadingTimeout);
+      }, 1000);
     }
   };
 

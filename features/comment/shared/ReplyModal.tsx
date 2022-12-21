@@ -13,6 +13,8 @@ import { Comment } from 'lib/firebase/comment/types';
 import { editComment, replyComment } from 'lib/firebase/comment/actions';
 import schema from './schema';
 
+import commentsJson from 'mock/comments.json';
+
 type Props = {
   postId: string;
   activeId: string;
@@ -57,7 +59,7 @@ const ReplyModal: FC<Props> = ({
     try {
       setIsCommentLoading(true);
 
-      const activeComment = await getComment(activeId);
+      const activeComment = commentsJson.filter(({ id }) => id === activeId)[0];
 
       setCommentData(activeComment);
       setValue('postTitle', activeComment.postTitle);
@@ -69,36 +71,26 @@ const ReplyModal: FC<Props> = ({
       console.log(error);
       setError('Failed to fetch comment. Please try again.');
     } finally {
-      setIsCommentLoading(false);
+      const loadingTimeout = setTimeout(() => {
+        setIsCommentLoading(false);
+
+        clearTimeout(loadingTimeout);
+      }, 1000);
     }
   };
 
   const onSubmit = handleSubmit(async ({ postId, postTitle, comment }) => {
     try {
       setIsCommentLoading(true);
-
-      if (action === 'edit' && commentData) {
-        await editComment({
-          ...commentData,
-          id: activeId,
-          postId,
-          postTitle,
-          comment,
-        });
-      } else {
-        await replyComment({
-          postId,
-          postTitle,
-          comment,
-          commentId: activeId,
-        });
-      }
     } catch (error) {
       setError('Failed to submit comment. Please try again.');
       console.log(error);
     } finally {
-      setIsCommentLoading(false);
-      onClose();
+      const loadingTimeout = setTimeout(() => {
+        setIsCommentLoading(false);
+        onClose();
+        clearTimeout(loadingTimeout);
+      }, 1000);
     }
   });
 

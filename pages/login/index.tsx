@@ -6,7 +6,6 @@ import * as z from 'zod';
 import Input from 'components/form/input/Input';
 import Button from 'components/button/Button';
 import Shared from 'components/layout/Shared';
-import publicRoute from 'lib/routes/publicRoute';
 
 const schema = z.object({
   email: z.string().email().min(1, { message: 'Required' }),
@@ -14,8 +13,6 @@ const schema = z.object({
 });
 
 const Login = () => {
-  const auth = getAuth();
-
   const methods = useForm({
     resolver: zodResolver(schema),
   });
@@ -25,7 +22,6 @@ const Login = () => {
   const onSubmit = handleSubmit(async data => {
     const { email, password } = data;
     try {
-      await signInWithEmailAndPassword(auth, email, password);
       window.location.href = '/';
     } catch (error) {
       // NOOP
@@ -65,5 +61,3 @@ const Login = () => {
 Login.Layout = Shared;
 
 export default Login;
-
-export const getServerSideProps = publicRoute();

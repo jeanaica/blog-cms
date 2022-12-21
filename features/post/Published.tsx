@@ -4,12 +4,12 @@ import List from 'components/list/List';
 import ListItem from 'components/list/ListItem';
 
 import { Posts } from 'lib/firebase/post/types';
-import { getPublishedPosts } from 'lib/firebase/post/get';
 
 import ListContent from './shared/ListContent';
 import PostActions from './shared/PostActions';
 import PostModal from './shared/PostModal';
-import { unpublishPost } from 'lib/firebase/post/actions';
+
+import postsJson from 'mock/posts.json';
 
 const Published: FC = () => {
   const [posts, setPosts] = useState<Posts>([]);
@@ -27,13 +27,17 @@ const Published: FC = () => {
     try {
       setIsLoading(true);
 
-      const published = await getPublishedPosts({});
+      const published = postsJson.filter(({ isPublished }) => isPublished);
 
       setPosts(published);
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoading(false);
+      const loadingTimeout = setTimeout(() => {
+        setIsLoading(false);
+
+        clearTimeout(loadingTimeout);
+      }, 1000);
     }
   };
 
@@ -50,15 +54,17 @@ const Published: FC = () => {
     try {
       setError('');
       setIsActionLoading(true);
-      await unpublishPost(activeId);
 
       setActiveId('');
     } catch (error) {
       console.log(error);
       setError('Failed to unpublish post.');
     } finally {
-      setIsActionLoading(false);
-      setShowModal(false);
+      const actionLoadingTimeout = setTimeout(() => {
+        setIsActionLoading(false);
+        setShowModal(false);
+        clearTimeout(actionLoadingTimeout);
+      }, 1000);
     }
   };
 

@@ -1,15 +1,11 @@
 import React from 'react';
-import { InferGetServerSidePropsType } from 'next';
 
 import Dashboard from 'components/layout/Dashboard';
-import protectedRoute from 'lib/routes/protectedRoute';
 
-const Page = (
-  props: InferGetServerSidePropsType<typeof getServerSideProps>
-) => {
+const Page = () => {
   return (
     <>
-      <p>{props.message!}</p>
+      <p>Welcome to my CMS demo!</p>
     </>
   );
 };
@@ -17,5 +13,3 @@ const Page = (
 Page.Layout = Dashboard;
 
 export default Page;
-
-export const getServerSideProps = protectedRoute();

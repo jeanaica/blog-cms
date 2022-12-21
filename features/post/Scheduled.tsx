@@ -4,12 +4,12 @@ import List from 'components/list/List';
 import ListItem from 'components/list/ListItem';
 
 import { Posts } from 'lib/firebase/post/types';
-import { getScheduledPosts } from 'lib/firebase/post/get';
-import { unschedulePost } from 'lib/firebase/post/actions';
 
 import ListContent from './shared/ListContent';
 import PostActions from './shared/PostActions';
 import PostModal from './shared/PostModal';
+
+import postsJson from 'mock/posts.json';
 
 const Scheduled: FC = () => {
   const [posts, setPosts] = useState<Posts>([]);
@@ -26,13 +26,17 @@ const Scheduled: FC = () => {
   const fetchPosts = async () => {
     try {
       setIsLoading(true);
-      const scheduled = await getScheduledPosts({});
+      const scheduled = postsJson.filter(({ isScheduled }) => isScheduled);
 
       setPosts(scheduled);
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoading(false);
+      const loadingTimeout = setTimeout(() => {
+        setIsLoading(false);
+
+        clearTimeout(loadingTimeout);
+      }, 1000);
     }
   };
 
@@ -49,15 +53,17 @@ const Scheduled: FC = () => {
     try {
       setError('');
       setIsActionLoading(true);
-      await unschedulePost(activeId);
 
       setActiveId('');
     } catch (error) {
       console.log(error);
       setError('Failed to unschedule post.');
     } finally {
-      setIsActionLoading(false);
-      setShowModal(false);
+      const actionLoadingTimeout = setTimeout(() => {
+        setIsActionLoading(false);
+        setShowModal(false);
+        clearTimeout(actionLoadingTimeout);
+      }, 1000);
     }
   };
 

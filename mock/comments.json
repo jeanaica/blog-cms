@@ -1,0 +1,37 @@
+[
+  {
+    "id": "ID1",
+    "name": "Draft",
+    "postId": "ID1",
+    "postTitle": "Post Title",
+    "comment": "unread comment",
+    "postedDate": "12/21/2022 11:53:10 PM",
+    "modifiedDate": "12/21/2022 11:53:10 PM",
+    "isUnread": true,
+    "isReply": false
+  },
+  {
+    "id": "ID2",
+    "name": "Read",
+    "postId": "ID1",
+    "postTitle": "Post Title",
+    "comment": "read comment",
+    "postedDate": "12/21/2022 11:53:10 PM",
+    "modifiedDate": "12/21/2022 11:53:10 PM",
+    "publishedDate": "12/21/2022 11:53:10 PM",
+    "isUnread": false,
+    "isReply": false
+  },
+  {
+    "id": "ID3",
+    "name": "Reply",
+    "postId": "ID1",
+    "postTitle": "Post Title",
+    "comment": "reply comment",
+    "postedDate": "12/21/2022 11:53:10 PM",
+    "modifiedDate": "12/21/2022 11:53:10 PM",
+    "publishedDate": "12/21/2022 11:53:10 PM",
+    "isUnread": false,
+    "isReply": true
+  }
+]

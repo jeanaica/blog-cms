@@ -3,13 +3,14 @@ import { FC, useEffect, useState } from 'react';
 import List from 'components/list/List';
 import ListItem from 'components/list/ListItem';
 
-import { getDrafts } from 'lib/firebase/post/get';
 import { Posts } from 'lib/firebase/post/types';
 import { deletePost } from 'lib/firebase/post/actions';
 
 import ListContent from './shared/ListContent';
 import PostActions from './shared/PostActions';
 import PostModal from './shared/PostModal';
+
+import postsJson from 'mock/posts.json';
 
 const Drafts: FC = () => {
   const [posts, setPosts] = useState<Posts>([]);
@@ -26,13 +27,18 @@ const Drafts: FC = () => {
   const fetchPosts = async () => {
     try {
       setIsLoading(true);
-      const drafts = await getDrafts({});
+
+      const drafts = postsJson.filter(({ isDraft }) => isDraft);
 
       setPosts(drafts);
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoading(false);
+      const loadingTimeout = setTimeout(() => {
+        setIsLoading(false);
+
+        clearTimeout(loadingTimeout);
+      }, 1000);
     }
   };
 
@@ -50,15 +56,16 @@ const Drafts: FC = () => {
       setError('');
       setIsActionLoading(true);
 
-      await deletePost(activeId);
-
       setActiveId('');
     } catch (error) {
       console.log(error);
       setError('Failed to delete draft.');
     } finally {
-      setIsActionLoading(false);
-      setShowModal(false);
+      const actionLoadingTimeout = setTimeout(() => {
+        setIsActionLoading(false);
+        setShowModal(false);
+        clearTimeout(actionLoadingTimeout);
+      }, 1000);
     }
   };
 

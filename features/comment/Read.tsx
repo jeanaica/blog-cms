@@ -3,14 +3,14 @@ import { FC, useEffect, useState } from 'react';
 import List from 'components/list/List';
 import ListItem from 'components/list/ListItem';
 
-import { deleteComment } from 'lib/firebase/comment/actions';
-import { getRead } from 'lib/firebase/comment/get';
 import { Comments } from 'lib/firebase/comment/types';
 
 import CommentActions from './shared/CommentActions';
 import ListComment from './shared/ListComment';
 import DeleteModal from './shared/DeleteModal';
 import ViewModal from './shared/ViewModal';
+
+import commentsJson from 'mock/comments.json';
 
 const Read: FC = () => {
   const [comments, setComments] = useState<Comments>([]);
@@ -28,13 +28,19 @@ const Read: FC = () => {
   const fetchComments = async () => {
     try {
       setIsLoading(true);
-      const readComments = await getRead({});
+      const readComments = commentsJson.filter(
+        ({ isUnread, isReply }) => !isUnread && !isReply
+      );
 
       setComments(readComments);
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoading(false);
+      const loadingTimeout = setTimeout(() => {
+        setIsLoading(false);
+
+        clearTimeout(loadingTimeout);
+      }, 1000);
     }
   };
 
@@ -53,16 +59,17 @@ const Read: FC = () => {
       setError('');
       setIsActionLoading(true);
 
-      await deleteComment(activeId);
-
       setActiveId('');
       setPostId('');
     } catch (error) {
       console.log(error);
       setError('Failed to delete comment.');
     } finally {
-      setIsActionLoading(false);
-      setShowModal('');
+      const actionLoadingTimeout = setTimeout(() => {
+        setIsActionLoading(false);
+        setShowModal('');
+        clearTimeout(actionLoadingTimeout);
+      }, 1000);
     }
   };
 

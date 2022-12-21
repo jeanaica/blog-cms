@@ -1,0 +1,29 @@
+{
+  "id": "ID1",
+  "title": "Article",
+  "banner": "https://static-cse.canva.com/blob/666314/bestfreestockphotos.jpg",
+  "content": "Content",
+  "createdDate": "12/21/2022 11:53:10 PM",
+  "category": [
+    {
+      "label": "Nice",
+      "value": "nice"
+    }
+  ],
+  "tags": [
+    {
+      "label": "Nice",
+      "value": "nice"
+    }
+  ],
+  "modifiedDate": "12/21/2022 11:53:10 PM",
+  "isDraft": true,
+  "isPublished": false,
+  "isScheduled": false,
+  "isUnpublished": false,
+  "slug": "article",
+  "author": "Jeanaica",
+  "publishedDate": "12/21/2022 11:53:10 PM",
+  "description": "Describing content that needs to be at least 70 characters. This is not yet 70 characters. This is more than 70 characters.",
+  "url": "sampleurl.blog.com/article"
+}

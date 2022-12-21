@@ -1,11 +1,11 @@
-import { ButtonHTMLAttributes, FC, ReactNode } from 'react';
+import { ButtonHTMLAttributes, FC, MouseEventHandler, ReactNode } from 'react';
 import classNames from 'classnames';
 
 import Loading from 'components/loading/Loading';
 import Icon from './Icon';
 
 type Props = {
-  onClick?(): void;
+  onClick?: MouseEventHandler<HTMLButtonElement> | (() => void) | undefined;
   icon: string;
   className?: string;
   iconClassName?: string;

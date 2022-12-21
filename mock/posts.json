@@ -1,0 +1,101 @@
+[
+  {
+    "id": "ID1",
+    "title": "Draft",
+    "banner": "https://static-cse.canva.com/blob/666314/bestfreestockphotos.jpg",
+    "content": "Content",
+    "createdDate": "12/21/2022 11:53:10 PM",
+    "category": [
+      {
+        "label": "Nice",
+        "value": "nice"
+      }
+    ],
+    "tags": [
+      {
+        "label": "Nice",
+        "value": "nice"
+      }
+    ],
+    "modifiedDate": "12/21/2022 11:53:10 PM",
+    "isDraft": true,
+    "isPublished": false,
+    "isScheduled": false,
+    "isUnpublished": false
+  },
+  {
+    "id": "ID2",
+    "title": "Published",
+    "banner": "https://static-cse.canva.com/blob/666314/bestfreestockphotos.jpg",
+    "content": "Content",
+    "createdDate": "12/21/2022 11:53:10 PM",
+    "category": [
+      {
+        "label": "Nice",
+        "value": "nice"
+      }
+    ],
+    "tags": [
+      {
+        "label": "Nice",
+        "value": "nice"
+      }
+    ],
+    "modifiedDate": "12/21/2022 11:53:10 PM",
+    "publishedDate": "12/21/2022 11:53:10 PM",
+    "isDraft": false,
+    "isPublished": true,
+    "isScheduled": false,
+    "isUnpublished": false
+  },
+  {
+    "id": "ID3",
+    "title": "Scheduled",
+    "banner": "https://static-cse.canva.com/blob/666314/bestfreestockphotos.jpg",
+    "content": "Content",
+    "createdDate": "12/21/2022 11:53:10 PM",
+    "category": [
+      {
+        "label": "Nice",
+        "value": "nice"
+      }
+    ],
+    "tags": [
+      {
+        "label": "Nice",
+        "value": "nice"
+      }
+    ],
+    "modifiedDate": "12/21/2022 11:53:10 PM",
+    "postDate": "12/21/2022 11:53:10 PM",
+    "isDraft": false,
+    "isPublished": false,
+    "isScheduled": true,
+    "isUnpublished": false
+  },
+  {
+    "id": "ID4",
+    "title": "Unpublished",
+    "banner": "https://static-cse.canva.com/blob/666314/bestfreestockphotos.jpg",
+    "content": "Content",
+    "createdDate": "12/21/2022 11:53:10 PM",
+    "category": [
+      {
+        "label": "Nice",
+        "value": "nice"
+      }
+    ],
+    "tags": [
+      {
+        "label": "Nice",
+        "value": "nice"
+      }
+    ],
+    "modifiedDate": "12/21/2022 11:53:10 PM",
+    "publishedDate": "12/21/2022 11:53:10 PM",
+    "isDraft": false,
+    "isPublished": false,
+    "isScheduled": false,
+    "isUnpublished": true
+  }
+]

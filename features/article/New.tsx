@@ -11,7 +11,6 @@ import FormTabs from 'features/shared/form/FormTabs';
 import FormSide from 'features/shared/form/FormSide';
 import schema from 'features/shared/form/schema';
 
-import { saveArticle } from 'lib/firebase/article/actions';
 import { ArticleTypes } from 'lib/firebase/article/types';
 
 import { ArticleForm } from './shared/types';
@@ -32,11 +31,6 @@ const New: FC = () => {
   const onSubmit = (type: ArticleTypes) => {
     handleSubmit(async data => {
       try {
-        await saveArticle({
-          article: data,
-          type,
-        });
-
         reset();
         handleOnSuccess(type);
       } catch (err) {
