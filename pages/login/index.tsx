@@ -34,6 +34,9 @@ const Login = () => {
         <form
           onSubmit={onSubmit}
           className='w-full sm:max-w-md rounded overflow-hidden sm:shadow-lg shadow-accent-500 p-10 flex flex-col lg:max-w-1/2 lg:p-10'>
+          <span className='text-center'>Removed authentication for demo</span>
+          <span className='text-center mb-8'>Enter any email and password</span>
+
           <div className='flex gap-4 flex-col'>
             <Input
               label='Email'
