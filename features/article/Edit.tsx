@@ -152,7 +152,7 @@ const Edit: FC = () => {
             onSubmit={onSubmit}
             showButtons={showButtons}
           />
-          <div className='flex mt-12 gap-12'>
+          <div className='flex mt-8 gap-12'>
             <FormTabs />
             <FormSide />
           </div>

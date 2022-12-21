@@ -9,6 +9,7 @@ type Props = {
   name: string;
   readOnly?: boolean;
   className?: string;
+  rows?: number;
 };
 
 const TextArea: FC<Props> = ({
@@ -18,6 +19,7 @@ const TextArea: FC<Props> = ({
   name,
   readOnly = false,
   className,
+  rows = 5,
 }) => {
   const {
     register,
@@ -36,7 +38,7 @@ const TextArea: FC<Props> = ({
       <div className='relative mt-1 w-full'>
         <textarea
           {...register(name)}
-          rows={5}
+          rows={rows}
           name={name}
           id={name}
           readOnly={readOnly}

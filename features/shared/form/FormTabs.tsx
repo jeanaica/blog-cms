@@ -12,7 +12,6 @@ const FormTabs: FC = () => {
   const metaFields = ['slug', 'description', 'banner'];
 
   const {
-    register,
     formState: { errors },
   } = useFormContext();
 
@@ -21,7 +20,7 @@ const FormTabs: FC = () => {
   };
 
   return (
-    <div className='flex-[3] bg-white border shadow-sm'>
+    <div className='flex-[3] bg-white border shadow-sm mb-8'>
       <Tabs
         active={active}
         onClick={handleClick}

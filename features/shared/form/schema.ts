@@ -18,7 +18,7 @@ const schema = z.object({
     .any()
     .refine(file => {
       if (typeof file !== 'undefined' && typeof file !== 'string') {
-        return file?.size >= MAX_FILE_SIZE;
+        return file?.size <= MAX_FILE_SIZE;
       }
     }, `Max image size is 10MB.`)
     .refine(file => {

@@ -49,7 +49,9 @@ const FormHeader: FC<Props> = ({ showButtons, onSubmit }) => {
             {
               text: 'Save & Schedule',
               action: () => onSubmit(ArticleTypes.isScheduled),
-              hide: isPostDateToday && !isDraft && !isUnpublished,
+              hide:
+                (isPostDateToday && !isDraft) ||
+                (!isUnpublished && isPostDateToday),
             },
             {
               text: isPublished ? 'Update Article' : 'Publish Now',

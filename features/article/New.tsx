@@ -86,7 +86,7 @@ const New: FC = () => {
               isUnpublished: false,
             }}
           />
-          <div className='flex mt-12 gap-12'>
+          <div className='flex mt-8 gap-12 h-[620px]'>
             <FormTabs />
             <FormSide />
           </div>
