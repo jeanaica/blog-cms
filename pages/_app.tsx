@@ -1,8 +1,10 @@
 import { AppProps } from 'next/app';
+import { ApolloProvider } from '@apollo/client';
 
 import { AuthProvider } from 'provider/AuthProvider';
 import LayoutType from 'components/layout/LayoutType';
 import Dashboard from 'components/layout/Dashboard';
+import client from 'lib/client/apolloClient';
 
 import '../styles/globals.css';
 
@@ -17,9 +19,11 @@ export default function App({ Component, pageProps }: AppLayoutProps) {
 
   return (
     <AuthProvider>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <ApolloProvider client={client}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ApolloProvider>
     </AuthProvider>
   );
 }
