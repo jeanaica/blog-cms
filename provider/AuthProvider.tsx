@@ -1,38 +1,47 @@
-import { ReactNode, useEffect, useState } from 'react';
-import nookies from 'nookies';
-import { onIdTokenChanged, User } from 'firebase/auth';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { useRouter } from 'next/router';
 
 import { AuthContext } from 'lib/context/AuthContext';
 import { auth } from 'lib/firebase/client';
+import useSessionStorage from 'lib/hooks/useSessionStorage';
+
+import { User } from 'types/User';
 
 type Props = {
   children: ReactNode;
 };
 
 export const AuthProvider: React.FC<Props> = ({ children }) => {
+  const router = useRouter();
+  const { pathname } = router;
   const [authUser, setAuthUser] = useState<User | null>(null);
+  const [idToken, setIdToken] = useSessionStorage<string>('token', undefined);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      (window as any).nookies = nookies;
-    }
-    return onIdTokenChanged(auth, async user => {
-      console.log(`token changed!`);
-      if (!user) {
-        console.log(`no token found...`);
-        setAuthUser(null);
-        nookies.destroy(null, 'token');
-        nookies.set(null, 'token', '', { path: '/' });
-        return;
-      }
+  const verifyToken = useCallback(() => {
+    return new Promise<string>((resolve, reject) => {
+      onAuthStateChanged(auth, async user => {
+        if (user) {
+          try {
+            const token: string = await user.getIdToken();
 
-      console.log(`updating token...`);
-      const token = await user.getIdToken();
-      setAuthUser(user);
-      nookies.destroy(null, 'token');
-      nookies.set(null, 'token', token, { path: '/' });
+            setAuthUser({
+              displayName: user.displayName!,
+              email: user.email!,
+            });
+
+            resolve(token);
+          } catch (error) {
+            reject(error);
+          }
+        } else {
+          // User is signed out
+          setIdToken('');
+          reject('No users available');
+        }
+      });
     });
-  }, []);
+  }, [setIdToken]);
 
   // force refresh the token every 10 minutes
   useEffect(() => {
@@ -43,6 +52,23 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     }, 10 * 60 * 1000);
     return () => clearInterval(handle);
   }, []);
+
+  useEffect(() => {
+    verifyToken()
+      .then(token => setIdToken(token))
+      .catch(err => {
+        setIdToken('');
+        if (pathname !== '/login') {
+          window.location.href = '/login';
+        }
+      });
+  }, [pathname, setIdToken, verifyToken]);
+
+  useEffect(() => {
+    if (pathname === '/login' && idToken) {
+      window.location.href = '/';
+    }
+  }, [pathname, idToken]);
 
   return (
     <AuthContext.Provider value={{ user: authUser }}>

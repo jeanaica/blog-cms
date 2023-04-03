@@ -1,4 +1,4 @@
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -6,7 +6,8 @@ import * as z from 'zod';
 import Input from 'components/form/input/Input';
 import Button from 'components/button/Button';
 import Shared from 'components/layout/Shared';
-import publicRoute from 'lib/routes/publicRoute';
+import { auth } from 'lib/firebase/client';
+import useSessionStorage from 'lib/hooks/useSessionStorage';
 
 const schema = z.object({
   email: z.string().email().min(1, { message: 'Required' }),
@@ -14,7 +15,7 @@ const schema = z.object({
 });
 
 const Login = () => {
-  const auth = getAuth();
+  const [idToken, setIdToken] = useSessionStorage<string>('token', '');
 
   const methods = useForm({
     resolver: zodResolver(schema),
@@ -25,12 +26,20 @@ const Login = () => {
   const onSubmit = handleSubmit(async data => {
     const { email, password } = data;
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      const token = await result.user.getIdToken();
+
+      setIdToken(token);
+
       window.location.href = '/';
     } catch (error) {
-      // NOOP
+      setIdToken('');
     }
   });
+
+  if (idToken) {
+    return <span>Loading</span>;
+  }
 
   return (
     <div className='h-screen w-screen overflow-hidden prose min-w-[320px] flex justify-center content-center items-center'>
@@ -65,5 +74,3 @@ const Login = () => {
 Login.Layout = Shared;
 
 export default Login;
-
-export const getServerSideProps = publicRoute();
