@@ -1,14 +1,17 @@
-import { FC } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { signOut } from 'firebase/auth';
+import { useRouter } from 'next/router';
+import classNames from 'classnames';
 
 import NavLink from 'components/nav/NavLink';
 import NavItem from 'components/nav/NavItem';
 import Logo from 'components/logo/Logo';
+import IconButton from 'components/icon/IconButton';
 
 import { auth } from 'lib/firebase/client';
+import useDetectOutsideClick from 'lib/hooks/useDetectOutsideClick';
 
 import navJson from './nav.json';
-import { useRouter } from 'next/router';
 
 interface NavItems {
   icon: string;
@@ -19,6 +22,9 @@ interface NavItems {
 
 const Nav: FC = () => {
   const router = useRouter();
+  const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef(null);
+  const isClickedOutside = useDetectOutsideClick(menuRef);
 
   const handleLogout = async () => {
     await signOut(auth).then(() => {
@@ -26,10 +32,40 @@ const Nav: FC = () => {
     });
   };
 
+  const handleShowMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
+  useEffect(() => {
+    if (isClickedOutside) {
+      setShowMenu(false);
+    }
+  }, [isClickedOutside]);
+
+  useEffect(() => {
+    setShowMenu(false);
+  }, [router.asPath]);
+
   return (
-    <div className='flex-col bg-white relative text-right md:text-center w-[250px] justify-center drop-shadow-[3px_0_3px_rgba(0,0,0,0.25)]'>
-      <Logo />
-      <ul>
+    <div
+      ref={menuRef}
+      className='flex flex-col bg-white relative text-center md:w-[250px] border-r md:h-full'>
+      <div className='flex items-center border-b md:border-0'>
+        <IconButton
+          icon={showMenu ? 'close' : 'menu'}
+          className='ml-4 md:hidden'
+          onClick={handleShowMenu}
+        />
+        <Logo />
+      </div>
+      <div
+        className={classNames(
+          'w-[200px] absolute top-[6.30rem] z-10 bg-white drop-shadow-md md:block md:relative md:drop-shadow-none md:w-full md:top-0 md:h-full',
+          {
+            hidden: !showMenu,
+            block: showMenu,
+          }
+        )}>
         {navJson.map(({ text, icon, href, isAction }: NavItems) => (
           <NavItem key={text}>
             <NavLink
@@ -41,7 +77,7 @@ const Nav: FC = () => {
           </NavItem>
         ))}
 
-        <NavItem className='absolute bottom-0 left-0 w-full border-t'>
+        <NavItem className='w-full border-t md:absolute md:bottom-0'>
           <button
             className='px-8 py-4 w-full flex items-start hover:bg-gray-300'
             onClick={handleLogout}>
@@ -49,7 +85,7 @@ const Nav: FC = () => {
             Logout
           </button>
         </NavItem>
-      </ul>
+      </div>
     </div>
   );
 };

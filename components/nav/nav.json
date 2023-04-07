@@ -8,7 +8,7 @@
   {
     "icon": "auto_awesome",
     "text": "Posts",
-    "href": "/post/drafts",
+    "href": "/post",
     "isAction": false
   },
   {
