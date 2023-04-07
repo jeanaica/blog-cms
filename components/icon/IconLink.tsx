@@ -25,20 +25,16 @@ const IconLink: FC<Props> = ({
   tooltip,
 }) => (
   <Link
-    className={classNames(
-      'px-2 py-1 no-underline rounded-md flex items-center hover:bg-slate-100 hover:shadow-md',
-      className,
-      {
-        'cursor-not-allowed opacity-50': disabled || isLoading,
-      }
-    )}
+    className={classNames('no-underline flex items-center', className, {
+      'cursor-not-allowed opacity-50': disabled || isLoading,
+    })}
     href={href}
     target={target}
     title={tooltip}>
     {isLoading && <Loading />}
     <Icon
       icon={icon}
-      className='text-3xl text-sky-700'
+      className='px-2 py-1 text-3xl text-sky-700 rounded-md hover:bg-slate-100'
     />
   </Link>
 );

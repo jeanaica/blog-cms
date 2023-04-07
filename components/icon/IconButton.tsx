@@ -1,11 +1,11 @@
-import { ButtonHTMLAttributes, FC, ReactNode } from 'react';
+import { ButtonHTMLAttributes, FC, MouseEventHandler } from 'react';
 import classNames from 'classnames';
 
 import Loading from 'components/loading/Loading';
 import Icon from './Icon';
 
 type Props = {
-  onClick?(): void;
+  onClick?: MouseEventHandler;
   icon: string;
   className?: string;
   iconClassName?: string;
@@ -26,19 +26,18 @@ const IconButton: FC<Props> = ({
   <button
     type='button'
     title={tooltip}
-    className={classNames(
-      'px-2 py-1 rounded-md flex items-center hover:bg-slate-100 hover:shadow-md',
-      className,
-      {
-        'cursor-not-allowed opacity-50': disabled || isLoading,
-      }
-    )}
+    className={classNames('flex items-center cursor-pointer', className, {
+      'cursor-not-allowed opacity-50': disabled || isLoading,
+    })}
     onClick={onClick}
     disabled={disabled}>
     {isLoading && <Loading />}
     <Icon
       icon={icon}
-      className={classNames('text-3xl text-sky-700', iconClassName)}
+      className={classNames(
+        'px-2 py-1 text-3xl text-sky-700 rounded-md hover:bg-slate-100',
+        iconClassName
+      )}
     />
   </button>
 );
