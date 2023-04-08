@@ -6,15 +6,17 @@ import Meta from 'components/meta/Meta';
 import Container from 'components/container/Container';
 
 import View from 'features/article/View';
-
-import { GET_ALL_POST_IDS, GET_POST_BY_ID } from 'graphql/queries';
+import {
+  GET_ALL_ARTICLE_IDS,
+  GET_ARTICLE_BY_ID,
+} from 'features/article/schema/queries';
 
 import client from 'lib/client/apolloClient';
 
-import { Post } from 'types/Post';
+import { Article } from 'shared/types/Article';
 
 type Props = {
-  post: Post | null;
+  post: Article | null;
   loading?: boolean;
   error?: unknown;
 };
@@ -39,11 +41,11 @@ ViewPage.Layout = Shared;
 export const getStaticPaths: GetStaticPaths = async () => {
   // Fetch all blog post slugs from the API
   const { data } = await client.query({
-    query: GET_ALL_POST_IDS,
+    query: GET_ALL_ARTICLE_IDS,
   });
 
   // Generate paths based on the blog post slugs
-  const paths = data.posts.map((post: Post) => ({
+  const paths = data.posts.map((post: Article) => ({
     params: { id: post.id },
   }));
 
@@ -54,7 +56,7 @@ export const getStaticProps: GetStaticProps<Props> = async context => {
   const { id } = context.params as { id: string };
 
   const { data, loading, error } = await client.query<Props>({
-    query: GET_POST_BY_ID,
+    query: GET_ARTICLE_BY_ID,
     variables: { id },
   });
 

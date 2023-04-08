@@ -11,7 +11,7 @@ type Props = {
   loading: boolean;
 };
 
-const PostActions: FC<Props> = ({
+const Actions: FC<Props> = ({
   id,
   onDelete,
   onMoveToDrafts,
@@ -55,4 +55,4 @@ const PostActions: FC<Props> = ({
   </div>
 );
 
-export default PostActions;
+export default Actions;

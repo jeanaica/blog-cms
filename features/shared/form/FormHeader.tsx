@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import Input from 'components/form/input/Input';
 import Dropdown from 'components/button/Dropdown';
 
-import { isToday } from 'lib/utils/dateHelpers';
+import { isToday } from 'shared/utils/dateHelpers';
 import { ArticleTypes } from 'lib/firebase/article/types';
 
 type Props = {

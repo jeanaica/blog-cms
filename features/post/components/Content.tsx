@@ -8,7 +8,7 @@ type Props = {
 
 const REGEX = /(<([^>]+)>)/gi;
 
-const PostItem: FC<Props> = ({ title, content, updatedAt }) => {
+const Content: FC<Props> = ({ title, content, updatedAt }) => {
   const formattedDate = new Date(updatedAt).toLocaleString();
   const strippedContent = content.replace(REGEX, ' ');
 
@@ -25,4 +25,4 @@ const PostItem: FC<Props> = ({ title, content, updatedAt }) => {
   );
 };
 
-export default PostItem;
+export default Content;

@@ -2,11 +2,12 @@ import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'next/router';
 
-import { AuthContext } from 'lib/context/AuthContext';
+import { AuthContext } from 'lib/auth/AuthContext';
 import { auth } from 'lib/firebase/client';
-import useSessionStorage from 'lib/hooks/useSessionStorage';
 
-import { User } from 'types/User';
+import { Auth } from 'lib/auth/Auth';
+
+import useSessionStorage from 'shared/utils/hooks/useSessionStorage';
 
 type Props = {
   children: ReactNode;
@@ -15,54 +16,57 @@ type Props = {
 export const AuthProvider: React.FC<Props> = ({ children }) => {
   const router = useRouter();
   const { pathname } = router;
-  const [authUser, setAuthUser] = useState<User | null>(null);
+  const [authUser, setAuthUser] = useState<Auth | null>(null);
   const [idToken, setIdToken] = useSessionStorage<string>('token', undefined);
-
-  const verifyToken = useCallback(() => {
-    return new Promise<string>((resolve, reject) => {
-      onAuthStateChanged(auth, async user => {
-        if (user) {
-          try {
-            const token: string = await user.getIdToken();
-
-            setAuthUser({
-              displayName: user.displayName!,
-              email: user.email!,
-            });
-
-            resolve(token);
-          } catch (error) {
-            reject(error);
-          }
-        } else {
-          // User is signed out
-          setIdToken('');
-          reject('No users available');
-        }
-      });
-    });
-  }, [setIdToken]);
 
   // force refresh the token every 10 minutes
   useEffect(() => {
     const handle = setInterval(async () => {
       console.log(`refreshing token...`);
       const user = auth.currentUser;
-      if (user) await user.getIdToken(true);
+      try {
+        if (user) {
+          const token: string = await user.getIdToken(true);
+
+          setIdToken(token);
+        }
+      } catch (error) {
+        setIdToken('');
+        if (pathname !== '/login') {
+          window.location.href = '/login';
+        }
+      }
     }, 10 * 60 * 1000);
     return () => clearInterval(handle);
   }, []);
 
   useEffect(() => {
-    verifyToken()
-      .then(token => setIdToken(token))
-      .catch(err => {
+    onAuthStateChanged(auth, async user => {
+      if (user) {
+        try {
+          const token: string = await user.getIdToken();
+
+          setAuthUser({
+            displayName: user.displayName!,
+            email: user.email!,
+          });
+
+          setIdToken(token);
+        } catch (error) {
+          setIdToken('');
+          if (pathname !== '/login') {
+            window.location.href = '/login';
+          }
+        }
+      } else {
+        // User is signed out
         setIdToken('');
         if (pathname !== '/login') {
           window.location.href = '/login';
         }
-      });
-  }, [pathname, setIdToken, verifyToken]);
+      }
+    });
+  }, [pathname, setIdToken]);
 
   useEffect(() => {
     if (pathname === '/login' && idToken) {

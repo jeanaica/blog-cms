@@ -2,19 +2,19 @@ import React, { FC, MouseEventHandler, useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
 
-import { Post as PostType } from 'types/Post';
+import { Article } from 'shared/types/Article';
 
-import PostItem from './PostItem';
-import PostActions from './PostActions';
+import Content from './Content';
+import Actions from './Actions';
 
 type Props = {
   id: string;
-  post: PostType;
+  post: Article;
   onUpdate(id: string, status: string): Promise<void>;
   loading: boolean;
 };
 
-const Post: FC<Props> = ({ id, post, onUpdate, loading }) => {
+const Item: FC<Props> = ({ id, post, onUpdate, loading }) => {
   const router = useRouter();
   const [showActions, setShowActions] = useState<string>();
 
@@ -54,9 +54,9 @@ const Post: FC<Props> = ({ id, post, onUpdate, loading }) => {
       )}
       onMouseEnter={handleHover}
       onMouseLeave={handleLeaveHover}>
-      <PostItem {...post} />
+      <Content {...post} />
       {id === showActions && (
-        <PostActions
+        <Actions
           id={post.id}
           status={post.status.toLowerCase()}
           onMoveToDrafts={handleMoveToDraft}
@@ -68,4 +68,4 @@ const Post: FC<Props> = ({ id, post, onUpdate, loading }) => {
   );
 };
 
-export default Post;
+export default Item;

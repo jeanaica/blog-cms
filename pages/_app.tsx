@@ -1,12 +1,15 @@
 import { AppProps } from 'next/app';
 import { ApolloProvider } from '@apollo/client';
 
-import { AuthProvider } from 'provider/AuthProvider';
 import LayoutType from 'components/layout/LayoutType';
 import Dashboard from 'components/layout/Dashboard';
-import client from 'lib/client/apolloClient';
+import { ToastProvider } from 'components/toast/context';
+import ToastContainer from 'components/toast/ToastContainer';
 
-import '../styles/globals.css';
+import client from 'lib/client/apolloClient';
+import { AuthProvider } from 'lib/auth/AuthProvider';
+
+import '../shared/styles/globals.css';
 
 type AppLayoutProps = AppProps & {
   Component: LayoutType;
@@ -19,11 +22,14 @@ export default function App({ Component, pageProps }: AppLayoutProps) {
 
   return (
     <AuthProvider>
-      <ApolloProvider client={client}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </ApolloProvider>
+      <ToastProvider>
+        <ApolloProvider client={client}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+          <ToastContainer />
+        </ApolloProvider>
+      </ToastProvider>
     </AuthProvider>
   );
 }

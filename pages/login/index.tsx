@@ -7,7 +7,8 @@ import Input from 'components/form/input/Input';
 import Button from 'components/button/Button';
 import Shared from 'components/layout/Shared';
 import { auth } from 'lib/firebase/client';
-import useSessionStorage from 'lib/hooks/useSessionStorage';
+import useSessionStorage from 'shared/utils/hooks/useSessionStorage';
+import Loading from 'components/loading/Loading';
 
 const schema = z.object({
   email: z.string().email().min(1, { message: 'Required' }),
@@ -38,7 +39,14 @@ const Login = () => {
   });
 
   if (idToken) {
-    return <span>Loading</span>;
+    return (
+      <div className='h-screen w-screen overflow-hidden prose min-w-[320px] flex justify-center content-center items-center'>
+        <Loading
+          type='page'
+          size='lg'
+        />
+      </div>
+    );
   }
 
   return (

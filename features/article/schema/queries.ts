@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const GET_ALL_POST_IDS = gql`
+export const GET_ALL_ARTICLE_IDS = gql`
   query Posts {
     posts {
       id
@@ -8,19 +8,7 @@ export const GET_ALL_POST_IDS = gql`
   }
 `;
 
-export const GET_POST_BY_STATUS = gql`
-  query Posts($status: String) {
-    posts(status: $status) {
-      id
-      title
-      content
-      updatedAt
-      status
-    }
-  }
-`;
-
-export const GET_POST_BY_ID = gql`
+export const GET_ARTICLE_BY_ID = gql`
   query Post($id: ID!) {
     post(id: $id) {
       id

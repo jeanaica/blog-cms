@@ -10,7 +10,7 @@ import {
 } from 'firebase/firestore';
 import { getDownloadURL } from 'firebase/storage';
 
-import { isToday } from 'lib/utils/dateHelpers';
+import { isToday } from 'shared/utils/dateHelpers';
 
 import { db } from '../client';
 import handleUpload from '../storage/upload';

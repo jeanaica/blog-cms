@@ -16,32 +16,34 @@ type Props = {
   }>;
 };
 
-const Tabs: FC<Props> = ({ tabs, isPage, active, onClick }) => (
-  <div className='border-b border-gray-200 bg-slate-100'>
-    <ul className='flex flex-wrap -mb-[0.1rem] text-sm font-medium text-center text-gray-500 '>
-      {isPage
-        ? tabs?.map(({ text, icon, href, indexHref }, index) => (
-            <TabLink
-              key={index}
-              href={href}
-              text={text}
-              icon={icon}
-              indexHref={indexHref}
-            />
-          ))
-        : tabs?.map(({ text, icon, name, hasError }, index) => (
-            <Tab
-              key={index}
-              text={text}
-              icon={icon}
-              active={active === name}
-              hasError={hasError}
-              name={name}
-              onClick={onClick}
-            />
-          ))}
-    </ul>
-  </div>
-);
+const Tabs: FC<Props> = ({ tabs, isPage, active, onClick }) => {
+  return (
+    <div className='border-b border-gray-200 bg-slate-100'>
+      <ul className='flex flex-wrap -mb-[0.1rem] text-sm font-medium text-center text-gray-500 '>
+        {isPage
+          ? tabs?.map(({ text, icon, href, indexHref }, index) => (
+              <TabLink
+                key={index}
+                href={href}
+                text={text}
+                icon={icon}
+                indexHref={indexHref}
+              />
+            ))
+          : tabs?.map(({ text, icon, name, hasError }, index) => (
+              <Tab
+                key={index}
+                text={text}
+                icon={icon}
+                active={active === name}
+                hasError={hasError}
+                name={name}
+                onClick={onClick}
+              />
+            ))}
+      </ul>
+    </div>
+  );
+};
 
 export default Tabs;

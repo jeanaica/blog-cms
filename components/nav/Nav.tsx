@@ -9,7 +9,7 @@ import Logo from 'components/logo/Logo';
 import IconButton from 'components/icon/IconButton';
 
 import { auth } from 'lib/firebase/client';
-import useDetectOutsideClick from 'lib/hooks/useDetectOutsideClick';
+import useDetectOutsideClick from 'shared/utils/hooks/useDetectOutsideClick';
 
 import navJson from './nav.json';
 

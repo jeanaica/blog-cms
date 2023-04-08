@@ -30,7 +30,7 @@ const TabLink: FC<Props> = ({
           'inline-flex items-center p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 group',
           {
             'bg-white text-blue-600 border-blue-600 hover:text-blue-600 hover:border-blue-600 active':
-              router.pathname === href || router.pathname === indexHref,
+              router.asPath.includes(href),
             'text-gray-400 hover:text-gray-400 hover:border-b-transparent  cursor-not-allowed':
               disabled,
           },

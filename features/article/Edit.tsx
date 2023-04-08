@@ -15,7 +15,7 @@ import { updateArticle } from 'lib/firebase/article/actions';
 import { getArticle } from 'lib/firebase/article/get';
 
 import { ArticleForm } from './shared/types';
-import { getTodayFormValue } from 'lib/utils/dateConverter';
+import { getTodayFormValue } from 'shared/utils/dateConverter';
 import { ArticleTypes } from 'lib/firebase/article/types';
 
 const Edit: FC = () => {

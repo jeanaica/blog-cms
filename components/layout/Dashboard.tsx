@@ -4,7 +4,7 @@ import { ReactElement } from 'react';
 import Nav from 'components/nav/Nav';
 import Loading from 'components/loading/Loading';
 
-import { usePageLoading } from 'lib/hooks/usePageLoading';
+import { usePageLoading } from 'shared/utils/hooks/usePageLoading';
 
 type Props = {
   children: ReactElement;
@@ -22,7 +22,10 @@ const Dashboard = ({ children }: Props) => {
       <div className='overflow-y-auto h-full'>
         {isPageLoading && !lastPath ? (
           <div className='flex justify-center h-full items-center'>
-            <Loading size='lg' />
+            <Loading
+              size='lg'
+              type='page'
+            />
           </div>
         ) : (
           <div className='h-full w-full p-8 md:px-16 md:py-12'>{children}</div>

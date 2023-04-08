@@ -3,7 +3,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import {
   convertSecondsToTimeStamp,
   convertTimeStampToForm,
-} from 'lib/utils/dateConverter';
+} from 'shared/utils/dateConverter';
 
 import { db } from '../client';
 import { ArticleAPI, Categories, Tags } from './types';

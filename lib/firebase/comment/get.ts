@@ -10,9 +10,9 @@ import {
   startAfter,
   where,
 } from 'firebase/firestore';
-import { convertSecondsToTimeStamp } from 'lib/utils/dateConverter';
+import { convertSecondsToTimeStamp } from 'shared/utils/dateConverter';
 
-import { mapComments } from 'lib/utils/mapComments';
+import { mapComments } from 'shared/utils/mapComments';
 
 import { db } from '../client';
 import { CommentAPI, Comments, Params } from './types';
