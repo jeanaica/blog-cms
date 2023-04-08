@@ -17,7 +17,9 @@ const functions = getFunctions(getApp());
 // Check if the code is running in development or production environment
 if (process.env.NODE_ENV === 'development') {
   // Connect to the Firebase Authentication emulator
-  connectAuthEmulator(getAuth(), 'http://localhost:9099');
+  connectAuthEmulator(getAuth(), 'http://localhost:9099', {
+    disableWarnings: true,
+  });
   // Connect to the Firebase Functions emulator
   connectFunctionsEmulator(functions, 'localhost', 5001);
 }

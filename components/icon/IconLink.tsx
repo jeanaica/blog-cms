@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, FC } from 'react';
+import { ButtonHTMLAttributes, FC, MouseEventHandler } from 'react';
 import classNames from 'classnames';
 import Link from 'next/link';
 
@@ -23,20 +23,26 @@ const IconLink: FC<Props> = ({
   isLoading,
   target,
   tooltip,
-}) => (
-  <Link
-    className={classNames('no-underline flex items-center', className, {
-      'cursor-not-allowed opacity-50': disabled || isLoading,
-    })}
-    href={href}
-    target={target}
-    title={tooltip}>
-    {isLoading && <Loading />}
-    <Icon
-      icon={icon}
-      className='px-2 py-1 text-3xl text-sky-700 rounded-md hover:bg-slate-100'
-    />
-  </Link>
-);
+}) => {
+  const handleClick: MouseEventHandler = e => e.stopPropagation();
+  return (
+    <Link
+      className={classNames('no-underline flex items-center', className, {
+        'cursor-not-allowed opacity-50': disabled || isLoading,
+      })}
+      onClick={handleClick}
+      href={href}
+      target={target}
+      title={tooltip}>
+      {isLoading && <Loading className='w-[44px]' />}
+      {!isLoading && (
+        <Icon
+          icon={icon}
+          className='px-2 py-1 text-3xl text-sky-700 rounded-md hover:bg-slate-100'
+        />
+      )}
+    </Link>
+  );
+};
 
 export default IconLink;

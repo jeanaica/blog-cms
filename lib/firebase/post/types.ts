@@ -8,12 +8,12 @@ export interface Option {
 export interface Post {
   id: string;
   title: string;
-  banner: string;
-  content: string;
+  banner?: string;
+  content?: string;
   createdDate: string;
-  category: Array<Option>;
-  tags: Array<Option>;
-  modifiedDate: string;
+  category?: Array<Option>;
+  tags?: Array<Option>;
+  updatedAt?: string;
   publishedDate?: string;
   postDate?: string;
 }

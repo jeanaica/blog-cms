@@ -30,15 +30,17 @@ const IconButton: FC<Props> = ({
       'cursor-not-allowed opacity-50': disabled || isLoading,
     })}
     onClick={onClick}
-    disabled={disabled}>
-    {isLoading && <Loading />}
-    <Icon
-      icon={icon}
-      className={classNames(
-        'px-2 py-1 text-3xl text-sky-700 rounded-md hover:bg-slate-100',
-        iconClassName
-      )}
-    />
+    disabled={disabled || isLoading}>
+    {isLoading && <Loading className='w-[44px]' />}
+    {!isLoading && (
+      <Icon
+        icon={icon}
+        className={classNames(
+          'px-2 py-1 text-3xl text-sky-700 rounded-md hover:bg-slate-100',
+          iconClassName
+        )}
+      />
+    )}
   </button>
 );
 

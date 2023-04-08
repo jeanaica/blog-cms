@@ -8,39 +8,51 @@ type Props = {
   onMoveToDrafts(): void;
   onDelete(): void;
   status: string;
+  loading: boolean;
 };
 
-const PostActions: FC<Props> = ({ id, onDelete, onMoveToDrafts, status }) => {
-  return (
-    <div className='flex gap-1 ml-4'>
-      <IconLink
-        icon='remove_red_eye'
-        tooltip='Preview Article'
-        href={`${`/article/${id}/view`}`}
-        target='_blank'
+const PostActions: FC<Props> = ({
+  id,
+  onDelete,
+  onMoveToDrafts,
+  status,
+  loading,
+}) => (
+  <div className='flex gap-1 ml-4'>
+    <IconLink
+      icon='remove_red_eye'
+      tooltip='Preview Article'
+      href={`${`/article/${id}/view`}`}
+      target='_blank'
+      isLoading={loading}
+      className='mr-2'
+    />
+    {status !== 'draft' && (
+      <IconButton
+        className='mr-2'
+        icon='send_and_archive'
+        tooltip='Move to drafts'
+        isLoading={loading}
+        onClick={e => {
+          e.preventDefault();
+          e.stopPropagation();
+          onMoveToDrafts();
+        }}
       />
-      {status !== 'draft' && (
-        <IconButton
-          icon='send_and_archive'
-          tooltip='Move to drafts'
-          onClick={e => {
-            e.stopPropagation();
-            onMoveToDrafts();
-          }}
-        />
-      )}
-      {status === 'draft' && (
-        <IconButton
-          icon='delete'
-          tooltip='Delete Post'
-          onClick={e => {
-            e.stopPropagation();
-            onDelete();
-          }}
-        />
-      )}
-    </div>
-  );
-};
+    )}
+    {status === 'draft' && (
+      <IconButton
+        className='mr-2'
+        icon='delete'
+        tooltip='Delete Post'
+        isLoading={loading}
+        onClick={e => {
+          e.stopPropagation();
+          onDelete();
+        }}
+      />
+    )}
+  </div>
+);
 
 export default PostActions;

@@ -7,14 +7,18 @@ const httpLink = createHttpLink({
 
 // Set the authorization header using the token from session storage:
 const authLink = setContext((_, { headers }) => {
-  const sessionToken = window.sessionStorage.getItem('token');
-  const token = sessionToken ? JSON.parse(sessionToken) : '';
-
+  if (typeof window !== 'undefined') {
+    const sessionToken = window?.sessionStorage?.getItem('token');
+    const token = sessionToken ? JSON.parse(sessionToken) : '';
+    return {
+      headers: {
+        ...headers,
+        authorization: token ? `Bearer ${token}` : '',
+      },
+    };
+  }
   return {
-    headers: {
-      ...headers,
-      authorization: token ? `Bearer ${token}` : '',
-    },
+    headers,
   };
 });
 

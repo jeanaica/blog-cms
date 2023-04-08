@@ -1,16 +1,71 @@
 import React from 'react';
-import { InferGetServerSidePropsType } from 'next';
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
 
-import protectedRoute from 'lib/routes/protectedRoute';
-import View from 'features/article/View';
 import Shared from 'components/layout/Shared';
+import Meta from 'components/meta/Meta';
+import Container from 'components/container/Container';
 
-const ViewPage = (
-  props: InferGetServerSidePropsType<typeof getServerSideProps>
-) => <View />;
+import View from 'features/article/View';
+
+import { GET_ALL_POST_IDS, GET_POST_BY_ID } from 'graphql/queries';
+
+import client from 'lib/client/apolloClient';
+
+import { Post } from 'types/Post';
+
+type Props = {
+  post: Post | null;
+  loading?: boolean;
+  error?: unknown;
+};
+
+const ViewPage = ({
+  post,
+  loading,
+}: InferGetStaticPropsType<typeof getStaticProps>) => (
+  <>
+    <Meta {...post?.meta} />
+    <Container
+      loading={loading}
+      isEmpty={!post?.id}
+      full>
+      <View content={post?.content} />
+    </Container>
+  </>
+);
 
 ViewPage.Layout = Shared;
 
-export default ViewPage;
+export const getStaticPaths: GetStaticPaths = async () => {
+  // Fetch all blog post slugs from the API
+  const { data } = await client.query({
+    query: GET_ALL_POST_IDS,
+  });
 
-export const getServerSideProps = protectedRoute();
+  // Generate paths based on the blog post slugs
+  const paths = data.posts.map((post: Post) => ({
+    params: { id: post.id },
+  }));
+
+  return { paths, fallback: false };
+};
+
+export const getStaticProps: GetStaticProps<Props> = async context => {
+  const { id } = context.params as { id: string };
+
+  const { data, loading, error } = await client.query<Props>({
+    query: GET_POST_BY_ID,
+    variables: { id },
+  });
+
+  return {
+    props: {
+      post: data?.post || null,
+      loading: loading || false,
+      error: error || null,
+    },
+    revalidate: 60,
+  };
+};
+
+export default ViewPage;

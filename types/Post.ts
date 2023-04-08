@@ -19,12 +19,15 @@ export type PostStatus = 'draft' | 'scheduled' | 'published' | 'archived';
 
 export interface Meta {
   slug: string;
-  author: string;
-  publishedAt: number;
-  url: string;
-  image?: string;
-  description?: string;
   title?: string;
+  url: string;
+  author: string;
+  description?: string;
+  image?: string;
+  imageAlt?: string;
+  publishedAt?: number;
+  updatedAt: number;
+  keywords?: Array<string>;
 }
 
 export interface Option {
