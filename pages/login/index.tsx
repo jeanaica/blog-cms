@@ -68,10 +68,10 @@ const Login = () => {
 
             <Button
               type='submit'
-              large
-              className='mt-4'>
-              Submit
-            </Button>
+              primary
+              className='mt-4'
+              text='Submit'
+            />
           </div>
         </form>
       </FormProvider>

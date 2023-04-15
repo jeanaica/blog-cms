@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 type SessionStorageHook<T> = [T | undefined, (value: T) => void];
 
@@ -20,18 +20,21 @@ export default function useSessionStorage<T>(
     }
   });
 
-  const setValue = (value: T) => {
-    try {
-      const valueToStore =
-        value instanceof Function ? value(storedValue) : value;
-      setStoredValue(valueToStore);
-      if (typeof window !== 'undefined') {
-        window.sessionStorage.setItem(key, JSON.stringify(valueToStore));
+  const setValue = useCallback(
+    (value: T) => {
+      try {
+        const valueToStore =
+          value instanceof Function ? value(storedValue) : value;
+        setStoredValue(valueToStore);
+        if (typeof window !== 'undefined') {
+          window.sessionStorage.setItem(key, JSON.stringify(valueToStore));
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    },
+    [key, storedValue]
+  );
 
   return [storedValue, setValue];
 }

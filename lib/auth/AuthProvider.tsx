@@ -1,10 +1,9 @@
 import { ReactNode, useCallback, useEffect, useState } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useRouter } from 'next/router';
 
 import { AuthContext } from 'lib/auth/AuthContext';
 import { auth } from 'lib/firebase/client';
-
 import { Auth } from 'lib/auth/Auth';
 
 import useSessionStorage from 'shared/utils/hooks/useSessionStorage';
@@ -19,6 +18,33 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   const [authUser, setAuthUser] = useState<Auth | null>(null);
   const [idToken, setIdToken] = useSessionStorage<string>('token', undefined);
 
+  const handleLogout = useCallback(async () => {
+    await signOut(auth).finally(() => {
+      router.push('/login');
+    });
+  }, [router]);
+
+  const verifyIdToken = useCallback(() => {
+    onAuthStateChanged(auth, async user => {
+      if (user) {
+        try {
+          const verifiedToken = await user.getIdToken();
+          setAuthUser({
+            displayName: user.displayName!,
+            email: user.email!,
+          });
+
+          setIdToken(verifiedToken);
+        } catch (error) {
+          // NOOP
+          setIdToken('');
+        }
+      } else {
+        setIdToken('');
+      }
+    });
+  }, [setIdToken]);
+
   // force refresh the token every 10 minutes
   useEffect(() => {
     const handle = setInterval(async () => {
@@ -32,47 +58,41 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
         }
       } catch (error) {
         setIdToken('');
-        if (pathname !== '/login') {
-          window.location.href = '/login';
-        }
       }
     }, 10 * 60 * 1000);
     return () => clearInterval(handle);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    onAuthStateChanged(auth, async user => {
-      if (user) {
-        try {
-          const token: string = await user.getIdToken();
-
-          setAuthUser({
-            displayName: user.displayName!,
-            email: user.email!,
-          });
-
-          setIdToken(token);
-        } catch (error) {
-          setIdToken('');
-          if (pathname !== '/login') {
-            window.location.href = '/login';
-          }
-        }
-      } else {
-        // User is signed out
-        setIdToken('');
-        if (pathname !== '/login') {
-          window.location.href = '/login';
-        }
-      }
-    });
-  }, [pathname, setIdToken]);
+    verifyIdToken();
+  }, [pathname, verifyIdToken]);
 
   useEffect(() => {
-    if (pathname === '/login' && idToken) {
-      window.location.href = '/';
+    const tokenListener = (event: StorageEvent) => {
+      const { storageArea, key, newValue, oldValue } = event;
+
+      if (storageArea === sessionStorage && key === 'token') {
+        if (newValue && newValue !== oldValue) {
+          console.log('Token value changed');
+          handleLogout();
+        }
+      }
+
+      if (!key && !newValue) {
+        handleLogout();
+      }
+    };
+    window.addEventListener('storage', tokenListener);
+    return () => window.removeEventListener('storage', tokenListener);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!idToken && pathname !== '/login') {
+      window.location.href = '/login';
     }
-  }, [pathname, idToken]);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user: authUser }}>
