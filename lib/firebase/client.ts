@@ -12,17 +12,17 @@ const firebaseCredentials = {
 };
 
 export const app = initializeApp(firebaseCredentials);
-const functions = getFunctions(getApp());
+const functions = getFunctions(app);
+export const auth = getAuth(app);
 
 // Check if the code is running in development or production environment
 if (process.env.NODE_ENV === 'development') {
   // Connect to the Firebase Authentication emulator
-  connectAuthEmulator(getAuth(), 'http://localhost:9099', {
+  connectAuthEmulator(auth, 'http://localhost:9099', {
     disableWarnings: true,
   });
   // Connect to the Firebase Functions emulator
   connectFunctionsEmulator(functions, 'localhost', 5001);
 }
-export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
