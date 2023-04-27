@@ -35,7 +35,23 @@
 }
 
 .ql-container {
-  height: 300px !important;
+  flex: 1;
+}
+.ql-container.ql-snow {
+  border: none !important;
+}
+
+.ql-toolbar.ql-snow {
+  position: sticky !important;
+  top: 0 !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+
+.quill {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .quill.error {

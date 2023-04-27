@@ -16,15 +16,15 @@ type Props = {
 };
 
 const Meta: FC<Props> = ({
-  title,
-  url,
-  description,
-  author,
-  image,
-  imageAlt,
-  publishedAt,
-  updatedAt,
-  keywords,
+  title = '',
+  url = '',
+  description = '',
+  author = '',
+  image = '',
+  imageAlt = '',
+  publishedAt = '',
+  updatedAt = '',
+  keywords = [],
 }) => {
   const publishedTime = publishedAt ? new Date(publishedAt).toISOString() : '';
   const modifiedTime = updatedAt ? new Date(updatedAt).toISOString() : '';

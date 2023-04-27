@@ -40,7 +40,7 @@ const Dropdown: React.FC<Props> = ({
       options={options}
       placeholder={placeholder}
       instanceId={useId()}
-      className='w-40 my-2'
+      className='flex-1 md:w-40'
     />
   );
 };

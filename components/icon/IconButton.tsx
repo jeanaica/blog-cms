@@ -2,6 +2,7 @@ import { ButtonHTMLAttributes, FC, MouseEventHandler } from 'react';
 import classNames from 'classnames';
 
 import Loading from 'components/loading/Loading';
+
 import Icon from './Icon';
 
 type Props = {
@@ -16,6 +17,7 @@ type Props = {
 
 const IconButton: FC<Props> = ({
   onClick,
+  type = 'button',
   icon,
   className,
   iconClassName,
@@ -24,7 +26,7 @@ const IconButton: FC<Props> = ({
   tooltip,
 }) => (
   <button
-    type='button'
+    type={type}
     title={tooltip}
     className={classNames('flex items-center cursor-pointer', className, {
       'cursor-not-allowed opacity-50': disabled || isLoading,

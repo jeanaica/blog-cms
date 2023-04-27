@@ -11,6 +11,7 @@ type Props = {
   readOnly?: boolean;
   className?: string;
   defaultValue?: string;
+  disabled?: boolean;
 };
 
 const Input: FC<Props> = ({
@@ -22,6 +23,7 @@ const Input: FC<Props> = ({
   readOnly = false,
   className,
   defaultValue,
+  disabled,
 }) => {
   const {
     register,
@@ -30,12 +32,14 @@ const Input: FC<Props> = ({
 
   return (
     <div className='w-full mb-4'>
-      <label
-        htmlFor={name}
-        className='block text-sm font-semibold text-primary'>
-        {label}
-      </label>
-      <div className='relative mt-1 w-full'>
+      {label && (
+        <label
+          htmlFor={name}
+          className='block text-sm font-semibold text-primary mb-1'>
+          {label}
+        </label>
+      )}
+      <div className='relative w-full h-full'>
         <input
           {...register(name)}
           type={type}
@@ -44,20 +48,15 @@ const Input: FC<Props> = ({
           readOnly={readOnly}
           defaultValue={defaultValue}
           className={classNames(
-            'border-secondary-300 border rounded-md shadow-sm w-full px-4 py-2',
+            'border-b-secondary-300 border-b w-full md:px-4 py-2 outline-none focus:ring-0 focus:text-black disabled:cursor-not-allowed disabled:bg-gray-100 disabled:rounded-md read-only:bg-gray-100 read-only:rounded-md',
             className,
             {
-              'bg-secondary-100 focus:ring-0 cursor-not-allowed border-secondary-300 focus:border-secondary-300':
-                readOnly || isSubmitting,
-              'focus:ring-error-300 border-error-300 focus:border-error-300':
-                !readOnly && errors[name],
-              'focus:ring-primary-500 border-secondary-300 focus:border-primary-500':
-                !readOnly && !errors[name],
+              'border-b-error-300 text-error-300': !readOnly && errors[name],
             }
           )}
           placeholder={placeholder}
           aria-describedby={name}
-          disabled={isSubmitting}
+          disabled={disabled || isSubmitting}
         />
 
         {errors[name] && (

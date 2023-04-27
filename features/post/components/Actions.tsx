@@ -1,57 +1,70 @@
-import { FC } from 'react';
+import { FC, MouseEventHandler } from 'react';
 
 import IconButton from 'components/icon/IconButton';
 import IconLink from 'components/icon/IconLink';
+import classNames from 'classnames';
 
 type Props = {
   id: string;
-  onMoveToDrafts(): void;
-  onDelete(): void;
+  onMoveToDrafts: MouseEventHandler;
+  onDelete: MouseEventHandler;
+  onMore: MouseEventHandler;
   status: string;
   loading: boolean;
+  show: boolean;
 };
 
 const Actions: FC<Props> = ({
   id,
   onDelete,
   onMoveToDrafts,
+  onMore,
   status,
   loading,
+  show,
 }) => (
-  <div className='flex gap-1 ml-4'>
-    <IconLink
-      icon='remove_red_eye'
-      tooltip='Preview Article'
-      href={`${`/article/${id}/view`}`}
-      target='_blank'
-      isLoading={loading}
-      className='mr-2'
+  <div className={classNames('ml-4 flex-col md:flex relative')}>
+    <IconButton
+      icon='more_vert'
+      onClick={onMore}
+      className=' -mr-4 md:hidden'
     />
-    {status !== 'draft' && (
-      <IconButton
-        className='mr-2'
-        icon='send_and_archive'
-        tooltip='Move to drafts'
+    <div
+      className={classNames(
+        'gap-1 absolute right-0 shadow-md rounded bg-white md:shadow-none md:relative md:justify-center md:flex-1  md:flex-row',
+        {
+          hidden: !show,
+          flex: show,
+        }
+      )}>
+      <IconLink
+        icon='remove_red_eye'
+        tooltip='Preview Article'
+        href={`${`/article/${id}/view`}`}
+        target='_blank'
         isLoading={loading}
-        onClick={e => {
-          e.preventDefault();
-          e.stopPropagation();
-          onMoveToDrafts();
-        }}
-      />
-    )}
-    {status === 'draft' && (
-      <IconButton
-        className='mr-2'
-        icon='delete'
-        tooltip='Delete Post'
-        isLoading={loading}
-        onClick={e => {
-          e.stopPropagation();
-          onDelete();
-        }}
-      />
-    )}
+        className='border-r'>
+        <span>Preview</span>
+      </IconLink>
+      {status !== 'draft' && (
+        <IconButton
+          className=''
+          icon='send_and_archive'
+          tooltip='Move to drafts'
+          isLoading={loading}
+          onClick={onMoveToDrafts}
+        />
+      )}
+      {status === 'draft' && (
+        <IconButton
+          className=''
+          icon='delete'
+          tooltip='Delete Post'
+          isLoading={loading}
+          onClick={onDelete}
+        />
+      )}
+    </div>
   </div>
 );
 

@@ -1,11 +1,11 @@
-import { BaseSyntheticEvent, ButtonHTMLAttributes, FC, useState } from 'react';
+import { ButtonHTMLAttributes, FC, useState } from 'react';
 import classNames from 'classnames';
 
 import Icon from 'components/icon/Icon';
 
 type Props = {
   outlined?: boolean;
-  icon?: boolean;
+  icon?: string;
   large?: boolean;
   type?: 'button' | 'submit';
   className?: string;
@@ -62,6 +62,12 @@ const Dropdown: FC<Props> = ({
         type='button'
         disabled={disabled}
         onClick={() => setIsOpen(!isOpen)}>
+        {icon && (
+          <Icon
+            icon={icon}
+            className=' text-2xl ml-4'
+          />
+        )}
         <span className='text-sm'>{text}</span>
         <Icon
           icon='expand_more'

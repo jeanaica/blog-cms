@@ -21,7 +21,7 @@ type Props = {
 
 const Header: FC<Props> = ({ onChange }) => {
   return (
-    <div className='flex justify-between mb-10'>
+    <div className='flex justify-between flex-col md:flex-row gap-4 mb-10'>
       <Dropdown
         options={options}
         onChange={onChange}

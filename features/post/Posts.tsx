@@ -54,7 +54,7 @@ const Posts = () => {
   }, [selectedOption, refetch]);
 
   return (
-    <div className='pb-40 md:pb-12'>
+    <div className='p-8'>
       <Header onChange={handleOnChange} />
 
       <Container

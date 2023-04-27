@@ -1,15 +1,7 @@
-import { FC, useEffect, useRef, useState } from 'react';
-import { signOut } from 'firebase/auth';
-import { useRouter } from 'next/router';
+import { FC, useState } from 'react';
 import classNames from 'classnames';
 
-import NavLink from 'components/nav/NavLink';
 import NavItem from 'components/nav/NavItem';
-import Logo from 'components/logo/Logo';
-import IconButton from 'components/icon/IconButton';
-
-import { auth } from 'lib/firebase/client';
-import useDetectOutsideClick from 'shared/utils/hooks/useDetectOutsideClick';
 
 import navJson from './nav.json';
 
@@ -20,72 +12,45 @@ interface NavItems {
   isAction: boolean;
 }
 
-const Nav: FC = () => {
-  const router = useRouter();
-  const [showMenu, setShowMenu] = useState(false);
-  const menuRef = useRef(null);
-  const isClickedOutside = useDetectOutsideClick(menuRef);
+type Props = {};
 
-  const handleLogout = async () => {
-    await signOut(auth).then(() => {
-      router.push('/login');
-    });
+const Nav: FC<Props> = () => {
+  const [collapseMenu, setCollapseMenu] = useState(false);
+
+  const handleCollapse = () => {
+    setCollapseMenu(!collapseMenu);
   };
-
-  const handleShowMenu = () => {
-    setShowMenu(!showMenu);
-  };
-
-  useEffect(() => {
-    if (isClickedOutside) {
-      setShowMenu(false);
-    }
-  }, [isClickedOutside]);
-
-  useEffect(() => {
-    setShowMenu(false);
-  }, [router.asPath]);
 
   return (
     <div
-      ref={menuRef}
-      className='flex flex-col bg-white relative text-center md:w-[250px] border-r md:h-full'>
-      <div className='flex items-center border-b md:border-0'>
-        <IconButton
-          icon={showMenu ? 'close' : 'menu'}
-          className='ml-4 md:hidden'
-          onClick={handleShowMenu}
+      className={classNames(
+        `bg-white relative flex w-full text-center border-t md:flex-col md:row-start-2 md:border-t-0 md:border-r md:transition-transform md:duration-100`,
+        {
+          'md:w-[auto] md:-translate-x-0 md:ml-auto': collapseMenu,
+          'md:w-[250px]': !collapseMenu,
+        }
+      )}>
+      {navJson.map(({ text, icon, href, isAction }: NavItems) => (
+        <NavItem
+          key={text}
+          icon={icon}
+          href={href}
+          text={text}
+          isAction={isAction}
+          collapsed={collapseMenu}
         />
-        <Logo />
-      </div>
-      <div
-        className={classNames(
-          'w-[200px] absolute top-[6.30rem] z-10 bg-white drop-shadow-md md:block md:relative md:drop-shadow-none md:w-full md:top-0 md:h-full',
-          {
-            hidden: !showMenu,
-            block: showMenu,
-          }
-        )}>
-        {navJson.map(({ text, icon, href, isAction }: NavItems) => (
-          <NavItem key={text}>
-            <NavLink
-              icon={icon}
-              href={href}
-              text={text}
-              isAction={isAction}
-            />
-          </NavItem>
-        ))}
-
-        <NavItem className='w-full border-t md:absolute md:bottom-0'>
-          <button
-            className='px-8 py-4 w-full flex items-start hover:bg-gray-300'
-            onClick={handleLogout}>
-            <span className='material-icons-outlined text-xl mr-4'>logout</span>
-            Logout
-          </button>
-        </NavItem>
-      </div>
+      ))}
+      <NavItem
+        icon={
+          collapseMenu
+            ? 'keyboard_double_arrow_right'
+            : 'keyboard_double_arrow_left'
+        }
+        text='Collapse'
+        collapsed={collapseMenu}
+        onClick={handleCollapse}
+        className='hidden md:flex md:w-full absolute bottom-0'
+      />
     </div>
   );
 };

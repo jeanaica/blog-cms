@@ -26,17 +26,39 @@ const Item: FC<Props> = ({ id, post, onUpdate, loading }) => {
     }
   };
 
-  const handleHover = () => setShowActions(id);
+  const handleHover: MouseEventHandler = e => {
+    e.stopPropagation();
+    setShowActions(id);
+  };
 
-  const handleLeaveHover = () => setShowActions('');
+  const handleLeaveHover: MouseEventHandler = e => {
+    e.stopPropagation();
+    setShowActions('');
+  };
 
-  const handleMoveToDraft = useCallback(
-    () => onUpdate(id, 'DRAFT'),
+  const handleClickMore: MouseEventHandler = e => {
+    e.stopPropagation();
+
+    if (showActions) {
+      setShowActions('');
+    } else {
+      setShowActions(id);
+    }
+  };
+
+  const handleMoveToDraft: MouseEventHandler = useCallback(
+    e => {
+      e.stopPropagation();
+      onUpdate(id, 'DRAFT');
+    },
     [id, onUpdate]
   );
 
-  const handleDelete = useCallback(
-    () => onUpdate(id, 'ARCHIVED'),
+  const handleDelete: MouseEventHandler = useCallback(
+    e => {
+      e.stopPropagation();
+      onUpdate(id, 'ARCHIVED');
+    },
     [id, onUpdate]
   );
 
@@ -55,15 +77,16 @@ const Item: FC<Props> = ({ id, post, onUpdate, loading }) => {
       onMouseEnter={handleHover}
       onMouseLeave={handleLeaveHover}>
       <Content {...post} />
-      {id === showActions && (
-        <Actions
-          id={post.id}
-          status={post.status.toLowerCase()}
-          onMoveToDrafts={handleMoveToDraft}
-          onDelete={handleDelete}
-          loading={loading}
-        />
-      )}
+
+      <Actions
+        id={post.id}
+        status={post.status.toLowerCase()}
+        onMoveToDrafts={handleMoveToDraft}
+        onDelete={handleDelete}
+        onMore={handleClickMore}
+        loading={loading}
+        show={id === showActions}
+      />
     </div>
   );
 };
