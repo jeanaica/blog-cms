@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import classnames from 'classnames';
 import { FC } from 'react';
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 const Icon: FC<Props> = ({ icon, className, size = 'sm' }) => {
   return (
     <span
-      className={clsx(
+      className={classnames(
         'material-icons-outlined',
         className,
         typeof size !== 'number' ? `text-${size}` : `text-[${size}px]`
