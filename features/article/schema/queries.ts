@@ -41,3 +41,23 @@ export const GET_ARTICLE_BY_ID = gql`
     }
   }
 `;
+
+export const GET_CATEGORIES = gql`
+  query Categories {
+    categories {
+      label
+      value
+      notRemovable
+    }
+  }
+`;
+
+export const GET_TAGS = gql`
+  query Tags {
+    tags {
+      label
+      value
+      notRemovable
+    }
+  }
+`;
