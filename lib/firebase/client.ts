@@ -1,7 +1,7 @@
 import { getApp, initializeApp } from 'firebase/app';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage';
+import { connectStorageEmulator, getStorage } from 'firebase/storage';
 import { connectFunctionsEmulator, getFunctions } from 'firebase/functions';
 
 const firebaseCredentials = {
@@ -14,6 +14,7 @@ const firebaseCredentials = {
 export const app = initializeApp(firebaseCredentials);
 const functions = getFunctions(app);
 export const auth = getAuth(app);
+export const storage = getStorage(app);
 
 // Check if the code is running in development or production environment
 if (process.env.NODE_ENV === 'development') {
@@ -23,6 +24,7 @@ if (process.env.NODE_ENV === 'development') {
   });
   // Connect to the Firebase Functions emulator
   connectFunctionsEmulator(functions, 'localhost', 5001);
+  // Connect to the Firebase Storage emulator
+  connectStorageEmulator(storage, 'localhost', 9199);
 }
 export const db = getFirestore(app);
-export const storage = getStorage(app);
