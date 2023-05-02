@@ -12,6 +12,7 @@ type Props = {
   className?: string;
   defaultValue?: string;
   disabled?: boolean;
+  autoComplete?: string;
 };
 
 const Input: FC<Props> = ({
@@ -24,6 +25,7 @@ const Input: FC<Props> = ({
   className,
   defaultValue,
   disabled,
+  autoComplete,
 }) => {
   const {
     register,
@@ -48,7 +50,7 @@ const Input: FC<Props> = ({
           readOnly={readOnly}
           defaultValue={defaultValue}
           className={classNames(
-            'border-b-secondary-300 border-b w-full md:px-4 py-2 outline-none focus:ring-0 focus:text-black disabled:cursor-not-allowed disabled:bg-gray-100 disabled:rounded-md read-only:bg-gray-100 read-only:rounded-md',
+            'border-b-secondary-300 border-b w-full md:px-4 py-2 outline-none focus:ring-0 focus:text-black disabled:cursor-not-allowed disabled:bg-gray-100 disabled:rounded-md read-only:bg-gray-100 ',
             className,
             {
               'border-b-error-300 text-error-300': !readOnly && errors[name],
@@ -57,6 +59,9 @@ const Input: FC<Props> = ({
           placeholder={placeholder}
           aria-describedby={name}
           disabled={disabled || isSubmitting}
+          autoComplete={
+            type === 'password' && autoComplete ? autoComplete : 'password'
+          }
         />
 
         {errors[name] && (

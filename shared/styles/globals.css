@@ -39,13 +39,16 @@
 }
 .ql-container.ql-snow {
   border: none !important;
+  background-color: #f3f4f6 !important;
 }
 
 .ql-toolbar.ql-snow {
   position: sticky !important;
-  top: 0 !important;
+  top: 76px !important;
   border-left: none !important;
   border-right: none !important;
+  z-index: 3 !important;
+  background-color: white !important;
 }
 
 .quill {

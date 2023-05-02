@@ -60,7 +60,7 @@ const FileImage: FC<Props> = ({
         onDragLeave={handleDrag}
         onDrop={handleDrop}
         className={classNames(
-          'flex flex-col items-center justify-center w-full h-64 border-2 border-dashed cursor-pointer bg-gray-50 border-secondary-300 rounded-md shadow-sm px-4 py-2',
+          'flex flex-col items-center justify-center w-full h-64 border border-dashed cursor-pointer bg-gray-50 border-secondary-300 rounded-md shadow-sm px-4 py-2',
           {
             'focus:ring-primary-900 border-secondary-700 bg-secondary-100 focus:border-primary-900':
               dragActive,

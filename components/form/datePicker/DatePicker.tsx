@@ -2,6 +2,8 @@ import classNames from 'classnames';
 import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import formatDate from 'shared/utils/formatDate';
+
 type Props = {
   label: string;
   name: string;
@@ -9,8 +11,8 @@ type Props = {
   readOnly?: boolean;
   placeholder?: string;
   helperText?: string;
-  defaultValue?: string;
-  minDate?: string;
+  defaultValue?: string | Date;
+  minDate?: string | Date;
 };
 
 const DatePicker: FC<Props> = ({
@@ -27,11 +29,6 @@ const DatePicker: FC<Props> = ({
     register,
     formState: { errors, isSubmitting },
   } = useFormContext();
-  const today = new Date();
-
-  const dateToday = `${today.getFullYear()}-${
-    today.getMonth() + 1
-  }-${today.getDate()}`;
 
   return (
     <div className='mb-4'>
@@ -52,10 +49,10 @@ const DatePicker: FC<Props> = ({
           name={name}
           id={name}
           readOnly={readOnly}
-          min={minDate || dateToday}
-          defaultValue={defaultValue || dateToday}
+          min={minDate ? formatDate(minDate) : undefined}
+          defaultValue={defaultValue ? formatDate(defaultValue) : undefined}
           className={classNames(
-            'border-secondary-300 border rounded-md shadow-sm w-full py-[0.43rem] pl-12 pr-4',
+            'border-secondary-300 border-b shadow-sm w-full py-[0.43rem] pl-12 pr-4 bg-gray-100',
             className,
             {
               'bg-secondary-100 focus:ring-0 cursor-not-allowed border-secondary-300 focus:border-secondary-300':

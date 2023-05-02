@@ -49,7 +49,12 @@ const Button: FC<Props> = ({
       )}
       {children && !text && children}
       {!children && text && (
-        <span className='font-semibold hidden md:flex'>{text}</span>
+        <span
+          className={classNames('font-semibold md:flex', {
+            hidden: icon || !primary,
+          })}>
+          {text}
+        </span>
       )}
     </button>
   );

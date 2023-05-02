@@ -10,11 +10,18 @@ type Props = {
   loading?: boolean;
   isEmpty?: boolean;
   full?: boolean;
+  className?: string;
 };
 
-const Container: FC<Props> = ({ children, loading, isEmpty, full }) => (
+const Container: FC<Props> = ({
+  children,
+  loading,
+  isEmpty,
+  full,
+  className,
+}) => (
   <div
-    className={classNames('prose p-0', {
+    className={classNames('prose', className, {
       'w-screen h-screen': full,
     })}>
     {loading ? (

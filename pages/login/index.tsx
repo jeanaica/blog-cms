@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -6,9 +7,10 @@ import * as z from 'zod';
 import Input from 'components/form/input/Input';
 import Button from 'components/button/Button';
 import Shared from 'components/layout/Shared';
+import Loading from 'components/loading/Loading';
+
 import { auth } from 'lib/firebase/client';
 import useSessionStorage from 'shared/utils/hooks/useSessionStorage';
-import Loading from 'components/loading/Loading';
 
 const schema = z.object({
   email: z.string().email().min(1, { message: 'Required' }),
@@ -17,6 +19,7 @@ const schema = z.object({
 
 const Login = () => {
   const [idToken, setIdToken] = useSessionStorage<string>('token', '');
+  const [error, setError] = useState<any>('');
 
   const methods = useForm({
     resolver: zodResolver(schema),
@@ -32,9 +35,10 @@ const Login = () => {
 
       setIdToken(token);
 
-      window.location.href = '/';
-    } catch (error) {
+      window.location.href = '/post';
+    } catch (err) {
       setIdToken('');
+      setError(err);
     }
   });
 

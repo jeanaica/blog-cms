@@ -27,7 +27,7 @@ const Nav: FC<Props> = () => {
         `bg-white relative flex w-full text-center border-t md:flex-col md:row-start-2 md:border-t-0 md:border-r md:transition-transform md:duration-100`,
         {
           'md:w-[auto] md:-translate-x-0 md:ml-auto': collapseMenu,
-          'md:w-[250px]': !collapseMenu,
+          'md:w-[200px]': !collapseMenu,
         }
       )}>
       {navJson.map(({ text, icon, href, isAction }: NavItems) => (

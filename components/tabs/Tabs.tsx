@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { FC } from 'react';
 import Tab from './Tab';
 import TabLink from './TabLink';
@@ -6,6 +7,7 @@ type Props = {
   isPage?: boolean;
   active?: string;
   onClick?(name: string): void;
+  className?: string;
   tabs?: Array<{
     text: string;
     href?: string;
@@ -16,9 +18,10 @@ type Props = {
   }>;
 };
 
-const Tabs: FC<Props> = ({ tabs, isPage, active, onClick }) => {
+const Tabs: FC<Props> = ({ className, tabs, isPage, active, onClick }) => {
   return (
-    <div className='border-b border-gray-200 bg-slate-100'>
+    <div
+      className={classNames('border border-gray-200 bg-slate-100', className)}>
       <ul className='flex flex-wrap -mb-[0.1rem] text-sm font-medium text-center text-gray-500 '>
         {isPage
           ? tabs?.map(({ text, icon, href, indexHref }, index) => (

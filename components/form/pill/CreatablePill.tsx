@@ -1,22 +1,29 @@
 import { FC } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
-import { StylesConfig } from 'react-select';
+import { MultiValue, StylesConfig } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
+import { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
+
+import toTitleCase from 'shared/utils/toTitleCase';
+
+import MultiValueRemove from './MultiValueRemove';
 
 type Props = {
   label: string;
   helperText?: string;
   name: string;
   disabled?: boolean;
-  isLoading?: boolean;
+  loading?: boolean;
   options?: Array<{ value: string; label: string }>;
   readOnly?: boolean;
+  hasRemovable?: boolean;
+  onPillChange?(val: MultiValue<any>): void;
 };
 
-const pillStyles: StylesConfig<
-  Array<{ value: string; label: string }>,
-  true
-> = {
+type OptionType = { value: string; label: string };
+type PillStyles = StylesConfig<OptionType, true>;
+
+const pillStyles: PillStyles = {
   control: styles => ({ ...styles, backgroundColor: 'white' }),
   multiValue: styles => ({ ...styles, backgroundColor: '#b2b2b250' }),
   multiValueLabel: styles => ({
@@ -38,8 +45,10 @@ const CreatablePill: FC<Props> = ({
   readOnly = false,
   name,
   disabled,
-  isLoading,
+  loading,
   options = [],
+  hasRemovable,
+  onPillChange,
 }) => {
   const {
     control,
@@ -57,25 +66,40 @@ const CreatablePill: FC<Props> = ({
         <Controller
           control={control}
           name={name}
-          render={({ field: { onChange, value, ref } }) => (
+          render={({ field: { value, onChange, ref } }) => (
             <CreatableSelect
               ref={ref}
               instanceId={name}
               isMulti
               value={value}
               isDisabled={disabled || readOnly || isSubmitting}
-              isLoading={isLoading}
+              isLoading={loading}
               closeMenuOnSelect={false}
               styles={pillStyles}
               onChange={val => {
-                const formatValue = val.map(v => ({
-                  label: v.label.charAt(0).toUpperCase() + v.label.slice(1),
-                  value: v.value.toLowerCase(),
-                }));
-
-                return onChange(formatValue);
+                if (onPillChange) {
+                  onPillChange(val);
+                }
+                onChange(val);
               }}
+              onCreateOption={(inputValue: string) => ({
+                label: toTitleCase(inputValue),
+                value: inputValue.toLowerCase(),
+              })}
               options={options}
+              hideSelectedOptions
+              filterOption={(
+                option: FilterOptionOption<OptionType>,
+                inputValue: string
+              ) => option.value !== value}
+              components={{
+                MultiValueRemove: props => (
+                  <MultiValueRemove
+                    {...props}
+                    hasRemovable={hasRemovable}
+                  />
+                ),
+              }}
             />
           )}
         />

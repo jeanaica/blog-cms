@@ -1,15 +1,19 @@
 import { FC } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
-import Select, { StylesConfig } from 'react-select';
+import Select, { MultiValue, StylesConfig } from 'react-select';
+
+import MultiValueRemove from './MultiValueRemove';
 
 type Props = {
   label: string;
   helperText?: string;
   name: string;
   disabled?: boolean;
-  isLoading?: boolean;
+  loading?: boolean;
   options?: Array<{ value: string; label: string }>;
   readOnly?: boolean;
+  onPillChange?(val: MultiValue<any>): void;
+  hasRemovable?: boolean;
 };
 
 const pillStyles: StylesConfig<
@@ -37,8 +41,10 @@ const Pill: FC<Props> = ({
   readOnly = false,
   name,
   disabled,
-  isLoading,
+  loading,
   options = [],
+  onPillChange,
+  hasRemovable,
 }) => {
   const {
     control,
@@ -63,11 +69,25 @@ const Pill: FC<Props> = ({
               isMulti
               value={value}
               isDisabled={disabled || readOnly || isSubmitting}
-              isLoading={isLoading}
+              isLoading={loading}
               closeMenuOnSelect={false}
               styles={pillStyles}
-              onChange={val => onChange(val)}
+              onChange={val => {
+                if (onPillChange) {
+                  onPillChange(val);
+                }
+                onChange(val);
+              }}
               options={options}
+              hideSelectedOptions
+              components={{
+                MultiValueRemove: props => (
+                  <MultiValueRemove
+                    {...props}
+                    hasRemovable={hasRemovable}
+                  />
+                ),
+              }}
             />
           )}
         />

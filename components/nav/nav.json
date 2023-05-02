@@ -1,11 +1,5 @@
 [
   {
-    "icon": "home",
-    "text": "Home",
-    "href": "/",
-    "isAction": false
-  },
-  {
     "icon": "auto_awesome",
     "text": "Posts",
     "href": "/post",
@@ -19,8 +13,8 @@
   },
   {
     "icon": "post_add",
-    "text": "New Post",
-    "href": "/article/new",
+    "text": "Add Post",
+    "href": "/article/add",
     "isAction": true
   }
 ]

@@ -30,6 +30,7 @@ const Tab: FC<Props> = ({
   return (
     <li className=''>
       <button
+        type='button'
         onClick={handleTabClick}
         className={classNames(
           'inline-flex items-center p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 group h-[58px]',

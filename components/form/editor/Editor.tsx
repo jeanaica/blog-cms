@@ -27,8 +27,7 @@ const modules = {
     ['blockquote', 'code-block'],
     [{ list: 'ordered' }, { list: 'bullet' }],
     [{ indent: '-1' }, { indent: '+1' }, { align: [] }],
-    ['link', 'image', 'video'],
-    ['clean'],
+    ['link'],
   ],
 };
 
@@ -64,7 +63,7 @@ const Editor: FC<Props> = ({
               value={value}
               readOnly={readOnly || isSubmitting || isLoading || disabled}
               modules={modules}
-              className={classNames({
+              className={classNames('min-h-[250px]', {
                 error: errors[name],
               })}
               onChange={text => {
