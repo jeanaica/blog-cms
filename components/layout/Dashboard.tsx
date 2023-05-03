@@ -20,9 +20,7 @@ const Dashboard = ({ children }: Props) => {
   const router = useRouter();
   const lastPath = router.pathname.split('/').pop();
 
-  console.log(auth.user);
-
-  if (!auth.user?.displayName) {
+  if (!auth.user?.email) {
     return (
       <div className='h-screen w-screen flex justify-center items-center'>
         <Loading
