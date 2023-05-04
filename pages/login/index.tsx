@@ -7,7 +7,6 @@ import * as z from 'zod';
 import Input from 'components/form/input/Input';
 import Button from 'components/button/Button';
 import Shared from 'components/layout/Shared';
-import Loading from 'components/loading/Loading';
 
 import { auth } from 'lib/firebase/client';
 import useSessionStorage from 'shared/utils/hooks/useSessionStorage';
@@ -41,17 +40,6 @@ const Login = () => {
       setError(err);
     }
   });
-
-  if (idToken) {
-    return (
-      <div className='h-screen w-screen overflow-hidden prose min-w-[320px] flex justify-center content-center items-center'>
-        <Loading
-          type='page'
-          size='lg'
-        />
-      </div>
-    );
-  }
 
   return (
     <div className='h-screen w-screen overflow-hidden prose min-w-[320px] flex justify-center content-center items-center'>

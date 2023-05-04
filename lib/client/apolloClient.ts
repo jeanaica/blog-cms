@@ -1,4 +1,10 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import {
+  ApolloClient,
+  InMemoryCache,
+  createHttpLink,
+  from,
+  ApolloLink,
+} from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
 const httpLink = createHttpLink({
@@ -22,8 +28,20 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const removeTypenameLink = new ApolloLink((operation, forward) => {
+  if (operation.variables) {
+    const omitTypename = (key: string, value: any) =>
+      key === '__typename' ? undefined : value;
+    operation.variables = JSON.parse(
+      JSON.stringify(operation.variables),
+      omitTypename
+    );
+  }
+  return forward(operation);
+});
+
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: from([removeTypenameLink, authLink, httpLink]),
   cache: new InMemoryCache(),
 });
 

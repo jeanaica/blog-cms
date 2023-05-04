@@ -18,6 +18,7 @@ type Props = {
   readOnly?: boolean;
   hasRemovable?: boolean;
   onPillChange?(val: MultiValue<any>): void;
+  onCreateOption?(inputValue: string): void;
 };
 
 type OptionType = { value: string; label: string };
@@ -49,11 +50,23 @@ const CreatablePill: FC<Props> = ({
   options = [],
   hasRemovable,
   onPillChange,
+  onCreateOption,
 }) => {
   const {
     control,
     formState: { errors, isSubmitting },
   } = useFormContext();
+
+  const handleCreate = (inputValue: string) => {
+    if (onCreateOption) {
+      onCreateOption(inputValue);
+    }
+
+    return {
+      label: toTitleCase(inputValue),
+      value: inputValue.toUpperCase(),
+    };
+  };
 
   return (
     <div className='w-full mb-4'>
@@ -82,10 +95,7 @@ const CreatablePill: FC<Props> = ({
                 }
                 onChange(val);
               }}
-              onCreateOption={(inputValue: string) => ({
-                label: toTitleCase(inputValue),
-                value: inputValue.toLowerCase(),
-              })}
+              onCreateOption={handleCreate}
               options={options}
               hideSelectedOptions
               filterOption={(

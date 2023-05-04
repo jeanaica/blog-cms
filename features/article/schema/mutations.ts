@@ -44,3 +44,12 @@ export const ADD_ARTICLE = gql`
     }
   }
 `;
+
+export const ADD_TAG = gql`
+  mutation Mutation($tag: String!) {
+    createTag(tag: $tag) {
+      value
+      label
+    }
+  }
+`;

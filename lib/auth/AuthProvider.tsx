@@ -89,11 +89,16 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (!idToken && pathname !== '/login') {
+    if (
+      !idToken &&
+      pathname !== '/login' &&
+      !pathname.includes('/view') &&
+      !pathname.includes('/preview')
+    ) {
       window.location.href = '/login';
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [idToken]);
 
   return (
     <AuthContext.Provider value={{ user: authUser }}>

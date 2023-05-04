@@ -36,7 +36,7 @@ const Header: FC<Props> = () => {
 
   return (
     <header
-      className='py-2 px-4 border-b flex justify-end relative z-20 bg-white col-span-full md:col-span-2'
+      className='py-2 px-4 border-b flex justify-end relative z-50 bg-white col-span-full md:col-span-2'
       ref={headerRef}>
       <button
         className='flex items-center rounded px-4 hover:bg-slate-300'

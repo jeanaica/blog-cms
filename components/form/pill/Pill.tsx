@@ -72,10 +72,11 @@ const Pill: FC<Props> = ({
               isLoading={loading}
               closeMenuOnSelect={false}
               styles={pillStyles}
-              onChange={val => {
+              onChange={(val: MultiValue<any>) => {
                 if (onPillChange) {
                   onPillChange(val);
                 }
+
                 onChange(val);
               }}
               options={options}

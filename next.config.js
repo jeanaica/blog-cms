@@ -5,7 +5,11 @@ const nextConfig = nextTranslate({
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['firebasestorage.googleapis.com'],
+    domains: [
+      'localhost',
+      process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+      'firebasestorage.googleapis.com',
+    ],
   },
 });
 

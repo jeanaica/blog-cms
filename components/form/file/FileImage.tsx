@@ -1,14 +1,16 @@
 import Image from 'next/image';
-import { DragEvent, FC, useEffect, useState } from 'react';
+import { DragEvent, FC, useState } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import classNames from 'classnames';
+
+import upload from 'lib/firebase/storage/upload';
 
 type Props = {
   label: string;
   helperText?: string;
   name: string;
   disabled?: boolean;
-  isLoading?: boolean;
+  loading?: boolean;
   defaultValue?: string;
 };
 
@@ -17,13 +19,14 @@ const FileImage: FC<Props> = ({
   helperText = '',
   name,
   disabled,
-  isLoading,
+  loading,
 }) => {
   const {
     control,
     register,
     watch,
     setValue,
+    setError,
     formState: { errors, isSubmitting },
   } = useFormContext();
   const fileUploaded = watch(name);
@@ -45,9 +48,20 @@ const FileImage: FC<Props> = ({
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      // at least one file has been dropped so do something
-      setValue(name, e.dataTransfer.files[0]);
+    handleUploadImage(e.dataTransfer.files[0]);
+  };
+
+  const handleUploadImage = async (file?: File) => {
+    if (file) {
+      const fileURL = await upload({
+        file,
+      });
+
+      if (fileURL.success) {
+        setValue(name, fileURL.url);
+      } else {
+        setError(name, fileURL);
+      }
     }
   };
 
@@ -70,21 +84,28 @@ const FileImage: FC<Props> = ({
               !errors[name],
           }
         )}>
-        <div className='flex flex-col items-center justify-center pt-5 pb-6'>
+        <div className='flex flex-col items-center justify-center'>
           {typeof fileUploaded !== 'undefined' ? (
-            <Image
-              id={`${name}-preview`}
-              src={
-                typeof fileUploaded === 'string'
-                  ? fileUploaded
-                  : URL.createObjectURL(fileUploaded)
-              }
-              alt='Image Preview'
-              className='w-80 h-52'
-              width={300}
-              height={200}
-              priority
-            />
+            <div
+              style={{
+                width: '300px',
+                paddingTop: 'calc(200 / 300 * 100%)',
+                position: 'relative',
+              }}>
+              <Image
+                id={`${name}-preview`}
+                src={
+                  typeof fileUploaded === 'string'
+                    ? fileUploaded
+                    : URL.createObjectURL(fileUploaded)
+                }
+                alt='Image Preview'
+                width={300}
+                height={200}
+                priority
+                className='absolute top-0 left-0 w-full h-full object-contain m-0'
+              />
+            </div>
           ) : (
             <>
               <span className='material-icons-outlined text-gray-400 mb-3 text-[4rem]'>
@@ -98,6 +119,7 @@ const FileImage: FC<Props> = ({
             </>
           )}
         </div>
+
         <Controller
           control={control}
           name={name}
@@ -111,12 +133,17 @@ const FileImage: FC<Props> = ({
               name={name}
               type='file'
               accept='image/*'
-              onChange={event => {
+              onChange={async event => {
                 if (event.target.files && event.target.files[0]) {
-                  onChange(event.target.files[0]);
+                  const fileURL = await upload({
+                    file: event.target.files[0],
+                  });
+                  if (fileURL) {
+                    onChange(fileURL.url);
+                  }
                 }
               }}
-              disabled={disabled || isSubmitting}
+              disabled={disabled || isSubmitting || loading}
             />
           )}
         />

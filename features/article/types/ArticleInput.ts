@@ -3,20 +3,15 @@ import { Option } from 'lib/firebase/comment/types';
 export interface ArticleInput {
   id: string;
   title: string;
-  banner: File | string;
+  banner: string;
   content: string;
   createdDate: string;
   category: Array<Option>;
   tags: Array<Option>;
-  postDate: string | null;
+  scheduledAt: string | null;
   slug: string;
   author: string;
   description: string;
   url: string;
-  modifiedDate?: string;
-  publishedDate?: string;
-  isDraft?: boolean;
-  isScheduled?: boolean;
-  isPublished?: boolean;
-  isUnpublished?: boolean;
+  imageAlt: string;
 }

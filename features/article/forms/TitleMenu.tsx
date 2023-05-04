@@ -6,17 +6,19 @@ import Icon from 'components/icon/Icon';
 import Menu from 'components/menu/Menu';
 
 type Props = {
+  onPreview: () => void;
   onSave: () => void;
   onSubmit: () => void;
+  previewUrl: string;
 };
 
-const TitleMenu: FC<Props> = ({ onSave, onSubmit }) => {
+const TitleMenu: FC<Props> = ({ onPreview, previewUrl, onSave, onSubmit }) => {
   const {
     formState: { isSubmitting },
   } = useFormContext();
 
   return (
-    <div className='flex gap-2 sticky top-0 bg-white z-50 pt-4'>
+    <div className='flex gap-2 sticky top-0 bg-white z-20 pt-4'>
       <div className='flex flex-[2] '>
         <Input
           label=''
@@ -32,9 +34,10 @@ const TitleMenu: FC<Props> = ({ onSave, onSubmit }) => {
           loading={isSubmitting}
           options={[
             {
+              href: previewUrl,
               text: 'Preview',
               icon: 'remove_red_eye',
-              onClick: () => console.log('Preview'),
+              onClick: onPreview,
             },
             {
               text: 'Save',

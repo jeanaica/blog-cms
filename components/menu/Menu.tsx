@@ -7,6 +7,7 @@ import useDetectOutsideClick from 'shared/utils/hooks/useDetectOutsideClick';
 type Props = {
   text: string;
   options: Array<{
+    href?: string;
     text: string;
     onClick: MouseEventHandler;
     icon: string;
@@ -21,6 +22,15 @@ const Menu: FC<Props> = ({ text, options, loading }) => {
 
   const handleClick = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleOptionClick = (
+    optionClickHandler: MouseEventHandler<HTMLAnchorElement>
+  ) => {
+    return (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+      setIsOpen(false);
+      optionClickHandler(event);
+    };
   };
 
   useEffect(() => {
@@ -62,7 +72,7 @@ const Menu: FC<Props> = ({ text, options, loading }) => {
             hidden: !isOpen || loading,
           }
         )}>
-        {options.map(({ text, icon, onClick }, index) => (
+        {options.map(({ href, text, icon, onClick }, index) => (
           <li
             key={index}
             className={classNames(
@@ -75,11 +85,22 @@ const Menu: FC<Props> = ({ text, options, loading }) => {
               icon={icon}
               className='px-2 text-xl md:text-3xl text-sky-700 rounded-md'
             />
-            <a
-              className='block py-2 px-2 no-underline'
-              onClick={onClick}>
-              {text}
-            </a>
+            {href ? (
+              <a
+                className='block py-2 px-2 no-underline'
+                href={href}
+                target='_blank'
+                rel='noopener noreferrer'
+                onClick={handleOptionClick(onClick)}>
+                {text}
+              </a>
+            ) : (
+              <a
+                className='block py-2 px-2 no-underline'
+                onClick={handleOptionClick(onClick)}>
+                {text}
+              </a>
+            )}
           </li>
         ))}
       </ul>

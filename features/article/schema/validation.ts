@@ -3,7 +3,7 @@ import * as z from 'zod';
 const MAX_FILE_SIZE = 1000000;
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 
-const schema = z.object({
+const validation = z.object({
   title: z.string().min(1, { message: 'Required' }),
   content: z.string().min(1, { message: 'Required' }),
   slug: z
@@ -27,14 +27,16 @@ const schema = z.object({
       }
     }, 'Only .jpg, .jpeg, and .png formats are supported.')
     .or(z.string().min(1, { message: 'Required' })),
+  imageAlt: z.string().min(1, { message: 'Required' }),
   author: z.string().min(1, { message: 'Required' }),
-  postDate: z.string().min(1, { message: 'Required' }),
+  scheduledAt: z.string().min(1, { message: 'Required' }),
   category: z
     .object({
       label: z.string(),
       value: z.string(),
     })
-    .array(),
+    .array()
+    .min(1, { message: 'Required' }),
   tags: z
     .object({
       label: z.string(),
@@ -43,4 +45,4 @@ const schema = z.object({
     .array(),
 });
 
-export default schema;
+export default validation;

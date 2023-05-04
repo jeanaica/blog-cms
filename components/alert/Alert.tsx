@@ -8,7 +8,7 @@ type Props = {
 
 const Alert: FC<Props> = ({ type = 'info', message }) => (
   <div
-    className={classNames('p-4 mb-8 text-sm rounded-lg ease-in', {
+    className={classNames('p-4 mt-4 mb-4 text-sm rounded-lg ease-in', {
       'text-red-700 bg-red-100': type === 'error',
       'text-blue-700 bg-blue-100': type === 'info',
       'text-green-700 bg-green-100': type === 'success',

@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useEffect } from 'react';
 import { MultiValue } from 'react-select';
 import { useFormContext } from 'react-hook-form';
@@ -7,6 +7,7 @@ import CreatablePill from 'components/form/pill/CreatablePill';
 import Pill from 'components/form/pill/Pill';
 
 import { GET_CATEGORIES, GET_TAGS } from '../schema/queries';
+import { ADD_TAG } from '../schema/mutations';
 
 const Labels = () => {
   const { setValue, setError } = useFormContext();
@@ -14,13 +15,17 @@ const Labels = () => {
     data: categories,
     loading: loadingCategories,
     error: errorCategories,
+    refetch: refetchCategories,
   } = useQuery(GET_CATEGORIES);
 
   const {
     data: tags,
     loading: loadingTags,
     error: errorTags,
+    refetch: refetchTags,
   } = useQuery(GET_TAGS);
+
+  const [addTag, { error: addTagError }] = useMutation(ADD_TAG);
 
   const handlePillChange = (val: MultiValue<any>) => {
     setValue('tags', val);
@@ -32,6 +37,15 @@ const Labels = () => {
     setValue('category', categoryVal);
   };
 
+  const handleCreateOption = async (inputValue: string) => {
+    await addTag({
+      variables: {
+        tag: inputValue,
+      },
+    });
+    refetchTags();
+  };
+
   useEffect(() => {
     if (errorCategories) {
       setError('category', errorCategories);
@@ -40,7 +54,16 @@ const Labels = () => {
     if (errorTags) {
       setError('tags', errorTags);
     }
-  }, [errorCategories, errorTags, setError]);
+
+    if (addTagError) {
+      setError('tags', addTagError);
+    }
+  }, [errorCategories, errorTags, addTagError, setError]);
+
+  useEffect(() => {
+    refetchCategories();
+    refetchTags();
+  }, [refetchCategories, refetchTags]);
 
   return (
     <>
@@ -56,6 +79,7 @@ const Labels = () => {
         name='tags'
         loading={loadingTags}
         options={tags?.tags}
+        onCreateOption={handleCreateOption}
         onPillChange={handleCreatablePillChange}
         hasRemovable
       />
