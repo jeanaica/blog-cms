@@ -11,26 +11,36 @@ const options = [
 ];
 
 const sortOptions = [
-  { value: 'ASC', label: 'Oldest first' },
-  { value: 'DESC', label: 'Newest first' },
+  { value: 'desc', label: 'Descending' },
+  { value: 'asc', label: 'Ascending' },
 ];
 
 type Props = {
-  onChange(selectedOption: string | null): void;
+  onChange(option: string, selectedOption: string | null): void;
 };
 
 const Header: FC<Props> = ({ onChange }) => {
+  const handleStatusChange = (selectedOption: string | null) => {
+    onChange('status', selectedOption);
+  };
+
+  const handleSortingChange = (selectedOption: string | null) => {
+    onChange('sort', selectedOption);
+  };
+
   return (
-    <div className='flex justify-between flex-col md:flex-row gap-4 mb-10'>
+    <div className='flex justify-between flex-col gap-4 md:flex-row md:gap-8 mb-10'>
       <Dropdown
+        label='Filter by status:'
         options={options}
-        onChange={onChange}
+        onChange={handleStatusChange}
         defaultValue={options[0]}
       />
       <Dropdown
-        placeholder='Sort By:'
+        label='Sort:'
         options={sortOptions}
-        onChange={onChange}
+        onChange={handleSortingChange}
+        defaultValue={sortOptions[0]}
       />
     </div>
   );

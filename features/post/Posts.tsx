@@ -16,18 +16,23 @@ import { GET_POST_BY_STATUS } from './schema/queries';
 const Posts = () => {
   const toast = useToast();
   const { t } = useTranslation('common');
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [selectedOption, setSelectedOption] = useState<{
+    [option: string]: string | null;
+  }>({ status: null, sort: 'desc' });
 
   const { loading, data, refetch } = useQuery(GET_POST_BY_STATUS, {
-    variables: { status: selectedOption },
+    variables: {
+      status: selectedOption['status'],
+      sort: selectedOption['sort'],
+    },
   });
 
   const [updatePost, { loading: updateLoading }] = useMutation(
     UPDATE_POST_STATUS_MUTATION
   );
 
-  const handleOnChange = (selectedOption: string | null) =>
-    setSelectedOption(selectedOption);
+  const handleOnChange = (option: string, selected: string | null) =>
+    setSelectedOption({ [option]: selected });
 
   const handleUpdateStatus = useCallback(
     async (id: string, status: string) => {
@@ -40,7 +45,10 @@ const Posts = () => {
 
         toast('success', message);
 
-        refetch({ status: selectedOption });
+        refetch({
+          status: selectedOption['status'],
+          sort: selectedOption['sort'],
+        });
       } catch (e) {
         message = t('updateFail');
         toast('error', message);
@@ -50,7 +58,7 @@ const Posts = () => {
   );
 
   useEffect(() => {
-    refetch({ status: selectedOption });
+    refetch({ status: selectedOption['status'], sort: selectedOption['sort'] });
   }, [selectedOption, refetch]);
 
   return (

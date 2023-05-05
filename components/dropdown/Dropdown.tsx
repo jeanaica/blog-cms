@@ -11,6 +11,7 @@ interface Props {
   onChange: (value: string | null) => void;
   placeholder?: string;
   defaultValue?: SingleValue<OptionType>;
+  label?: string;
 }
 
 const Dropdown: React.FC<Props> = ({
@@ -18,6 +19,7 @@ const Dropdown: React.FC<Props> = ({
   placeholder,
   onChange,
   defaultValue,
+  label,
 }) => {
   const [selectedOption, setSelectedOption] =
     useState<SingleValue<OptionType>>(null);
@@ -34,14 +36,17 @@ const Dropdown: React.FC<Props> = ({
   }, [defaultValue]);
 
   return (
-    <Select
-      value={selectedOption}
-      onChange={handleChange}
-      options={options}
-      placeholder={placeholder}
-      instanceId={useId()}
-      className='flex-1 md:w-40'
-    />
+    <div className='flex flex-col flex-1 md:w-40'>
+      <span className='text-primary'>{label}</span>
+      <Select
+        value={selectedOption}
+        onChange={handleChange}
+        options={options}
+        placeholder={placeholder}
+        instanceId={useId()}
+        className='flex-1'
+      />
+    </div>
   );
 };
 
