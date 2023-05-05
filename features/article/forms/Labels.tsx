@@ -8,18 +8,22 @@ import Pill from 'components/form/pill/Pill';
 
 import { GET_CATEGORIES, GET_TAGS } from '../schema/queries';
 import { ADD_TAG } from '../schema/mutations';
+import { Option, Options } from '../types/Option';
 
 const Labels = () => {
-  const { setValue, setError } = useFormContext();
+  const { setValue, setError, watch } = useFormContext();
+  const currentCategory: Options = watch('category');
+  const currentTags: Options = watch('tags');
+
   const {
-    data: categories,
+    data: categoryData,
     loading: loadingCategories,
     error: errorCategories,
     refetch: refetchCategories,
   } = useQuery(GET_CATEGORIES);
 
   const {
-    data: tags,
+    data: tagData,
     loading: loadingTags,
     error: errorTags,
     refetch: refetchTags,
@@ -27,12 +31,39 @@ const Labels = () => {
 
   const [addTag, { error: addTagError }] = useMutation(ADD_TAG);
 
-  const handlePillChange = (val: MultiValue<any>) => {
-    setValue('tags', val);
+  const addCategoryToTags = (newCategory: Option, newTags: Options) => {
+    if (!newTags?.some(tag => tag?.value === newCategory?.value)) {
+      return [...(newTags || []), newCategory];
+    }
+    return newTags;
+  };
+
+  const removeCategoryFromTags = (
+    removedCategory: Option,
+    newTags: Options
+  ) => {
+    return newTags?.filter(tag => tag.value !== removedCategory.value);
+  };
+
+  const handlePillChange = (val: Options) => {
+    const removedCategory = currentCategory?.find(
+      category => !val.some(newCategory => newCategory.value === category.value)
+    );
+
+    let newTags = currentTags || [];
+
+    if (removedCategory) {
+      newTags = removeCategoryFromTags(removedCategory, newTags);
+    } else {
+      const newCategory = val[val.length - 1];
+      newTags = addCategoryToTags(newCategory, newTags);
+    }
+
+    setValue('tags', newTags);
   };
 
   const handleCreatablePillChange = (val: MultiValue<any>) => {
-    const categoryVal = val.filter(v => v.notRemovable);
+    const categoryVal = val.filter((v: any) => v.notRemovable);
 
     setValue('category', categoryVal);
   };
@@ -71,14 +102,14 @@ const Labels = () => {
         label='Category'
         name='category'
         loading={loadingCategories}
-        options={categories?.categories}
+        options={categoryData?.categories}
         onPillChange={handlePillChange}
       />
       <CreatablePill
         label='Tags'
         name='tags'
         loading={loadingTags}
-        options={tags?.tags}
+        options={tagData?.tags}
         onCreateOption={handleCreateOption}
         onPillChange={handleCreatablePillChange}
         hasRemovable
