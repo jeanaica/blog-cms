@@ -17,6 +17,7 @@ type Props = {
 const Item: FC<Props> = ({ id, post, onUpdate, loading }) => {
   const router = useRouter();
   const [showActions, setShowActions] = useState<string>();
+  const status = post.status.toLowerCase();
 
   const handlePostClick: MouseEventHandler<HTMLDivElement> = e => {
     e.stopPropagation();
@@ -72,6 +73,7 @@ const Item: FC<Props> = ({ id, post, onUpdate, loading }) => {
         'flex border border-slate-300 p-4 my-4 bg-white hover:drop-shadow-md rounded',
         {
           'cursor-not-allowed': loading,
+          'bg-gray-200': status === 'archived',
         }
       )}
       onMouseEnter={handleHover}
@@ -80,7 +82,7 @@ const Item: FC<Props> = ({ id, post, onUpdate, loading }) => {
 
       <Actions
         id={post.id}
-        status={post.status.toLowerCase()}
+        status={status}
         onMoveToDrafts={handleMoveToDraft}
         onDelete={handleDelete}
         onMore={handleClickMore}

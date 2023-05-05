@@ -31,7 +31,7 @@ const Actions: FC<Props> = ({
     />
     <div
       className={classNames(
-        'gap-1 absolute right-0 shadow-md rounded bg-white md:shadow-none md:relative md:justify-center md:flex-1  md:flex-row',
+        'gap-1 absolute right-0 shadow-md rounded bg-transparent md:shadow-none md:relative md:justify-center md:flex-1 md:flex-row',
         {
           hidden: !show,
           flex: show,
@@ -43,7 +43,7 @@ const Actions: FC<Props> = ({
         href={`${`/article/${id}/view`}`}
         target='_blank'
         isLoading={loading}
-        className='border-r'>
+        className='border-r md:border-0'>
         <span>Preview</span>
       </IconLink>
       {status !== 'draft' && (

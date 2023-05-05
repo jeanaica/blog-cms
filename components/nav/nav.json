@@ -6,12 +6,6 @@
     "isAction": false
   },
   {
-    "icon": "comment_bank",
-    "text": "Comments",
-    "href": "/comment/unread",
-    "isAction": false
-  },
-  {
     "icon": "post_add",
     "text": "Add Post",
     "href": "/article/add",
