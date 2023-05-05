@@ -4,7 +4,7 @@ const PublishOn = () => (
   <>
     <DatePicker
       label=''
-      name='postDate'
+      name='scheduledAt'
       minDate={new Date()}
     />
   </>
