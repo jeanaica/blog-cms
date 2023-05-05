@@ -119,9 +119,11 @@ const Add: FC = () => {
   };
 
   useEffect(() => {
-    const regExChars = /[^a-zA-Z 0-9 -]/g;
+    const regExChars = /[^a-zA-Z0-9 -]/g;
+    const trimmedTitle = title && title.trimEnd();
     const slug =
-      title && title.toLowerCase().replace(regExChars, '').replaceAll(' ', '-');
+      trimmedTitle &&
+      trimmedTitle.toLowerCase().replace(regExChars, '').replaceAll(' ', '-');
 
     setValue('slug', slug);
   }, [title, setValue]);
