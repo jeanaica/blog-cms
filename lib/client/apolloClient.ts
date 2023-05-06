@@ -40,9 +40,23 @@ const removeTypenameLink = new ApolloLink((operation, forward) => {
   return forward(operation);
 });
 
+const cache = new InMemoryCache({
+  typePolicies: {
+    Post: {
+      fields: {
+        meta: {
+          merge(existing, incoming) {
+            return { ...existing, ...incoming };
+          },
+        },
+      },
+    },
+  },
+});
+
 const client = new ApolloClient({
   link: from([removeTypenameLink, authLink, httpLink]),
-  cache: new InMemoryCache(),
+  cache,
 });
 
 export default client;

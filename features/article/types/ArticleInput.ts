@@ -15,3 +15,6 @@ export interface ArticleInput {
   url: string;
   imageAlt: string;
 }
+
+export type FormKeys = keyof ArticleInput;
+export type FormValues = string | Option[] | null;

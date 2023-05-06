@@ -85,7 +85,7 @@ const FileImage: FC<Props> = ({
           }
         )}>
         <div className='flex flex-col items-center justify-center'>
-          {typeof fileUploaded !== 'undefined' ? (
+          {fileUploaded ? (
             <div
               style={{
                 width: '300px',
@@ -97,7 +97,9 @@ const FileImage: FC<Props> = ({
                 src={
                   typeof fileUploaded === 'string'
                     ? fileUploaded
-                    : URL.createObjectURL(fileUploaded)
+                    : fileUploaded instanceof File
+                    ? URL.createObjectURL(fileUploaded)
+                    : ''
                 }
                 alt='Image Preview'
                 width={300}

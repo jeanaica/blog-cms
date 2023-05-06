@@ -10,9 +10,16 @@ type Props = {
   onSave: () => void;
   onSubmit: () => void;
   previewUrl: string;
+  status?: string;
 };
 
-const TitleMenu: FC<Props> = ({ onPreview, previewUrl, onSave, onSubmit }) => {
+const TitleMenu: FC<Props> = ({
+  onPreview,
+  onSave,
+  onSubmit,
+  previewUrl,
+  status,
+}) => {
   const {
     formState: { isSubmitting },
   } = useFormContext();
@@ -43,6 +50,7 @@ const TitleMenu: FC<Props> = ({ onPreview, previewUrl, onSave, onSubmit }) => {
               text: 'Save',
               icon: 'save',
               onClick: onSave,
+              disabled: status === 'PUBLISHED',
             },
           ]}
         />

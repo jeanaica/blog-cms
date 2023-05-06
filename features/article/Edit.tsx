@@ -1,6 +1,6 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
@@ -14,17 +14,29 @@ import validation from 'features/article/schema/validation';
 import { moveImageToFolder } from 'lib/firebase/storage/upload';
 import formatDate from 'shared/utils/formatDate';
 
-import { ADD_ARTICLE } from './schema/mutations';
+import { UPDATE_ARTICLE } from './schema/mutations';
 import { ArticleInput } from './types/ArticleInput';
 import TitleMenu from './forms/TitleMenu';
 import FormAccordion from './forms/FormAccordion';
+import { GET_ARTICLE_BY_ID } from './schema/queries';
 
-const Add: FC = () => {
+const Edit: FC = () => {
   const today = formatDate();
   const router = useRouter();
+  const { id } = router.query;
   const toast = useToast();
   const { t } = useTranslation('common');
   const [previewUrl, setPreviewUrl] = useState('');
+  const [initialBanner, setInitialBanner] = useState('');
+  const [dataStatus, setDataStatus] = useState('');
+
+  const {
+    loading,
+    data,
+    error: queryError,
+  } = useQuery(GET_ARTICLE_BY_ID, {
+    variables: { id },
+  });
 
   const methods = useForm<ArticleInput>({
     resolver: zodResolver(validation),
@@ -33,12 +45,36 @@ const Add: FC = () => {
       author: 'Jeanaica Suplido',
     },
   });
+
   const { reset, handleSubmit, getValues, watch, setValue, trigger } = methods;
   const title: string = watch('title');
   const content: string = watch('content');
   const slug: string = watch('slug');
 
-  const [addArticle, { error }] = useMutation(ADD_ARTICLE);
+  const [updateArticle, { error }] = useMutation(UPDATE_ARTICLE);
+
+  const formatDataForForm = useCallback(
+    (data: any): ArticleInput => {
+      if (!data) return {} as ArticleInput;
+
+      const { meta, ...restData } = data;
+
+      setInitialBanner(data.banner);
+      setDataStatus(data.status);
+
+      return {
+        ...restData,
+        ...meta,
+        scheduledAt:
+          data?.status === 'PUBLISHED'
+            ? formatDate(data.publishedAt)
+            : data?.status === 'SCHEDULED'
+            ? formatDate(data.scheduledAt)
+            : today,
+      };
+    },
+    [today]
+  );
 
   const handleArticle = async (values: ArticleInput, status: string) => {
     const {
@@ -53,10 +89,12 @@ const Add: FC = () => {
       category,
       tags,
     } = values;
-    let newBannerURL = banner;
 
     try {
-      if (banner) {
+      let newBannerURL = banner;
+
+      // Check if the banner has changed
+      if (banner !== initialBanner) {
         // Move the image from temp folder to the new folder and update the download URL
         newBannerURL = await moveImageToFolder(banner, status.toLowerCase());
       }
@@ -70,8 +108,9 @@ const Add: FC = () => {
         image: newBannerURL,
       };
 
-      await addArticle({
+      await updateArticle({
         variables: {
+          id,
           post: {
             title,
             content,
@@ -134,14 +173,24 @@ const Add: FC = () => {
     setPreviewUrl(`/article/${id}/preview`);
   }, [slug, setPreviewUrl]);
 
+  useEffect(() => {
+    if (data?.post) {
+      const formattedData = formatDataForForm(data?.post);
+      reset(formattedData);
+    }
+  }, [data, reset, formatDataForForm]);
+
   return (
-    <Container className='p-4 pt-0 relative'>
+    <Container
+      className='p-4 pt-0 relative'
+      loading={loading}>
       <FormProvider {...methods}>
         <Alert
           type='error'
-          message={error?.message}
+          message={error?.message || queryError?.message}
         />
         <TitleMenu
+          status={dataStatus}
           previewUrl={previewUrl}
           onPreview={onPreview}
           onSave={onSave}
@@ -157,4 +206,4 @@ const Add: FC = () => {
   );
 };
 
-export default Add;
+export default Edit;

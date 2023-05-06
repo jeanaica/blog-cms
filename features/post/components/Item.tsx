@@ -22,7 +22,7 @@ const Item: FC<Props> = ({ id, post, onUpdate, loading }) => {
   const handlePostClick: MouseEventHandler<HTMLDivElement> = e => {
     e.stopPropagation();
     e.preventDefault();
-    if (!loading) {
+    if (!loading && status !== 'archived') {
       router.push(`/article/${id}/edit`);
     }
   };
@@ -72,7 +72,7 @@ const Item: FC<Props> = ({ id, post, onUpdate, loading }) => {
       className={classNames(
         'flex border border-slate-300 p-4 my-4 bg-white hover:drop-shadow-md rounded',
         {
-          'cursor-not-allowed': loading,
+          'cursor-not-allowed': loading || status === 'archived',
           'bg-gray-200': status === 'archived',
         }
       )}

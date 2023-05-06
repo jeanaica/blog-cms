@@ -26,6 +26,7 @@ export const GET_ARTICLE_BY_ID = gql`
         url
         description
         image
+        imageAlt
         publishedAt
         updatedAt
         title
@@ -33,10 +34,12 @@ export const GET_ARTICLE_BY_ID = gql`
       category {
         label
         value
+        notRemovable
       }
       tags {
         value
         label
+        notRemovable
       }
     }
   }

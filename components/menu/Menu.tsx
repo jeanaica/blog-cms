@@ -7,15 +7,16 @@ import useDetectOutsideClick from 'shared/utils/hooks/useDetectOutsideClick';
 type Props = {
   text: string;
   options: Array<{
-    href?: string;
     text: string;
     onClick: MouseEventHandler;
     icon: string;
+    href?: string;
+    disabled?: boolean;
   }>;
   loading?: boolean;
 };
 
-const Menu: FC<Props> = ({ text, options, loading }) => {
+const Menu: FC<Props> = ({ text, options, loading = false }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const menuRef = useRef(null);
   const isClickedOutside = useDetectOutsideClick(menuRef);
@@ -25,11 +26,15 @@ const Menu: FC<Props> = ({ text, options, loading }) => {
   };
 
   const handleOptionClick = (
-    optionClickHandler: MouseEventHandler<HTMLAnchorElement>
+    optionClickHandler: MouseEventHandler<HTMLAnchorElement>,
+    disabled?: boolean
   ) => {
     return (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
       setIsOpen(false);
-      optionClickHandler(event);
+
+      if (!disabled) {
+        optionClickHandler(event);
+      }
     };
   };
 
@@ -72,13 +77,14 @@ const Menu: FC<Props> = ({ text, options, loading }) => {
             hidden: !isOpen || loading,
           }
         )}>
-        {options.map(({ href, text, icon, onClick }, index) => (
+        {options.map(({ href, disabled, text, icon, onClick }, index) => (
           <li
             key={index}
             className={classNames(
-              'cursor-pointer h-[50px] flex items-center px-4 hover:bg-gray-100',
+              'h-[50px] flex items-center px-4 hover:bg-gray-100 m-0',
               {
-                'cursor-not-allowed': loading,
+                'bg-gray-100 cursor-not-allowed': loading || disabled,
+                'cursor-pointer': !loading && !disabled,
               }
             )}>
             <Icon
@@ -91,13 +97,13 @@ const Menu: FC<Props> = ({ text, options, loading }) => {
                 href={href}
                 target='_blank'
                 rel='noopener noreferrer'
-                onClick={handleOptionClick(onClick)}>
+                onClick={handleOptionClick(onClick, disabled)}>
                 {text}
               </a>
             ) : (
               <a
                 className='block py-2 px-2 no-underline'
-                onClick={handleOptionClick(onClick)}>
+                onClick={handleOptionClick(onClick, disabled)}>
                 {text}
               </a>
             )}

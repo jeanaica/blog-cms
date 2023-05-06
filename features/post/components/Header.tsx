@@ -29,7 +29,7 @@ const Header: FC<Props> = ({ onChange }) => {
   };
 
   return (
-    <div className='flex justify-between flex-col gap-4 md:flex-row md:gap-8 mb-10'>
+    <div className='flex justify-between flex-col gap-4 md:flex-row md:gap-8 sticky top-0 pt-8 pb-4 px-8 bg-slate-50 z-20'>
       <Dropdown
         label='Filter by status:'
         options={options}

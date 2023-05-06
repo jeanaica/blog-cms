@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { ReactElement } from 'react';
+import classNames from 'classnames';
 
 import Nav from 'components/nav/Nav';
 import Loading from 'components/loading/Loading';
@@ -34,7 +35,11 @@ const Dashboard = ({ children }: Props) => {
   return (
     <div className='h-screen w-screen grid grid-rows-[auto_1fr_auto] grid-cols-none	md:grid-rows-auto md:grid-cols-[auto_1fr]'>
       <Header />
-      <div className='bg-white md:col-start-2 overflow-y-auto'>
+      <div
+        className={classNames('bg-white md:col-start-2 overflow-y-auto', {
+          'bg-white': !router.pathname.includes('post'),
+          'bg-slate-50': router.pathname.includes('post'),
+        })}>
         {isPageLoading && !lastPath ? (
           <div className='flex justify-center h-full items-center'>
             <Loading

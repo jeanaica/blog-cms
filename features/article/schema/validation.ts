@@ -29,7 +29,7 @@ const validation = z.object({
     .or(z.string().min(1, { message: 'Required' })),
   imageAlt: z.string().min(1, { message: 'Required' }),
   author: z.string().min(1, { message: 'Required' }),
-  scheduledAt: z.string().min(1, { message: 'Required' }),
+  scheduledAt: z.string(),
   category: z
     .object({
       label: z.string(),

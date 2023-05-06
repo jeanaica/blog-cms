@@ -62,12 +62,13 @@ const Posts = () => {
   }, [selectedOption, refetch]);
 
   return (
-    <div className='p-8'>
+    <div className='pb-8'>
       <Header onChange={handleOnChange} />
 
       <Container
         loading={loading}
-        isEmpty={!data?.posts.length}>
+        isEmpty={!data?.posts.length}
+        className='px-8'>
         {data?.posts.map((post: Article) => (
           <Item
             key={post.id}
