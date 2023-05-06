@@ -7,7 +7,6 @@ const useToast = (delay?: number) => {
   function toast(type: 'info' | 'error' | 'success', message: string) {
     const id = Math.random().toString(36).substr(2, 9);
     const delayNum = delay || 3000;
-    console.log('delayNum', delayNum);
 
     dispatch({
       type: ToastActions.ADD_TOAST,
