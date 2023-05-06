@@ -93,10 +93,13 @@ const Edit: FC = () => {
     try {
       let newBannerURL = banner;
 
-      // Check if the banner has changed
-      if (banner !== initialBanner) {
+      // Check if the banner has changed, and if in public folder
+      if (
+        (banner !== initialBanner && status !== 'DRAFT') ||
+        !banner.includes('public')
+      ) {
         // Move the image from temp folder to the new folder and update the download URL
-        newBannerURL = await moveImageToFolder(banner, status.toLowerCase());
+        newBannerURL = await moveImageToFolder(banner, 'public');
       }
 
       const meta = {
@@ -108,21 +111,21 @@ const Edit: FC = () => {
         image: newBannerURL,
       };
 
-      await updateArticle({
-        variables: {
-          id,
-          post: {
-            title,
-            content,
-            banner: newBannerURL,
-            scheduledAt,
-            category,
-            tags,
-            status,
-            meta,
-          },
-        },
-      });
+      // await updateArticle({
+      //   variables: {
+      //     id,
+      //     post: {
+      //       title,
+      //       content,
+      //       banner: newBannerURL,
+      //       scheduledAt,
+      //       category,
+      //       tags,
+      //       status,
+      //       meta,
+      //     },
+      //   },
+      // });
       reset(); // Clear the form after submission
       toast('success', t('updateSuccess'));
       router.push('/post');

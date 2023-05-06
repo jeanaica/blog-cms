@@ -56,9 +56,9 @@ const Add: FC = () => {
     let newBannerURL = banner;
 
     try {
-      if (banner) {
+      if (banner && status !== 'DRAFT') {
         // Move the image from temp folder to the new folder and update the download URL
-        newBannerURL = await moveImageToFolder(banner, status.toLowerCase());
+        newBannerURL = await moveImageToFolder(banner, 'public');
       }
 
       const meta = {
