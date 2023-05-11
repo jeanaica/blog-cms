@@ -9,7 +9,7 @@ NOTES: demo has not been updated with mobile responsiveness and backend
 Requirements:
 - Node
 - npm
-- Backend server
+- Backend server - GraphQL
 - Firebase storage
 
 ## How to run the frontend
