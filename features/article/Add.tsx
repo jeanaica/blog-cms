@@ -56,14 +56,14 @@ const Add: FC = () => {
     let newBannerURL = banner;
 
     try {
-      if (banner && status !== 'DRAFT') {
+      if (banner && status.toUpperCase() !== 'DRAFT') {
         // Move the image from temp folder to the new folder and update the download URL
         newBannerURL = await moveImageToFolder(banner, 'public');
       }
 
       const meta = {
         slug,
-        url: `${process.env.NEXT_PUBLIC_DOMAIN}/article/${slug}`,
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/${slug}`,
         description,
         author,
         imageAlt,

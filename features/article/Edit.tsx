@@ -95,7 +95,7 @@ const Edit: FC = () => {
 
       // Check if the banner has changed, and if in public folder
       if (
-        (banner !== initialBanner && status !== 'DRAFT') ||
+        (banner !== initialBanner && status.toUpperCase() !== 'DRAFT') ||
         !banner.includes('public')
       ) {
         // Move the image from temp folder to the new folder and update the download URL
@@ -104,28 +104,28 @@ const Edit: FC = () => {
 
       const meta = {
         slug,
-        url: `${process.env.NEXT_PUBLIC_DOMAIN}/article/${slug}`,
+        url: `${process.env.NEXT_PUBLIC_DOMAIN}/${slug}`,
         description,
         author,
         imageAlt,
         image: newBannerURL,
       };
 
-      // await updateArticle({
-      //   variables: {
-      //     id,
-      //     post: {
-      //       title,
-      //       content,
-      //       banner: newBannerURL,
-      //       scheduledAt,
-      //       category,
-      //       tags,
-      //       status,
-      //       meta,
-      //     },
-      //   },
-      // });
+      await updateArticle({
+        variables: {
+          id,
+          post: {
+            title,
+            content,
+            banner: newBannerURL,
+            scheduledAt,
+            category,
+            tags,
+            status,
+            meta,
+          },
+        },
+      });
       reset(); // Clear the form after submission
       toast('success', t('updateSuccess'));
       router.push('/post');
