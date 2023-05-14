@@ -14,10 +14,8 @@ const AccordionItem: FC<Props> = ({ title, children }) => {
       <h5 className='m-0'>
         <button
           type='button'
-          className={`flex items-center justify-between w-full py-4 font-medium text-left text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 ${
-            isOpen
-              ? 'bg-white dark:bg-gray-900 text-gray-900 dark:text-white'
-              : ''
+          className={`flex items-center justify-between w-full py-4 font-medium text-left text-gray-500 border-b border-gray-200 ${
+            isOpen ? 'bg-white text-gray-900' : ''
           }`}
           onClick={() => setIsOpen(!isOpen)}
           aria-expanded={isOpen}>
@@ -29,7 +27,7 @@ const AccordionItem: FC<Props> = ({ title, children }) => {
         </button>
       </h5>
       {isOpen && (
-        <div className='py-5 p-2 md:p-4 border-b border-gray-200 dark:border-gray-700'>
+        <div className='py-5 p-2 md:p-4 border-b border-gray-200'>
           {children}
         </div>
       )}
