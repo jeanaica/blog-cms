@@ -6,9 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "deploy": "firebase deploy --only functions,hosting",
-    "complete": "npm run build && npm run deploy"
+    "lint": "next lint"
   },
   "dependencies": {
     "@apollo/client": "3.7.10",
@@ -21,7 +19,6 @@
     "firebase-admin": "11.5.0",
     "graphql": "16.6.0",
     "graphql-tag": "2.12.6",
-    "isomorphic-unfetch": "4.0.2",
     "material-icons": "1.12.2",
     "next": "13.3.0",
     "next-translate": "2.0.4",
