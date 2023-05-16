@@ -25,6 +25,10 @@ if (process.env.NODE_ENV === 'development') {
   // Connect to the Firebase Functions emulator
   connectFunctionsEmulator(functions, 'localhost', 5001);
   // Connect to the Firebase Storage emulator
-  connectStorageEmulator(storage, 'localhost', 9199);
+  connectStorageEmulator(storage, 'localhost', 9199, {
+    mockUserToken: {
+      user_id: 'any-string',
+    },
+  });
 }
 export const db = getFirestore(app);

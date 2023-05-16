@@ -26,8 +26,9 @@ const validation = z.object({
         return ACCEPTED_IMAGE_TYPES.includes(file.type);
       }
     }, 'Only .jpg, .jpeg, and .png formats are supported.')
-    .or(z.string().min(1, { message: 'Required' })),
-  imageAlt: z.string().min(1, { message: 'Required' }),
+    .or(z.string()),
+  imageAlt: z.string(),
+  // TODO: Add caption
   author: z.string().min(1, { message: 'Required' }),
   scheduledAt: z.string(),
   category: z
