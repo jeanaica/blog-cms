@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "blog-9e4c9"
-  }
+    "default": "blog-9e4c9",
+    "staging": "staging-1ef01"
+  },
+  "targets": {},
+  "etags": {}
 }
