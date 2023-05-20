@@ -30,7 +30,7 @@ const Add: FC = () => {
     resolver: zodResolver(validation),
     defaultValues: {
       scheduledAt: today,
-      author: 'Jeanaica Suplido',
+      author: 'Jeanaica Suplido-Alinsub',
     },
   });
   const { reset, handleSubmit, getValues, watch, setValue, trigger } = methods;
@@ -47,6 +47,7 @@ const Add: FC = () => {
       slug,
       description,
       banner,
+      caption,
       imageAlt,
       author,
       scheduledAt,
@@ -76,6 +77,7 @@ const Add: FC = () => {
             title,
             content,
             banner: newBannerURL,
+            caption,
             scheduledAt,
             category,
             tags,

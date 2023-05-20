@@ -16,6 +16,7 @@ export const GET_ARTICLE_BY_ID = gql`
       content
       title
       banner
+      caption
       updatedAt
       status
       scheduledAt

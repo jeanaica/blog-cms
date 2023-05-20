@@ -42,7 +42,7 @@ const Edit: FC = () => {
     resolver: zodResolver(validation),
     defaultValues: {
       scheduledAt: today,
-      author: 'Jeanaica Suplido',
+      author: 'Jeanaica Suplido-Alinsub',
     },
   });
 
@@ -83,6 +83,7 @@ const Edit: FC = () => {
       slug,
       description,
       banner,
+      caption,
       imageAlt,
       author,
       scheduledAt,
@@ -93,9 +94,12 @@ const Edit: FC = () => {
     try {
       let newBannerURL = banner;
 
+      console.log(status);
+
       // Check if the banner has changed, and if in public folder
       if (
-        (banner !== initialBanner && status.toUpperCase() !== 'DRAFT') ||
+        banner !== initialBanner ||
+        status.toUpperCase() !== 'DRAFT' ||
         !banner.includes('public')
       ) {
         // Move the image from temp folder to the new folder and update the download URL
@@ -111,21 +115,22 @@ const Edit: FC = () => {
         image: newBannerURL,
       };
 
-      await updateArticle({
-        variables: {
-          id,
-          post: {
-            title,
-            content,
-            banner: newBannerURL,
-            scheduledAt,
-            category,
-            tags,
-            status,
-            meta,
-          },
-        },
-      });
+      // await updateArticle({
+      //   variables: {
+      //     id,
+      //     post: {
+      //       title,
+      //       content,
+      //       banner: newBannerURL,
+      //       caption,
+      //       scheduledAt,
+      //       category,
+      //       tags,
+      //       status,
+      //       meta,
+      //     },
+      //   },
+      // });
       reset(); // Clear the form after submission
       toast('success', t('updateSuccess'));
       router.push('/post');
@@ -143,7 +148,13 @@ const Edit: FC = () => {
     const postDate = values.scheduledAt !== today ? values.scheduledAt : null;
     const status = postDate ? 'SCHEDULED' : 'PUBLISHED';
 
-    handleArticle({ ...values, scheduledAt: postDate }, status);
+    // if data is already published
+    if (dataStatus === 'PUBLISHED') {
+      handleArticle(values, dataStatus);
+    } else {
+      // if data is not yet published
+      handleArticle({ ...values, scheduledAt: postDate }, status);
+    }
   };
 
   const onSave = async () => {
@@ -151,7 +162,14 @@ const Edit: FC = () => {
 
     if (isValid) {
       const values = getValues();
-      handleArticle({ ...values, scheduledAt: null }, 'DRAFT');
+
+      // if status is not already in draft
+      if (dataStatus !== 'DRAFT') {
+        handleSubmit(onSubmit);
+      } else {
+        // if it is still in draft
+        handleArticle({ ...values, scheduledAt: null }, 'DRAFT');
+      }
     }
   };
 

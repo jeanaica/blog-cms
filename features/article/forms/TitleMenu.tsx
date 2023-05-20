@@ -50,7 +50,8 @@ const TitleMenu: FC<Props> = ({
               text: 'Save',
               icon: 'save',
               onClick: onSave,
-              disabled: status === 'PUBLISHED',
+              hide: !!status && status !== 'DRAFT',
+              disabled: !!status && status !== 'DRAFT',
             },
           ]}
         />

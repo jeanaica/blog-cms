@@ -28,6 +28,10 @@ const Meta = () => (
       label='Image Alt'
       name='imageAlt'
     />
+    <Input
+      label='Caption'
+      name='caption'
+    />
   </>
 );
 
