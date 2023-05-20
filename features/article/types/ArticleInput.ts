@@ -4,6 +4,7 @@ export interface ArticleInput {
   id: string;
   title: string;
   banner: string;
+  caption: string;
   content: string;
   createdDate: string;
   category: Array<Option>;

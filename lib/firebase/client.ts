@@ -15,6 +15,7 @@ export const app = initializeApp(firebaseCredentials);
 const functions = getFunctions(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
+export const db = getFirestore(app);
 
 // Check if the code is running in development or production environment
 if (process.env.NODE_ENV === 'development') {
@@ -31,4 +32,3 @@ if (process.env.NODE_ENV === 'development') {
     },
   });
 }
-export const db = getFirestore(app);

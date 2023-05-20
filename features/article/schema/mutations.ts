@@ -7,6 +7,7 @@ export const UPDATE_ARTICLE = gql`
       content
       title
       banner
+      caption
       status
       scheduledAt
       meta {
@@ -37,6 +38,7 @@ export const ADD_ARTICLE = gql`
       content
       title
       banner
+      caption
       status
       scheduledAt
       meta {
