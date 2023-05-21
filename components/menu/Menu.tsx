@@ -30,10 +30,14 @@ const Menu: FC<Props> = ({ text, options, loading = false }) => {
   };
 
   const handleOptionClick = (
-    optionClickHandler: MouseEventHandler<HTMLAnchorElement>,
+    optionClickHandler: MouseEventHandler<
+      HTMLAnchorElement | HTMLButtonElement
+    >,
     disabled?: boolean
   ) => {
-    return (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    return (
+      event: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement, MouseEvent>
+    ) => {
       setIsOpen(false);
 
       if (!disabled) {
@@ -58,19 +62,20 @@ const Menu: FC<Props> = ({ text, options, loading = false }) => {
       className={classNames('relative flex w-full border rounded-md h-[50px]', {
         'justify-center': optionsValue.length <= 1,
       })}>
-      <button
-        type='button'
-        className={`relative w-full flex items-center justify-center  font-semibold px-2 md:px-4 hover:bg-slate-100 ${
+      <a
+        className={`relative w-full flex items-center justify-center font-semibold px-2 md:px-4 hover:bg-slate-100 no-underline ${
           optionsValue.length > 1 ? 'border-r' : 'md:w-3/4'
-        }`}
-        onClick={options[0].onClick}
-        disabled={loading}>
+        } ${loading ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+        href={optionsValue[0]?.href}
+        target='_blank'
+        rel='noopener noreferrer'
+        onClick={handleOptionClick(optionsValue[0]?.onClick, loading)}>
         <Icon
-          icon={options[0].icon}
+          icon={optionsValue[0]?.icon}
           className='text-xl md:text-3xl text-sky-700 rounded-md'
         />
         <span className='hidden lg:flex md:ml-4'>{text}</span>
-      </button>
+      </a>
 
       {optionsValue.length > 1 && (
         <>
