@@ -94,13 +94,19 @@ const Edit: FC = () => {
     try {
       let newBannerURL = banner;
 
-      // Check if the banner has changed, and if in public folder
+      // Check if the status is not 'DRAFT' and the banner is not in 'public' folder
       if (
-        (banner !== initialBanner && status.toUpperCase() !== 'DRAFT') ||
-        (status.toUpperCase() !== 'DRAFT' && !newBannerURL.includes('public'))
+        status.toUpperCase() !== 'DRAFT' &&
+        !newBannerURL.includes('public')
       ) {
-        // Move the image from temp folder to the new folder and update the download URL
-        newBannerURL = await moveImageToFolder(banner, 'public');
+        // If the banner has changed or if it's the initial banner and not yet in the public folder
+        if (
+          banner !== initialBanner ||
+          (banner === initialBanner && !newBannerURL.includes('public'))
+        ) {
+          // Move the image from temp folder to the new folder and update the download URL
+          newBannerURL = await moveImageToFolder(banner, 'public');
+        }
       }
 
       const meta = {
