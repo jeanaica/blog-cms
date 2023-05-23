@@ -96,9 +96,8 @@ const Edit: FC = () => {
 
       // Check if the banner has changed, and if in public folder
       if (
-        banner !== initialBanner ||
-        status.toUpperCase() !== 'DRAFT' ||
-        !banner.includes('public')
+        (banner !== initialBanner && status.toUpperCase() !== 'DRAFT') ||
+        (status.toUpperCase() !== 'DRAFT' && !newBannerURL.includes('public'))
       ) {
         // Move the image from temp folder to the new folder and update the download URL
         newBannerURL = await moveImageToFolder(banner, 'public');
