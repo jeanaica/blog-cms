@@ -94,8 +94,6 @@ const Edit: FC = () => {
     try {
       let newBannerURL = banner;
 
-      console.log(status);
-
       // Check if the banner has changed, and if in public folder
       if (
         banner !== initialBanner ||
@@ -115,22 +113,22 @@ const Edit: FC = () => {
         image: newBannerURL,
       };
 
-      // await updateArticle({
-      //   variables: {
-      //     id,
-      //     post: {
-      //       title,
-      //       content,
-      //       banner: newBannerURL,
-      //       caption,
-      //       scheduledAt,
-      //       category,
-      //       tags,
-      //       status,
-      //       meta,
-      //     },
-      //   },
-      // });
+      await updateArticle({
+        variables: {
+          id,
+          post: {
+            title,
+            content,
+            banner: newBannerURL,
+            caption,
+            scheduledAt,
+            category,
+            tags,
+            status,
+            meta,
+          },
+        },
+      });
       reset(); // Clear the form after submission
       toast('success', t('updateSuccess'));
       router.push('/post');
