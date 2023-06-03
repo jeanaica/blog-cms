@@ -51,7 +51,7 @@ const Button: FC<Props> = ({
       {!children && text && (
         <span
           className={classNames('font-semibold md:flex', {
-            hidden: icon || !primary,
+            hidden: icon || (icon && !primary),
           })}>
           {text}
         </span>

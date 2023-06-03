@@ -5,6 +5,7 @@ import Container from 'components/container/Container';
 import Editor from 'components/form/editor/Editor';
 import Alert from 'components/alert/Alert';
 import LoadingModal from 'components/form/loadingModal/LoadingModal';
+import UnsavedChangesModal from 'components/form/unsavedChangesModal/UnsavedChangesModal';
 
 import TitleMenu from './TitleMenu';
 import FormAccordion from './FormAccordion';
@@ -28,7 +29,12 @@ const MainForm: FC<Props> = ({
   error,
 }) => {
   const [previewUrl, setPreviewUrl] = useState('');
-  const { watch, setValue } = methods;
+
+  const {
+    watch,
+    setValue,
+    formState: { isDirty },
+  } = methods;
 
   const title: string = watch('title');
   const content: string = watch('content');
@@ -78,6 +84,7 @@ const MainForm: FC<Props> = ({
           name='content'
         />
         <LoadingModal isOpen={submitting} />
+        <UnsavedChangesModal hasUnsavedChanges={isDirty} />
       </FormProvider>
     </Container>
   );
