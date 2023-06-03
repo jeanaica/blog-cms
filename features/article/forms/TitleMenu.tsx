@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import Input from 'components/form/input/Input';
+import Input from 'components/form/Input';
 import Icon from 'components/icon/Icon';
-import Menu from 'components/menu/Menu';
+import Menu from 'components/Menu';
 
 type Props = {
   onPreview: () => void;

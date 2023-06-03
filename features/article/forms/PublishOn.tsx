@@ -1,4 +1,4 @@
-import DatePicker from 'components/form/datePicker/DatePicker';
+import DatePicker from 'components/form/DatePicker';
 
 const PublishOn = () => (
   <>

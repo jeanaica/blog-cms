@@ -2,7 +2,7 @@ import React, { FC, MouseEventHandler, useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
 
-import { Article } from 'shared/types/Article';
+import { Article } from '../types/Article';
 
 import Content from './Content';
 import Actions from './Actions';

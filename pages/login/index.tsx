@@ -4,13 +4,13 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
-import Input from 'components/form/input/Input';
+import Input from 'components/form/Input';
 import Button from 'components/button/Button';
 import Shared from 'components/layout/Shared';
+import Alert from 'components/Alert';
 
 import { auth } from 'lib/firebase/client';
 import useSessionStorage from 'hooks/useSessionStorage';
-import Alert from 'components/alert/Alert';
 
 const schema = z.object({
   email: z.string().email().min(1, { message: 'Required' }),

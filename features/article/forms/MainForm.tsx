@@ -2,10 +2,10 @@ import { FC, useEffect, useState } from 'react';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
 import Container from 'components/container/Container';
-import Editor from 'components/form/editor/Editor';
-import Alert from 'components/alert/Alert';
-import LoadingModal from 'components/form/loadingModal/LoadingModal';
-import UnsavedChangesModal from 'components/form/unsavedChangesModal/UnsavedChangesModal';
+import Alert from 'components/Alert';
+import Editor from 'components/form/Editor';
+import LoadingModal from 'components/form/LoadingModal';
+import UnsavedChangesModal from 'components/form/UnsavedChangesModal';
 
 import TitleMenu from './TitleMenu';
 import FormAccordion from './FormAccordion';

@@ -1,6 +1,6 @@
 import { FC, ReactElement } from 'react';
 
-import Loading from 'components/loading/Loading';
+import Loading from 'components/Loading';
 
 import EmptyList from './EmptyList';
 

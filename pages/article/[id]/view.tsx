@@ -2,15 +2,14 @@ import React from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 
 import Shared from 'components/layout/Shared';
-import Meta from 'components/meta/Meta';
 import Container from 'components/container/Container';
 
 import View from 'features/article/View';
+import Meta from 'features/article/components/Meta';
 import { GET_ARTICLE_BY_ID } from 'features/article/schema/queries';
+import { Article } from 'features/post/types/Article';
 
 import client from 'lib/client/apolloClient';
-
-import { Article } from 'shared/types/Article';
 
 type Props = {
   post: Article | null;
