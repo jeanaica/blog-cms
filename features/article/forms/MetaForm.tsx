@@ -1,8 +1,8 @@
-import FileImage from 'components/form/file/FileImage';
-import Input from 'components/form/input/Input';
-import TextArea from 'components/textarea/TextArea';
+import FileImage from 'components/form/FileImage';
+import Input from 'components/form/Input';
+import TextArea from 'components/form/TextArea';
 
-const Meta = () => (
+const MetaForm = () => (
   <>
     <Input
       label='Slug'
@@ -35,4 +35,4 @@ const Meta = () => (
   </>
 );
 
-export default Meta;
+export default MetaForm;

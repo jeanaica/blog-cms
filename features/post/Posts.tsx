@@ -5,13 +5,13 @@ import useTranslation from 'next-translate/useTranslation';
 import Container from 'components/container/Container';
 import useToast from 'components/toast/hook';
 
-import { Article } from 'shared/types/Article';
-
 import Header from './components/Header';
 import Item from './components/Item';
 
 import { UPDATE_POST_STATUS_MUTATION } from './schema/mutations';
 import { GET_POST_BY_STATUS } from './schema/queries';
+
+import { Article } from './types/Article';
 
 const Posts = () => {
   const toast = useToast();

@@ -1,7 +1,7 @@
 import { FC, ReactElement } from 'react';
 import classNames from 'classnames';
 
-import Loading from 'components/loading/Loading';
+import Loading from 'components/Loading';
 
 import Empty from './Empty';
 

@@ -1,6 +1,5 @@
-import { Option } from 'shared/types/Option';
-
 import { Meta } from './Meta';
+import { Option } from './Option';
 import { Status } from './Status';
 
 export interface Article {

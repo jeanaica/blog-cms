@@ -1,7 +1,7 @@
 import Accordion from 'components/accordion/Accordion';
 
 import Labels from './Labels';
-import Meta from './Meta';
+import MetaForm from './MetaForm';
 import PublishOn from './PublishOn';
 
 const FormAccordion = () => (
@@ -14,7 +14,7 @@ const FormAccordion = () => (
       },
       {
         title: 'Meta',
-        content: <Meta />,
+        content: <MetaForm />,
       },
       {
         title: 'Publish on',
