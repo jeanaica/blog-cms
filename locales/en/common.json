@@ -1,4 +1,7 @@
 {
+  "leave": "Leave",
+  "cancel": "Cancel",
   "updateSuccess": "Changes saved successfully!",
-  "updateFail": "Sorry, we encountered an error while saving your changes. Please check your internet connection and try again."
+  "updateFail": "Sorry, we encountered an error while saving your changes. Please check your internet connection and try again.",
+  "unsavedChanges": "You have unsaved changes. Are you sure you want to leave?"
 }

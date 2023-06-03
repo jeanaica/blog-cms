@@ -26,7 +26,7 @@ const Container: FC<Props> = ({
     })}>
     {loading ? (
       <div className='flex justify-center p-12 flex-col items-center'>
-        <Loading className='text-gray-500' />
+        <Loading />
         <span className='text-gray-500'>Loading... </span>
       </div>
     ) : isEmpty ? (
