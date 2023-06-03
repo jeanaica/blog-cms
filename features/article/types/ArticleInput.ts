@@ -15,6 +15,7 @@ export interface ArticleInput {
   description: string;
   url: string;
   imageAlt: string;
+  status?: string;
 }
 
 export type FormKeys = keyof ArticleInput;

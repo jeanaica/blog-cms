@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import formatDate from 'shared/utils/formatDate';
+import formatDate from 'utils/formatDate';
 
 type Props = {
   label: string;

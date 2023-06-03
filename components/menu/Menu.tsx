@@ -2,7 +2,8 @@ import { FC, MouseEventHandler, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 
 import Icon from 'components/icon/Icon';
-import useDetectOutsideClick from 'shared/utils/hooks/useDetectOutsideClick';
+import Loading from 'components/loading/Loading';
+import useDetectOutsideClick from 'hooks/useDetectOutsideClick';
 
 type MenuOptions = Array<{
   text: string;
@@ -63,17 +64,21 @@ const Menu: FC<Props> = ({ text, options, loading = false }) => {
         'justify-center': optionsValue.length <= 1,
       })}>
       <a
-        className={`relative w-full flex items-center justify-center font-semibold px-2 md:px-4 hover:bg-slate-100 no-underline ${
-          optionsValue.length > 1 ? 'border-r' : 'md:w-3/4'
+        className={`relative w-full flex items-center justify-center font-semibold text-gray-700 px-2 md:px-4 hover:bg-slate-100 no-underline ${
+          optionsValue.length > 1 ? 'border-r' : ''
         } ${loading ? 'bg-gray-100 cursor-not-allowed' : ''}`}
         href={optionsValue[0]?.href}
         target='_blank'
         rel='noopener noreferrer'
         onClick={handleOptionClick(optionsValue[0]?.onClick, loading)}>
-        <Icon
-          icon={optionsValue[0]?.icon}
-          className='text-xl md:text-3xl text-sky-700 rounded-md'
-        />
+        {loading ? (
+          <Loading className='text-sky-700' />
+        ) : (
+          <Icon
+            icon={optionsValue[0]?.icon}
+            className='text-sky-700 text-xl md:text-3xl  rounded-md'
+          />
+        )}
         <span className='hidden lg:flex md:ml-4'>{text}</span>
       </a>
 

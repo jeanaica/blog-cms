@@ -9,7 +9,8 @@ import Button from 'components/button/Button';
 import Shared from 'components/layout/Shared';
 
 import { auth } from 'lib/firebase/client';
-import useSessionStorage from 'shared/utils/hooks/useSessionStorage';
+import useSessionStorage from 'hooks/useSessionStorage';
+import Alert from 'components/alert/Alert';
 
 const schema = z.object({
   email: z.string().email().min(1, { message: 'Required' }),
@@ -19,6 +20,7 @@ const schema = z.object({
 const Login = () => {
   const [idToken, setIdToken] = useSessionStorage<string>('token', '');
   const [error, setError] = useState<any>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const methods = useForm({
     resolver: zodResolver(schema),
@@ -27,6 +29,7 @@ const Login = () => {
   const { handleSubmit } = methods;
 
   const onSubmit = handleSubmit(async data => {
+    setLoading(true);
     const { email, password } = data;
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
@@ -38,6 +41,8 @@ const Login = () => {
     } catch (err) {
       setIdToken('');
       setError(err);
+    } finally {
+      setLoading(false);
     }
   });
 
@@ -47,6 +52,10 @@ const Login = () => {
         <form
           onSubmit={onSubmit}
           className='w-full sm:max-w-md rounded overflow-hidden sm:shadow-lg shadow-accent-500 p-10 flex flex-col lg:max-w-1/2 lg:p-10'>
+          <Alert
+            type='error'
+            message={error?.message}
+          />
           <div className='flex gap-4 flex-col'>
             <Input
               label='Email'
@@ -57,11 +66,11 @@ const Login = () => {
               name='password'
               type='password'
             />
-
             <Button
               type='submit'
               primary
               className='mt-4'
+              isLoading={loading}
               text='Submit'
             />
           </div>

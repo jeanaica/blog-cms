@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import Nav from 'components/nav/Nav';
 import Loading from 'components/loading/Loading';
 
-import { usePageLoading } from 'shared/utils/hooks/usePageLoading';
+import { usePageLoading } from 'hooks/usePageLoading';
 import { useAuth } from 'lib/auth/AuthContext';
 
 import Header from './header/Header';
