@@ -1,30 +1,26 @@
-import { FC, useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FC, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
-import Container from 'components/container/Container';
-import Editor from 'components/form/editor/Editor';
-import Alert from 'components/alert/Alert';
 import useToast from 'components/toast/hook';
 
 import validation from 'features/article/schema/validation';
 import { moveImageToFolder } from 'lib/firebase/storage/upload';
-import formatDate from 'shared/utils/formatDate';
+import formatDate from 'utils/formatDate';
 
 import { ADD_ARTICLE } from './schema/mutations';
 import { ArticleInput } from './types/ArticleInput';
-import TitleMenu from './forms/TitleMenu';
-import FormAccordion from './forms/FormAccordion';
+import MainForm from './forms/MainForm';
 
 const Add: FC = () => {
   const today = formatDate();
   const router = useRouter();
   const toast = useToast();
   const { t } = useTranslation('common');
-  const [previewUrl, setPreviewUrl] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   const methods = useForm<ArticleInput>({
     resolver: zodResolver(validation),
@@ -33,14 +29,13 @@ const Add: FC = () => {
       author: 'Jeanaica Suplido-Alinsub',
     },
   });
-  const { reset, handleSubmit, getValues, watch, setValue, trigger } = methods;
-  const title: string = watch('title');
-  const content: string = watch('content');
-  const slug: string = watch('slug');
+  const { reset, handleSubmit, getValues, trigger } = methods;
 
   const [addArticle, { error }] = useMutation(ADD_ARTICLE);
 
   const handleArticle = async (values: ArticleInput, status: string) => {
+    setSubmitting(true);
+
     const {
       title,
       content,
@@ -88,8 +83,17 @@ const Add: FC = () => {
       });
       reset(); // Clear the form after submission
       toast('success', t('updateSuccess'));
+
+      setTimeout(() => {
+        setSubmitting(false);
+      }, 300);
+
       router.push('/post');
     } catch (err) {
+      setTimeout(() => {
+        setSubmitting(false);
+      }, 300);
+
       console.error(
         `Error ${
           status === 'PUBLISHED' ? 'submitting' : 'saving'
@@ -115,47 +119,14 @@ const Add: FC = () => {
     }
   };
 
-  const onPreview = () => {
-    if (slug && content) {
-      localStorage.setItem(`preview-${slug}`, content);
-    }
-  };
-
-  useEffect(() => {
-    const regExChars = /[^a-zA-Z0-9 -]/g;
-    const trimmedTitle = title && title.trim();
-    const slug =
-      trimmedTitle &&
-      trimmedTitle.toLowerCase().replace(regExChars, '').replaceAll(' ', '-');
-
-    setValue('slug', slug);
-  }, [title, setValue]);
-
-  useEffect(() => {
-    const id = slug;
-    setPreviewUrl(`/article/${id}/preview`);
-  }, [slug, setPreviewUrl]);
-
   return (
-    <Container className='p-4 pt-0 relative'>
-      <FormProvider {...methods}>
-        <Alert
-          type='error'
-          message={error?.message}
-        />
-        <TitleMenu
-          previewUrl={previewUrl}
-          onPreview={onPreview}
-          onSave={onSave}
-          onSubmit={handleSubmit(onSubmit)}
-        />
-        <FormAccordion />
-        <Editor
-          label=''
-          name='content'
-        />
-      </FormProvider>
-    </Container>
+    <MainForm
+      methods={methods}
+      onSave={onSave}
+      onSubmit={handleSubmit(onSubmit)}
+      submitting={submitting}
+      error={error?.message}
+    />
   );
 };
 
