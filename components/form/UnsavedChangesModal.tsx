@@ -18,7 +18,7 @@ const UnsavedChangesModal: FC<Props> = ({ hasUnsavedChanges }) => {
     <Modal showModal={shouldWarn}>
       <div className='flex flex-col'>
         <span>{t('unsavedChanges')}</span>
-        <div className='flex justify-end gap-4 mt-8'>
+        <div className='flex justify-center md:justify-end gap-4 mt-8'>
           <Button
             text={t('cancel')}
             onClick={cancelNavigate}

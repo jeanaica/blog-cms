@@ -17,14 +17,14 @@ const Modal: FC<Props> = ({ showModal, children, onClose, disabled }) => (
     <div
       tabIndex={-1}
       className={classNames(
-        'fixed inset-0 z-50 p-4 overflow-x-hidden overflow-y-auto h-modal md:h-full flex justify-center',
+        'fixed inset-0 z-50 p-4 overflow-hidden h-modal md:h-full flex justify-center',
         {
           hidden: !showModal,
           'backdrop-blur-sm': showModal,
         }
       )}
       data-modal-backdrop='static'>
-      <div className='absolute top-1/4 w-full h-full max-w-md md:h-auto mt-8'>
+      <div className='absolute top-1/4 w-3/4 md:w-full h-full max-w-md md:h-auto mt-8'>
         <div className='relative bg-white rounded-lg shadow'>
           {onClose && (
             <IconButton
