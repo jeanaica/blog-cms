@@ -6,7 +6,7 @@ import { AuthContext } from 'lib/auth/AuthContext';
 import { auth } from 'lib/firebase/client';
 import { Auth } from 'lib/auth/Auth';
 
-import useSessionStorage from 'shared/utils/hooks/useSessionStorage';
+import useSessionStorage from 'hooks/useSessionStorage';
 
 type Props = {
   children: ReactNode;

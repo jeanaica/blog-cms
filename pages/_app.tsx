@@ -9,7 +9,7 @@ import ToastContainer from 'components/toast/ToastContainer';
 import client from 'lib/client/apolloClient';
 import { AuthProvider } from 'lib/auth/AuthProvider';
 
-import '../shared/styles/globals.css';
+import '../styles/globals.css';
 
 type AppLayoutProps = AppProps & {
   Component: LayoutType;

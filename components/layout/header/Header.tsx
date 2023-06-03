@@ -8,7 +8,7 @@ import { auth } from 'lib/firebase/client';
 import Logo from 'components/logo/Logo';
 import Icon from 'components/icon/Icon';
 
-import useDetectOutsideClick from 'shared/utils/hooks/useDetectOutsideClick';
+import useDetectOutsideClick from 'hooks/useDetectOutsideClick';
 
 type Props = {};
 

@@ -4,7 +4,7 @@ import { MultiValue, StylesConfig } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
 
-import toTitleCase from 'shared/utils/toTitleCase';
+import toTitleCase from 'utils/toTitleCase';
 
 import MultiValueRemove from './MultiValueRemove';
 
