@@ -1,24 +1,20 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useMutation, useQuery } from '@apollo/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 
-import Container from 'components/container/Container';
-import Editor from 'components/form/editor/Editor';
-import Alert from 'components/alert/Alert';
 import useToast from 'components/toast/hook';
 
 import validation from 'features/article/schema/validation';
 import { moveImageToFolder } from 'lib/firebase/storage/upload';
-import formatDate from 'shared/utils/formatDate';
+import formatDate from 'utils/formatDate';
 
 import { UPDATE_ARTICLE } from './schema/mutations';
-import { ArticleInput } from './types/ArticleInput';
-import TitleMenu from './forms/TitleMenu';
-import FormAccordion from './forms/FormAccordion';
 import { GET_ARTICLE_BY_ID } from './schema/queries';
+import { ArticleInput } from './types/ArticleInput';
+import MainForm from './forms/MainForm';
 
 const Edit: FC = () => {
   const today = formatDate();
@@ -26,9 +22,9 @@ const Edit: FC = () => {
   const { id } = router.query;
   const toast = useToast();
   const { t } = useTranslation('common');
-  const [previewUrl, setPreviewUrl] = useState('');
   const [initialBanner, setInitialBanner] = useState('');
   const [dataStatus, setDataStatus] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   const {
     loading,
@@ -46,10 +42,7 @@ const Edit: FC = () => {
     },
   });
 
-  const { reset, handleSubmit, getValues, watch, setValue, trigger } = methods;
-  const title: string = watch('title');
-  const content: string = watch('content');
-  const slug: string = watch('slug');
+  const { reset, handleSubmit, getValues, trigger } = methods;
 
   const [updateArticle, { error }] = useMutation(UPDATE_ARTICLE);
 
@@ -77,6 +70,7 @@ const Edit: FC = () => {
   );
 
   const handleArticle = async (values: ArticleInput, status: string) => {
+    setSubmitting(true);
     const {
       title,
       content,
@@ -136,8 +130,17 @@ const Edit: FC = () => {
       });
       reset(); // Clear the form after submission
       toast('success', t('updateSuccess'));
+
+      setTimeout(() => {
+        setSubmitting(false);
+      }, 300);
+
       router.push('/post');
     } catch (err) {
+      setTimeout(() => {
+        setSubmitting(false);
+      }, 300);
+
       console.error(
         `Error ${
           status === 'PUBLISHED' ? 'submitting' : 'saving'
@@ -176,27 +179,6 @@ const Edit: FC = () => {
     }
   };
 
-  const onPreview = () => {
-    if (slug && content) {
-      localStorage.setItem(`preview-${slug}`, content);
-    }
-  };
-
-  useEffect(() => {
-    const regExChars = /[^a-zA-Z0-9 -]/g;
-    const trimmedTitle = title && title.trim();
-    const slug =
-      trimmedTitle &&
-      trimmedTitle.toLowerCase().replace(regExChars, '').replaceAll(' ', '-');
-
-    setValue('slug', slug);
-  }, [title, setValue]);
-
-  useEffect(() => {
-    const id = slug;
-    setPreviewUrl(`/article/${id}/preview`);
-  }, [slug, setPreviewUrl]);
-
   useEffect(() => {
     if (data?.post) {
       const formattedData = formatDataForForm(data?.post);
@@ -205,28 +187,14 @@ const Edit: FC = () => {
   }, [data, reset, formatDataForForm]);
 
   return (
-    <Container
-      className='p-4 pt-0 relative'
-      loading={loading}>
-      <FormProvider {...methods}>
-        <Alert
-          type='error'
-          message={error?.message || queryError?.message}
-        />
-        <TitleMenu
-          status={dataStatus}
-          previewUrl={previewUrl}
-          onPreview={onPreview}
-          onSave={onSave}
-          onSubmit={handleSubmit(onSubmit)}
-        />
-        <FormAccordion />
-        <Editor
-          label=''
-          name='content'
-        />
-      </FormProvider>
-    </Container>
+    <MainForm
+      methods={methods}
+      onSave={onSave}
+      onSubmit={handleSubmit(onSubmit)}
+      loading={loading}
+      submitting={submitting}
+      error={error?.message || queryError?.message}
+    />
   );
 };
 
