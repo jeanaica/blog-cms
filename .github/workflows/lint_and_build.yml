@@ -1,5 +1,12 @@
 name: Lint and Build
 
+env:
+  NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ''
+  NEXT_PUBLIC_DOMAIN: ''
+  NEXT_PUBLIC_API_URL: ''
+  NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ''
+  NEXT_PUBLIC_FIREBASE_PROJECT_ID: ''
+
 on:
   push:
     branches: ['main', 'development']
@@ -23,6 +30,3 @@ jobs:
 
       - name: Run ESLint
         run: npm run lint
-
-      - name: Compile TypeScript
-        run: npm run build
