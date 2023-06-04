@@ -1,0 +1,13 @@
+# Ignore the node_modules directory
+node_modules
+
+# Ignore all log files
+*.log
+
+# Ignore the .env file to prevent exposing sensitive data
+.env.local
+.env
+
+# Ignore all test-related files
+**/__tests__
+**/__mocks__
