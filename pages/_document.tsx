@@ -19,7 +19,12 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head></Head>
+        <Head>
+          <meta
+            name='robots'
+            content='noindex,nofollow'
+          />
+        </Head>
         <body>
           <Main />
           <NextScript />
