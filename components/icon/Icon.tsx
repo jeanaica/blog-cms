@@ -2,6 +2,7 @@ import classnames from 'classnames';
 import { FC } from 'react';
 
 type Props = {
+  // we want to limit the icons used to material-icons only
   icon: string;
   className?: string;
   size?: 'sm' | 'base' | 'lg' | 'xl' | '2xl' | number;

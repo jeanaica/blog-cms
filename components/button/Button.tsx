@@ -7,6 +7,7 @@ import Icon from 'components/icon/Icon';
 type Props = {
   onClick?(): void;
   primary?: boolean;
+  // we want to limit the icons used to icons in repository only
   icon?: string;
   children?: ReactNode;
   text?: string;
@@ -46,7 +47,7 @@ const Button: FC<Props> = ({
     {icon && (
       <Icon
         icon={icon}
-        className={`px-0 sm:px-2 py-1 text-xl md:text-3xl rounded-md `}
+        className={`px-0 sm:px-2 py-1 text-2xl md:text-3xl rounded-md `}
       />
     )}
     {children && !text && children}

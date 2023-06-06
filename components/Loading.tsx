@@ -31,7 +31,7 @@ const Loading: FC<Props> = ({ text, className, size, type }) => (
         fill='currentFill'
       />
     </svg>
-    <span className='sr-only'>Loading...</span>
+    <span className='sr-only'>{text}...</span>
     {text && <span className={`text-secondary ${className} mt-2`}>{text}</span>}
   </div>
 );

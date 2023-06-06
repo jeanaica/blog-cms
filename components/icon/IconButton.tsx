@@ -7,6 +7,7 @@ import Icon from './Icon';
 
 type Props = {
   onClick?: MouseEventHandler;
+  // we want to limit the icons used to icons in repository only
   icon: string;
   className?: string;
   iconClassName?: string;
