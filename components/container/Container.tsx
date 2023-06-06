@@ -1,5 +1,6 @@
 import { FC, ReactElement } from 'react';
 import classNames from 'classnames';
+import useTranslation from 'next-translate/useTranslation';
 
 import Loading from 'components/Loading';
 
@@ -19,21 +20,25 @@ const Container: FC<Props> = ({
   isEmpty,
   full,
   className,
-}) => (
-  <div
-    className={classNames('prose', className, {
-      'w-screen h-screen': full,
-    })}>
-    {loading ? (
-      <div className='flex justify-center p-12 flex-col items-center'>
-        <Loading text='Loading...' />
-      </div>
-    ) : isEmpty ? (
-      <Empty />
-    ) : (
-      children
-    )}
-  </div>
-);
+}) => {
+  const { t } = useTranslation('common');
+
+  return (
+    <div
+      className={classNames('prose', className, {
+        'w-screen h-screen': full,
+      })}>
+      {loading ? (
+        <div className='flex justify-center p-12 flex-col items-center'>
+          <Loading text={`${t('loading')}...`} />
+        </div>
+      ) : isEmpty ? (
+        <Empty />
+      ) : (
+        children
+      )}
+    </div>
+  );
+};
 
 export default Container;

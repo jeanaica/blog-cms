@@ -76,7 +76,7 @@ const Menu: FC<Props> = ({ text, options, loading = false }) => {
         ) : (
           <Icon
             icon={optionsValue[0]?.icon}
-            className='text-sky-700 text-xl md:text-3xl  rounded-md'
+            className='text-sky-700 text-2xl md:text-3xl  rounded-md'
           />
         )}
         <span className='hidden lg:flex md:ml-4'>{text}</span>
@@ -91,7 +91,7 @@ const Menu: FC<Props> = ({ text, options, loading = false }) => {
             disabled={loading}>
             <Icon
               icon='expand_more'
-              className='text-xl md:text-3xl text-sky-700 rounded-md'
+              className='text-2xl md:text-3xl text-sky-700 rounded-md'
             />
           </button>
           <ul
@@ -112,7 +112,8 @@ const Menu: FC<Props> = ({ text, options, loading = false }) => {
                   })}>
                   <Icon
                     icon={icon}
-                    className='px-2 text-xl md:text-3xl text-sky-700 rounded-md'
+                    size='2xl'
+                    className='px-2 text-2xl md:text-3xl text-sky-700 rounded-md'
                   />
                   {href ? (
                     <a

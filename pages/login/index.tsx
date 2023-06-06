@@ -11,29 +11,33 @@ import Alert from 'components/Alert';
 
 import { auth } from 'lib/firebase/client';
 import useSessionStorage from 'hooks/useSessionStorage';
+import useTranslation from 'next-translate/useTranslation';
 
 const schema = z.object({
   email: z.string().email().min(1, { message: 'Required' }),
   password: z.string().min(1, { message: 'Required' }),
 });
 
+type LoginInput = {
+  email: string;
+  password: string;
+};
+
 const Login = () => {
   const [idToken, setIdToken] = useSessionStorage<string>('token', '');
   const [error, setError] = useState<any>('');
-  const [loading, setLoading] = useState<boolean>(false);
+  const { t } = useTranslation('common');
 
-  const methods = useForm({
+  const methods = useForm<LoginInput>({
     resolver: zodResolver(schema),
   });
 
   const {
     handleSubmit,
-    formState: { isValidating },
+    formState: { isValidating, isSubmitting },
   } = methods;
 
-  const onSubmit = handleSubmit(async data => {
-    setLoading(true);
-    const { email, password } = data;
+  const onSubmit = async ({ email, password }: LoginInput) => {
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       const token = await result.user.getIdToken();
@@ -44,20 +48,20 @@ const Login = () => {
     } catch (err) {
       setIdToken('');
       setError(err);
-    } finally {
-      setLoading(false);
     }
-  });
+  };
 
   useEffect(() => {
-    setError('');
+    if (isValidating) {
+      setError('');
+    }
   }, [isValidating]);
 
   return (
     <div className='h-screen w-screen overflow-hidden prose min-w-[320px] flex justify-center content-center items-center'>
       <FormProvider {...methods}>
         <form
-          onSubmit={onSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           className='w-full sm:max-w-md rounded overflow-hidden sm:shadow-lg shadow-accent-500 p-10 flex flex-col lg:max-w-1/2 lg:p-10'>
           <Alert
             type='error'
@@ -77,8 +81,8 @@ const Login = () => {
               type='submit'
               primary
               className='mt-4 text-xl'
-              isLoading={loading}
-              text='Submit'
+              isLoading={isSubmitting}
+              text={t('submit')}
             />
           </div>
         </form>

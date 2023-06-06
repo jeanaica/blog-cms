@@ -17,25 +17,22 @@ const validation = z
       .max(155, 'Maximum length: 155 characters'),
     banner: z
       .any()
-      .refine(file => {
-        if (typeof file !== 'undefined' && typeof file !== 'string' && file) {
-          return file?.size >= MAX_FILE_SIZE;
-        }
-        return true;
-      }, `Max image size is 10MB.`)
-      .refine(file => {
-        if (
-          typeof file !== 'undefined' &&
-          typeof file !== 'string' &&
-          file &&
-          file?.size >= MAX_FILE_SIZE
-        ) {
-          return ACCEPTED_IMAGE_TYPES.includes(file.type);
-        }
-        return true;
-      }, 'Only .jpg, .jpeg, and .png formats are supported.')
-      .or(z.string())
-      .optional(),
+      .optional()
+      // Separate functions because we need to make the field error more specific to file size
+      .refine(
+        file => !file || typeof file === 'string' || file.size <= MAX_FILE_SIZE,
+        `Max image size is 10MB.`
+      )
+      // Separate functions because we need to make the field error more specific to file format
+      .refine(
+        file =>
+          !file ||
+          typeof file === 'string' ||
+          (file.size <= MAX_FILE_SIZE &&
+            ACCEPTED_IMAGE_TYPES.includes(file.type)),
+        'Only .jpg, .jpeg, and .png formats are supported.'
+      )
+      .or(z.string()),
     imageAlt: z.string(),
     caption: z.string().optional(),
     author: z.string().min(1, { message: 'Required' }),
