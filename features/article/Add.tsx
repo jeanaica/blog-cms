@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useTranslation from 'next-translate/useTranslation';
-import { useRouter } from 'next/router';
 
 import useToast from 'components/toast/hook';
 
@@ -14,10 +13,11 @@ import formatDate from 'utils/formatDate';
 import { ADD_ARTICLE } from './schema/mutations';
 import { ArticleInput } from './types/ArticleInput';
 import MainForm from './forms/MainForm';
+import { useRouter } from 'next/router';
 
 const Add: FC = () => {
-  const today = formatDate();
   const router = useRouter();
+  const today = formatDate();
   const toast = useToast();
   const { t } = useTranslation('common');
   const [submitting, setSubmitting] = useState(false);
@@ -81,14 +81,15 @@ const Add: FC = () => {
           },
         },
       });
-      reset(); // Clear the form after submission
+
       toast('success', t('updateSuccess'));
+
+      reset({}, { keepValues: true, keepDirty: false });
 
       setTimeout(() => {
         setSubmitting(false);
+        router.push('/post');
       }, 300);
-
-      router.push('/post');
     } catch (err) {
       setTimeout(() => {
         setSubmitting(false);

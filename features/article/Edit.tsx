@@ -90,6 +90,7 @@ const Edit: FC = () => {
 
       // Check if the status is not 'DRAFT' and the banner is not in 'public' folder
       if (
+        !!newBannerURL &&
         status.toUpperCase() !== 'DRAFT' &&
         !newBannerURL.includes('public')
       ) {
@@ -128,14 +129,13 @@ const Edit: FC = () => {
           },
         },
       });
-      reset(); // Clear the form after submission
       toast('success', t('updateSuccess'));
 
+      reset({}, { keepValues: true, keepDirty: false });
       setTimeout(() => {
         setSubmitting(false);
+        router.push('/post');
       }, 300);
-
-      router.push('/post');
     } catch (err) {
       setTimeout(() => {
         setSubmitting(false);

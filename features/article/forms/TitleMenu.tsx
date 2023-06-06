@@ -2,8 +2,8 @@ import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import Input from 'components/form/Input';
-import Icon from 'components/icon/Icon';
 import Menu from 'components/Menu';
+import Button from 'components/button/Button';
 
 type Props = {
   onPreview: () => void;
@@ -21,7 +21,7 @@ const TitleMenu: FC<Props> = ({
   status,
 }) => {
   const {
-    formState: { isSubmitting },
+    formState: { isSubmitting, isDirty },
   } = useFormContext();
 
   return (
@@ -51,21 +51,18 @@ const TitleMenu: FC<Props> = ({
               icon: 'save',
               onClick: onSave,
               hide: !!status && status !== 'DRAFT',
-              disabled: !!status && status !== 'DRAFT',
+              disabled: (!!status && status !== 'DRAFT') || !isDirty,
             },
           ]}
         />
-        <button
-          type='button'
-          className='relative w-full flex items-center justify-center rounded font-semibold px-2 md:px-4 border hover:bg-slate-100'
+
+        <Button
+          text='Publish'
+          primary
+          icon='send'
           onClick={onSubmit}
-          disabled={isSubmitting}>
-          <Icon
-            icon='send'
-            className='text-xl md:text-3xl text-sky-700 rounded-md'
-          />
-          <span className='hidden md:flex md:ml-4'>Publish</span>
-        </button>
+          disabled={isSubmitting || !isDirty}
+        />
       </div>
     </div>
   );
