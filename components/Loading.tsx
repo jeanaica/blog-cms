@@ -13,7 +13,7 @@ const Loading: FC<Props> = ({ text, className, size, type }) => (
     className='flex flex-col items-center'>
     <svg
       aria-hidden='true'
-      className={`inline w-8 h-8 mr-2 mb-4  animate-spin dark:fill-gray-600 fill-sky-600 ${
+      className={`inline w-8 h-8 animate-spin dark:fill-gray-600 fill-sky-600 ${
         type === 'page' ? 'text-primary-300' : 'text-gray-200'
       }`}
       viewBox='0 0 100 101'
@@ -32,7 +32,7 @@ const Loading: FC<Props> = ({ text, className, size, type }) => (
       />
     </svg>
     <span className='sr-only'>Loading...</span>
-    {text && <span className={`text-secondary ${className}`}>{text}</span>}
+    {text && <span className={`text-secondary ${className} mt-2`}>{text}</span>}
   </div>
 );
 

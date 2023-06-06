@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -26,7 +26,10 @@ const Login = () => {
     resolver: zodResolver(schema),
   });
 
-  const { handleSubmit } = methods;
+  const {
+    handleSubmit,
+    formState: { isValidating },
+  } = methods;
 
   const onSubmit = handleSubmit(async data => {
     setLoading(true);
@@ -45,6 +48,10 @@ const Login = () => {
       setLoading(false);
     }
   });
+
+  useEffect(() => {
+    setError('');
+  }, [isValidating]);
 
   return (
     <div className='h-screen w-screen overflow-hidden prose min-w-[320px] flex justify-center content-center items-center'>
@@ -69,7 +76,7 @@ const Login = () => {
             <Button
               type='submit'
               primary
-              className='mt-4'
+              className='mt-4 text-xl'
               isLoading={loading}
               text='Submit'
             />

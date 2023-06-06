@@ -33,7 +33,7 @@ const MainForm: FC<Props> = ({
   const {
     watch,
     setValue,
-    formState: { isDirty },
+    formState: { isDirty, isSubmitted },
   } = methods;
 
   const title: string = watch('title');
@@ -83,7 +83,7 @@ const MainForm: FC<Props> = ({
           label=''
           name='content'
         />
-        <LoadingModal isOpen={submitting} />
+        <LoadingModal isOpen={submitting || (submitting && isSubmitted)} />
         <UnsavedChangesModal hasUnsavedChanges={isDirty} />
       </FormProvider>
     </Container>

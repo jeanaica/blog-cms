@@ -18,18 +18,21 @@ const validation = z
     banner: z
       .any()
       .refine(file => {
-        if (typeof file !== 'undefined' && typeof file !== 'string') {
+        if (typeof file !== 'undefined' && typeof file !== 'string' && file) {
           return file?.size >= MAX_FILE_SIZE;
         }
+        return true;
       }, `Max image size is 10MB.`)
       .refine(file => {
         if (
           typeof file !== 'undefined' &&
           typeof file !== 'string' &&
+          file &&
           file?.size >= MAX_FILE_SIZE
         ) {
           return ACCEPTED_IMAGE_TYPES.includes(file.type);
         }
+        return true;
       }, 'Only .jpg, .jpeg, and .png formats are supported.')
       .or(z.string())
       .optional(),
