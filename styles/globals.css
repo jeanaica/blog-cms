@@ -42,6 +42,12 @@
   background-color: #f3f4f6 !important;
 }
 
+.ql-video {
+  margin: auto;
+  width: 100%;
+  height: 500px;
+}
+
 .ql-toolbar.ql-snow {
   position: sticky !important;
   top: 76px !important;
