@@ -82,7 +82,7 @@ const Pill: FC<Props> = ({
               options={options}
               hideSelectedOptions
               components={{
-                MultiValueRemove: props => (
+                MultiValueRemove: (props: any) => (
                   <MultiValueRemove
                     {...props}
                     hasRemovable={hasRemovable}

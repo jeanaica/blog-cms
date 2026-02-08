@@ -2,7 +2,6 @@ import { FC } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { MultiValue, StylesConfig } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
-import { FilterOptionOption } from 'react-select/dist/declarations/src/filters';
 
 import toTitleCase from 'utils/toTitleCase';
 
@@ -89,7 +88,7 @@ const CreatablePill: FC<Props> = ({
               isLoading={loading}
               closeMenuOnSelect={false}
               styles={pillStyles}
-              onChange={val => {
+              onChange={(val: MultiValue<OptionType>) => {
                 if (onPillChange) {
                   onPillChange(val);
                 }
@@ -98,12 +97,11 @@ const CreatablePill: FC<Props> = ({
               onCreateOption={handleCreate}
               options={options}
               hideSelectedOptions
-              filterOption={(
-                option: FilterOptionOption<OptionType>,
-                inputValue: string
-              ) => option.value !== value}
+              filterOption={(option: { value: string; label: string }, _inputValue: string) =>
+                option.value !== value
+              }
               components={{
-                MultiValueRemove: props => (
+                MultiValueRemove: (props: any) => (
                   <MultiValueRemove
                     {...props}
                     hasRemovable={hasRemovable}
