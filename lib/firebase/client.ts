@@ -16,7 +16,7 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 
 // Check if the code is running in development or production environment
-if (process.env.APP_ENV === 'development') {
+if (process.env.NEXT_PUBLIC_APP_ENV === 'development') {
   // Connect to the Firebase Authentication emulator
   connectAuthEmulator(auth, 'http://localhost:9099', {
     disableWarnings: true,
