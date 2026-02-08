@@ -3,8 +3,6 @@ import { DragEvent, FC, useState } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import classNames from 'classnames';
 
-import upload from 'lib/firebase/storage/upload';
-
 type Props = {
   label: string;
   helperText?: string;
@@ -48,21 +46,28 @@ const FileImage: FC<Props> = ({
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    handleUploadImage(e.dataTransfer.files[0]);
+    handleFile(e.dataTransfer.files[0]);
   };
 
-  const handleUploadImage = async (file?: File) => {
-    if (file) {
-      const fileURL = await upload({
-        file,
-      });
+  const handleFile = (file?: File) => {
+    if (!file) return;
 
-      if (fileURL.success) {
-        setValue(name, fileURL.url);
-      } else {
-        setError(name, fileURL);
-      }
+    const maxFileSize = 10 * 1024 * 1024;
+    const allowedTypes = ['image/jpeg', 'image/png'];
+
+    if (!allowedTypes.includes(file.type)) {
+      setError(name, {
+        message: 'Only .jpg, .jpeg, and .png formats are supported.',
+      });
+      return;
     }
+
+    if (file.size > maxFileSize) {
+      setError(name, { message: 'Max image size is 10MB.' });
+      return;
+    }
+
+    setValue(name, file, { shouldValidate: true, shouldDirty: true });
   };
 
   return (
@@ -125,7 +130,7 @@ const FileImage: FC<Props> = ({
         <Controller
           control={control}
           name={name}
-          render={({ field: { onChange, ref } }) => (
+          render={({ field: { ref } }) => (
             <input
               {...register(name)}
               className='hidden'
@@ -135,14 +140,9 @@ const FileImage: FC<Props> = ({
               name={name}
               type='file'
               accept='image/*'
-              onChange={async event => {
+              onChange={event => {
                 if (event.target.files && event.target.files[0]) {
-                  const fileURL = await upload({
-                    file: event.target.files[0],
-                  });
-                  if (fileURL) {
-                    onChange(fileURL.url);
-                  }
+                  handleFile(event.target.files[0]);
                 }
               }}
               disabled={disabled || isSubmitting || loading}

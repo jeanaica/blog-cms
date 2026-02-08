@@ -3,7 +3,7 @@ import { Option } from 'lib/firebase/comment/types';
 export interface ArticleInput {
   id: string;
   title: string;
-  banner: string;
+  banner: string | File;
   caption: string;
   content: string;
   createdDate: string;
@@ -19,4 +19,4 @@ export interface ArticleInput {
 }
 
 export type FormKeys = keyof ArticleInput;
-export type FormValues = string | Option[] | null;
+export type FormValues = string | File | Option[] | null;

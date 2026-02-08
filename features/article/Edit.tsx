@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import useToast from 'components/toast/hook';
 
 import validation from 'features/article/schema/validation';
-import { moveImageToFolder } from 'lib/firebase/storage/upload';
+import uploadImage from 'lib/api/uploadImage';
 import formatDate from 'utils/formatDate';
 
 import { UPDATE_ARTICLE } from './schema/mutations';
@@ -22,7 +22,6 @@ const Edit: FC = () => {
   const { id } = router.query;
   const toast = useToast();
   const { t } = useTranslation('common');
-  const [initialBanner, setInitialBanner] = useState('');
   const [dataStatus, setDataStatus] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -52,7 +51,6 @@ const Edit: FC = () => {
 
       const { meta, ...restData } = data;
 
-      setInitialBanner(data.banner);
       setDataStatus(data.status);
 
       return {
@@ -86,21 +84,17 @@ const Edit: FC = () => {
     } = values;
 
     try {
-      let newBannerURL = banner;
+      let bannerUrl = '';
 
-      // Check if the status is not 'DRAFT' and the banner is not in 'public' folder
-      if (
-        !!newBannerURL &&
-        status.toUpperCase() !== 'DRAFT' &&
-        !newBannerURL.includes('public')
-      ) {
-        // If the banner has changed or if it's the initial banner and not yet in the public folder
-        if (
-          banner !== initialBanner ||
-          (banner === initialBanner && !newBannerURL.includes('public'))
-        ) {
-          // Move the image from temp folder to the new folder and update the download URL
-          newBannerURL = await moveImageToFolder(banner, 'public');
+      if (banner) {
+        if (banner instanceof File) {
+          const uploadResult = await uploadImage(banner, 'banners');
+          if (!uploadResult.success) {
+            throw new Error(uploadResult.message);
+          }
+          bannerUrl = uploadResult.url!;
+        } else {
+          bannerUrl = banner;
         }
       }
 
@@ -110,7 +104,7 @@ const Edit: FC = () => {
         description,
         author,
         imageAlt,
-        image: newBannerURL,
+        image: bannerUrl,
       };
 
       await updateArticle({
@@ -119,7 +113,7 @@ const Edit: FC = () => {
           post: {
             title,
             content,
-            banner: newBannerURL,
+            banner: bannerUrl,
             caption,
             scheduledAt,
             category,

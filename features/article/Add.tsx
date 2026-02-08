@@ -7,7 +7,7 @@ import useTranslation from 'next-translate/useTranslation';
 import useToast from 'components/toast/hook';
 
 import validation from 'features/article/schema/validation';
-import { moveImageToFolder } from 'lib/firebase/storage/upload';
+import uploadImage from 'lib/api/uploadImage';
 import formatDate from 'utils/formatDate';
 
 import { ADD_ARTICLE } from './schema/mutations';
@@ -49,12 +49,19 @@ const Add: FC = () => {
       category,
       tags,
     } = values;
-    let newBannerURL = banner;
-
     try {
-      if (banner && status.toUpperCase() !== 'DRAFT') {
-        // Move the image from temp folder to the new folder and update the download URL
-        newBannerURL = await moveImageToFolder(banner, 'public');
+      let bannerUrl = '';
+
+      if (banner) {
+        if (banner instanceof File) {
+          const uploadResult = await uploadImage(banner, 'banners');
+          if (!uploadResult.success) {
+            throw new Error(uploadResult.message);
+          }
+          bannerUrl = uploadResult.url!;
+        } else {
+          bannerUrl = banner;
+        }
       }
 
       const meta = {
@@ -63,7 +70,7 @@ const Add: FC = () => {
         description,
         author,
         imageAlt,
-        image: newBannerURL,
+        image: bannerUrl,
       };
 
       await addArticle({
@@ -71,7 +78,7 @@ const Add: FC = () => {
           post: {
             title,
             content,
-            banner: newBannerURL,
+            banner: bannerUrl,
             caption,
             scheduledAt,
             category,

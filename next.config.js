@@ -9,6 +9,7 @@ const nextConfig = nextTranslate({
       'localhost',
       process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
       'firebasestorage.googleapis.com',
+      'storage.googleapis.com',
     ],
   },
 });
