@@ -1,6 +1,7 @@
 {
   "extends": [
-    "eslint:recommended"
+    "eslint:recommended",
+    "plugin:storybook/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
