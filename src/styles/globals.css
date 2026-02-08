@@ -1,0 +1,81 @@
+@import 'material-icons/iconfont/material-icons.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'ClickerScript';
+  src: url('/fonts/ClickerScript/ClickerScript-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins/Poppins-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'PoppinsLight';
+  src: url('/fonts/Poppins/Poppins-Light.ttf');
+}
+
+@font-face {
+  font-family: 'PoppinsExtraLight';
+  src: url('/fonts/Poppins/Poppins-ExtraLight.ttf');
+}
+
+@font-face {
+  font-family: 'PoppinsSemiBold';
+  src: url('/fonts/Poppins/Poppins-SemiBold.ttf');
+}
+
+@font-face {
+  font-family: 'PoppinsThin';
+  src: url('/fonts/Poppins/Poppins-Thin.ttf');
+}
+
+.ql-container {
+  flex: 1;
+}
+.ql-container.ql-snow {
+  border: none !important;
+  background-color: #f3f4f6 !important;
+}
+
+.ql-video {
+  margin: auto;
+  width: 100%;
+  height: 500px;
+}
+
+.ql-toolbar.ql-snow {
+  position: sticky !important;
+  top: 76px !important;
+  border-left: none !important;
+  border-right: none !important;
+  z-index: 3 !important;
+  background-color: white !important;
+}
+
+.quill {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.quill.error {
+  border: 1px solid #c0334d !important;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+}
