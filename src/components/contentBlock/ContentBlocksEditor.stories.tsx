@@ -43,10 +43,10 @@ export const WithBlocks: Story = {
   render: () =>
     React.createElement(FormWrapper, {
       defaultValues: [
-        { type: 'text', content: '' },
+        { type: 'text', content: '<p>First text block with content.</p>' },
         { type: 'gallery', images: [] },
         { type: 'image' },
-        { type: 'text', content: '' },
+        { type: 'text', content: '<h2>Second Block</h2><p>More <strong>rich text</strong> here.</p>' },
       ],
     }),
 };
