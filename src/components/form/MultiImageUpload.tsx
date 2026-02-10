@@ -1,0 +1,227 @@
+import { type DragEvent, type FC, useCallback, useState } from 'react';
+import { useFormContext, Controller } from 'react-hook-form';
+import {
+  DndContext,
+  closestCenter,
+  type DragEndEvent,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  rectSortingStrategy,
+} from '@dnd-kit/sortable';
+import classNames from 'classnames';
+
+import SortableImageCard from './SortableImageCard';
+
+export type ImageItem = {
+  id: string;
+  file?: File;
+  url?: string;
+};
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
+const getPreview = (item: ImageItem): string => {
+  if (item.url) return item.url;
+  if (item.file) return URL.createObjectURL(item.file);
+  return '';
+};
+
+type Props = {
+  name: string;
+  disabled?: boolean;
+};
+
+const MultiImageUpload: FC<Props> = ({ name, disabled }) => {
+  const {
+    control,
+    formState: { isSubmitting },
+  } = useFormContext();
+
+  const [dragActive, setDragActive] = useState(false);
+  const [fileErrors, setFileErrors] = useState<string[]>([]);
+
+  const isDisabled = disabled || isSubmitting;
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+  );
+
+  const validateFiles = useCallback(
+    (
+      files: FileList | File[],
+      onChange: (value: ImageItem[]) => void,
+      current: ImageItem[]
+    ) => {
+      const errors: string[] = [];
+      const newItems: ImageItem[] = [];
+
+      Array.from(files).forEach(file => {
+        if (!ALLOWED_TYPES.includes(file.type)) {
+          errors.push(
+            `"${file.name}" — Only .jpg, .png, and .webp formats are supported.`
+          );
+          return;
+        }
+
+        if (file.size > MAX_FILE_SIZE) {
+          errors.push(`"${file.name}" — Max image size is 10MB.`);
+          return;
+        }
+
+        newItems.push({
+          id: crypto.randomUUID(),
+          file,
+        });
+      });
+
+      setFileErrors(errors);
+
+      if (newItems.length > 0) {
+        onChange([...current, ...newItems]);
+      }
+    },
+    []
+  );
+
+  const handleDrag = (e: DragEvent<HTMLElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (e.type === 'dragenter' || e.type === 'dragover') {
+      setDragActive(true);
+    } else if (e.type === 'dragleave') {
+      setDragActive(false);
+    }
+  };
+
+  return (
+    <Controller
+      control={control}
+      name={name}
+      rules={{
+        validate: value =>
+          (Array.isArray(value) && value.length > 0) ||
+          'At least one image is required',
+      }}
+      render={({ field: { onChange, value }, fieldState: { error } }) => {
+        const items: ImageItem[] = Array.isArray(value) ? value : [];
+
+        const handleDrop = (e: DragEvent<HTMLElement>) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setDragActive(false);
+          if (e.dataTransfer.files.length > 0) {
+            validateFiles(e.dataTransfer.files, onChange, items);
+          }
+        };
+
+        const handleRemove = (id: string) => {
+          onChange(items.filter(item => item.id !== id));
+        };
+
+        const handleDragEnd = (event: DragEndEvent) => {
+          const { active, over } = event;
+          if (over && active.id !== over.id) {
+            const oldIndex = items.findIndex(item => item.id === active.id);
+            const newIndex = items.findIndex(item => item.id === over.id);
+            onChange(arrayMove(items, oldIndex, newIndex));
+          }
+        };
+
+        return (
+          <div className='w-full space-y-3'>
+            <label
+              htmlFor={`${name}-input`}
+              onDragOver={handleDrag}
+              onDragLeave={handleDrag}
+              onDrop={handleDrop}
+              className={classNames(
+                'flex flex-col items-center justify-center w-full h-40 border border-dashed cursor-pointer bg-gray-50 rounded-md px-4 py-2',
+                {
+                  'border-secondary-700 bg-secondary-100': dragActive,
+                  'border-error-300': error || fileErrors.length > 0,
+                  'border-secondary-300':
+                    !error && fileErrors.length === 0 && !dragActive,
+                  'opacity-50 cursor-not-allowed': isDisabled,
+                }
+              )}>
+              <span className='material-icons-outlined text-gray-400 mb-2 text-[3rem]'>
+                add_photo_alternate
+              </span>
+              <p className='text-sm text-gray-500 text-center'>
+                <span className='font-semibold'>Click to upload</span> or drag
+                and drop
+              </p>
+              <p className='text-xs text-gray-500 text-center'>
+                PNG, JPG, JPEG or WEBP (MAX. 10MB each)
+              </p>
+              <input
+                className='hidden'
+                id={`${name}-input`}
+                type='file'
+                multiple
+                accept='image/jpeg,image/png,image/webp'
+                onChange={e => {
+                  if (e.target.files && e.target.files.length > 0) {
+                    validateFiles(e.target.files, onChange, items);
+                    e.target.value = '';
+                  }
+                }}
+                disabled={isDisabled}
+              />
+            </label>
+
+            {fileErrors.length > 0 && (
+              <div className='space-y-1'>
+                {fileErrors.map((err, i) => (
+                  <p
+                    key={i}
+                    className='text-sm text-error-300'>
+                    {err}
+                  </p>
+                ))}
+              </div>
+            )}
+
+            {items.length > 0 && (
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}>
+                <SortableContext
+                  items={items.map(item => item.id)}
+                  strategy={rectSortingStrategy}>
+                  <div className='grid grid-cols-2 md:grid-cols-3 gap-3'>
+                    {items.map(item => (
+                      <SortableImageCard
+                        key={item.id}
+                        id={item.id}
+                        preview={getPreview(item)}
+                        onRemove={() => handleRemove(item.id)}
+                        disabled={isDisabled}
+                      />
+                    ))}
+                  </div>
+                </SortableContext>
+              </DndContext>
+            )}
+
+            {error && (
+              <span className='text-sm text-error-300 block'>
+                {error.message}
+              </span>
+            )}
+          </div>
+        );
+      }}
+    />
+  );
+};
+
+export default MultiImageUpload;
