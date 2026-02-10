@@ -45,7 +45,7 @@ export const WithBlocks: Story = {
       defaultValues: [
         { type: 'text', content: '<p>First text block with content.</p>' },
         { type: 'gallery', images: [] },
-        { type: 'image' },
+        { type: 'image', image: 'https://placehold.co/600x400/e2e8f0/64748b?text=Sample+Image', caption: 'A sample image', alt: 'Placeholder image' },
         { type: 'text', content: '<h2>Second Block</h2><p>More <strong>rich text</strong> here.</p>' },
       ],
     }),

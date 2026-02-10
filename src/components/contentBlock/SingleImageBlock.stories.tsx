@@ -1,0 +1,59 @@
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import React from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
+
+import SingleImageBlock from './SingleImageBlock';
+import { ContentBlock } from './types';
+
+type FormValues = { contentBlocks: ContentBlock[] };
+
+const FormWrapper = ({
+  image,
+  caption,
+  alt,
+}: {
+  image?: string;
+  caption?: string;
+  alt?: string;
+}) => {
+  const methods = useForm<FormValues>({
+    defaultValues: {
+      contentBlocks: [{ type: 'image', image, caption, alt }],
+    },
+  });
+
+  return React.createElement(
+    FormProvider,
+    { ...methods },
+    React.createElement(
+      'form',
+      null,
+      React.createElement(
+        'div',
+        { className: 'rounded border border-gray-200 overflow-hidden' },
+        React.createElement(SingleImageBlock, { index: 0 })
+      )
+    )
+  );
+};
+
+const meta = {
+  title: 'Components/ContentBlock/SingleImageBlock',
+  component: SingleImageBlock,
+} satisfies Meta<typeof SingleImageBlock>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Empty: Story = {
+  render: () => React.createElement(FormWrapper),
+};
+
+export const WithImage: Story = {
+  render: () =>
+    React.createElement(FormWrapper, {
+      image: 'https://placehold.co/600x400/e2e8f0/64748b?text=Sample+Image',
+      caption: 'A beautiful landscape photo',
+      alt: 'Mountain vista with lake in the foreground',
+    }),
+};

@@ -1,10 +1,10 @@
-import { FC } from 'react';
+import { type FC } from 'react';
 import classNames from 'classnames';
 
 import Icon from 'components/icon/Icon';
 import IconButton from 'components/icon/IconButton';
 
-import { BlockType, BLOCK_TYPE_META } from './types';
+import { type BlockType, BLOCK_TYPE_META } from './types';
 
 type Props = {
   type: BlockType;
