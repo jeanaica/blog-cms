@@ -1,23 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, type FieldValues } from 'react-hook-form';
 
 import TextBlock from './TextBlock';
-import { ContentBlock } from './types';
-
-type FormValues = { contentBlocks: ContentBlock[] };
 
 const FormWrapper = ({ content }: { content?: string }) => {
-  const methods = useForm<FormValues>({
+  const methods = useForm<FieldValues>({
     defaultValues: {
       contentBlocks: [{ type: 'text', content: content ?? '' }],
     },
   });
 
-  return React.createElement(
-    FormProvider,
-    { ...methods },
-    React.createElement(
+  return React.createElement(FormProvider, {
+    ...methods,
+    children: React.createElement(
       'form',
       null,
       React.createElement(
@@ -25,14 +21,13 @@ const FormWrapper = ({ content }: { content?: string }) => {
         { className: 'rounded border border-gray-200 overflow-hidden' },
         React.createElement(TextBlock, { index: 0 })
       )
-    )
-  );
+    ),
+  });
 };
 
 const meta = {
   title: 'Components/ContentBlock/TextBlock',
-  component: TextBlock,
-} satisfies Meta<typeof TextBlock>;
+} satisfies Meta;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

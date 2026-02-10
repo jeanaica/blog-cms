@@ -8,9 +8,22 @@ type Props = {
   preview: string;
   onRemove: () => void;
   disabled?: boolean;
+  caption?: string;
+  alt?: string;
+  onCaptionChange?: (value: string) => void;
+  onAltChange?: (value: string) => void;
 };
 
-const SortableImageCard: FC<Props> = ({ id, preview, onRemove, disabled }) => {
+const SortableImageCard: FC<Props> = ({
+  id,
+  preview,
+  onRemove,
+  disabled,
+  caption,
+  alt,
+  onCaptionChange,
+  onAltChange,
+}) => {
   const {
     attributes,
     listeners,
@@ -25,39 +38,64 @@ const SortableImageCard: FC<Props> = ({ id, preview, onRemove, disabled }) => {
     transition,
   };
 
+  const hasMetadata = !!onCaptionChange;
+
   return (
     <div
       ref={setNodeRef}
       style={style}
       className={classNames(
-        'relative aspect-square rounded overflow-hidden border border-gray-200 group',
-        { 'opacity-50': isDragging }
+        'rounded overflow-hidden border border-gray-200 group',
+        { 'aspect-square': !hasMetadata, 'opacity-50': isDragging }
       )}>
-      <img
-        src={preview}
-        alt=''
-        className='w-full h-full object-cover'
-      />
+      <div className={classNames('relative', { 'aspect-square': hasMetadata })}>
+        <img
+          src={preview}
+          alt=''
+          className='w-full h-full object-cover'
+        />
 
-      {!disabled && (
-        <>
-          <button
-            type='button'
-            className='absolute top-1 left-1 p-1 rounded bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing'
-            {...attributes}
-            {...listeners}>
-            <span className='material-icons-outlined text-sm'>
-              drag_indicator
-            </span>
-          </button>
+        {!disabled && (
+          <>
+            <button
+              type='button'
+              className='absolute top-1 left-1 p-1 rounded bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing'
+              {...attributes}
+              {...listeners}>
+              <span className='material-icons-outlined text-sm'>
+                drag_indicator
+              </span>
+            </button>
 
-          <button
-            type='button'
-            className='absolute top-1 right-1 p-1 rounded bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity'
-            onClick={onRemove}>
-            <span className='material-icons-outlined text-sm'>close</span>
-          </button>
-        </>
+            <button
+              type='button'
+              className='absolute top-1 right-1 p-1 rounded bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity'
+              onClick={onRemove}>
+              <span className='material-icons-outlined text-sm'>close</span>
+            </button>
+          </>
+        )}
+      </div>
+
+      {hasMetadata && (
+        <div className='p-2 space-y-1'>
+          <input
+            type='text'
+            placeholder='Caption'
+            value={caption ?? ''}
+            onChange={e => onCaptionChange(e.target.value)}
+            className='border-b-secondary-300 border-b w-full px-2 py-1 text-xs outline-none focus:ring-0 focus:text-black'
+            disabled={disabled}
+          />
+          <input
+            type='text'
+            placeholder='Alt text'
+            value={alt ?? ''}
+            onChange={e => onAltChange?.(e.target.value)}
+            className='border-b-secondary-300 border-b w-full px-2 py-1 text-xs outline-none focus:ring-0 focus:text-black'
+            disabled={disabled}
+          />
+        </div>
       )}
     </div>
   );
