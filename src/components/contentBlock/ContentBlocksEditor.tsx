@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import Icon from 'components/icon/Icon';
 
 import BlockHeader from './BlockHeader';
+import TextBlock from './TextBlock';
 import { BlockType, BLOCK_TYPE_META, ContentBlock } from './types';
 
 const BLOCK_OPTIONS: BlockType[] = ['text', 'gallery', 'image'];
@@ -110,11 +111,17 @@ const ContentBlocksEditor: FC = () => {
             type={(field as unknown as ContentBlock).type}
             onRemove={() => remove(index)}
           />
-          <div className='p-4 bg-white'>
-            <span className='text-sm text-gray-400 italic'>
-              {BLOCK_TYPE_META[(field as unknown as ContentBlock).type]?.label}{' '}
-              block content will appear here
-            </span>
+          <div className='bg-white'>
+            {(field as unknown as ContentBlock).type === 'text' ? (
+              <TextBlock index={index} />
+            ) : (
+              <div className='p-4'>
+                <span className='text-sm text-gray-400 italic'>
+                  {BLOCK_TYPE_META[(field as unknown as ContentBlock).type]?.label}{' '}
+                  block content will appear here
+                </span>
+              </div>
+            )}
           </div>
         </div>
       ))}

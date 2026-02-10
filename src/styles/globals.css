@@ -50,7 +50,6 @@
 
 .ql-toolbar.ql-snow {
   position: sticky !important;
-  top: 76px !important;
   border-left: none !important;
   border-right: none !important;
   z-index: 3 !important;
