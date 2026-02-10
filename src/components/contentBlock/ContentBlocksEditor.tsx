@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import Icon from 'components/icon/Icon';
 
 import BlockHeader from './BlockHeader';
+import GalleryBlock from './GalleryBlock';
 import SingleImageBlock from './SingleImageBlock';
 import TextBlock from './TextBlock';
 import { type BlockType, BLOCK_TYPE_META, type ContentBlock } from './types';
@@ -117,6 +118,8 @@ const ContentBlocksEditor: FC = () => {
               <TextBlock index={index} />
             ) : (field as unknown as ContentBlock).type === 'image' ? (
               <SingleImageBlock index={index} />
+            ) : (field as unknown as ContentBlock).type === 'gallery' ? (
+              <GalleryBlock index={index} />
             ) : (
               <div className='p-4'>
                 <span className='text-sm text-gray-400 italic'>

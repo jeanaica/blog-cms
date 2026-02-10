@@ -1,11 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, type FieldValues } from 'react-hook-form';
 
 import SingleImageBlock from './SingleImageBlock';
-import { ContentBlock } from './types';
-
-type FormValues = { contentBlocks: ContentBlock[] };
 
 const FormWrapper = ({
   image,
@@ -16,16 +13,15 @@ const FormWrapper = ({
   caption?: string;
   alt?: string;
 }) => {
-  const methods = useForm<FormValues>({
+  const methods = useForm<FieldValues>({
     defaultValues: {
       contentBlocks: [{ type: 'image', image, caption, alt }],
     },
   });
 
-  return React.createElement(
-    FormProvider,
-    { ...methods },
-    React.createElement(
+  return React.createElement(FormProvider, {
+    ...methods,
+    children: React.createElement(
       'form',
       null,
       React.createElement(
@@ -33,14 +29,13 @@ const FormWrapper = ({
         { className: 'rounded border border-gray-200 overflow-hidden' },
         React.createElement(SingleImageBlock, { index: 0 })
       )
-    )
-  );
+    ),
+  });
 };
 
 const meta = {
   title: 'Components/ContentBlock/SingleImageBlock',
-  component: SingleImageBlock,
-} satisfies Meta<typeof SingleImageBlock>;
+} satisfies Meta;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

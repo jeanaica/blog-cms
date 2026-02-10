@@ -21,6 +21,8 @@ export type ImageItem = {
   id: string;
   file?: File;
   url?: string;
+  caption?: string;
+  alt?: string;
 };
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -35,9 +37,11 @@ const getPreview = (item: ImageItem): string => {
 type Props = {
   name: string;
   disabled?: boolean;
+  maxImages?: number;
+  showMetadata?: boolean;
 };
 
-const MultiImageUpload: FC<Props> = ({ name, disabled }) => {
+const MultiImageUpload: FC<Props> = ({ name, disabled, maxImages, showMetadata }) => {
   const {
     control,
     formState: { isSubmitting },
@@ -60,8 +64,16 @@ const MultiImageUpload: FC<Props> = ({ name, disabled }) => {
     ) => {
       const errors: string[] = [];
       const newItems: ImageItem[] = [];
+      const remaining = maxImages ? maxImages - current.length : Infinity;
 
       Array.from(files).forEach(file => {
+        if (newItems.length >= remaining) {
+          errors.push(
+            `"${file.name}" — Maximum ${maxImages} images allowed.`
+          );
+          return;
+        }
+
         if (!ALLOWED_TYPES.includes(file.type)) {
           errors.push(
             `"${file.name}" — Only .jpg, .png, and .webp formats are supported.`
@@ -86,7 +98,7 @@ const MultiImageUpload: FC<Props> = ({ name, disabled }) => {
         onChange([...current, ...newItems]);
       }
     },
-    []
+    [maxImages]
   );
 
   const handleDrag = (e: DragEvent<HTMLElement>) => {
@@ -105,9 +117,13 @@ const MultiImageUpload: FC<Props> = ({ name, disabled }) => {
       control={control}
       name={name}
       rules={{
-        validate: value =>
-          (Array.isArray(value) && value.length > 0) ||
-          'At least one image is required',
+        validate: value => {
+          if (!Array.isArray(value) || value.length === 0)
+            return 'At least one image is required';
+          if (maxImages && value.length > maxImages)
+            return `Maximum ${maxImages} images allowed`;
+          return true;
+        },
       }}
       render={({ field: { onChange, value }, fieldState: { error } }) => {
         const items: ImageItem[] = Array.isArray(value) ? value : [];
@@ -134,8 +150,15 @@ const MultiImageUpload: FC<Props> = ({ name, disabled }) => {
           }
         };
 
+        const handleMetadataChange = (id: string, field: 'caption' | 'alt', value: string) => {
+          onChange(items.map(item => item.id === id ? { ...item, [field]: value } : item));
+        };
+
+        const atMaxCapacity = maxImages ? items.length >= maxImages : false;
+
         return (
           <div className='w-full space-y-3'>
+            {!atMaxCapacity && (
             <label
               htmlFor={`${name}-input`}
               onDragOver={handleDrag}
@@ -176,6 +199,7 @@ const MultiImageUpload: FC<Props> = ({ name, disabled }) => {
                 disabled={isDisabled}
               />
             </label>
+            )}
 
             {fileErrors.length > 0 && (
               <div className='space-y-1'>
@@ -205,6 +229,10 @@ const MultiImageUpload: FC<Props> = ({ name, disabled }) => {
                         preview={getPreview(item)}
                         onRemove={() => handleRemove(item.id)}
                         disabled={isDisabled}
+                        caption={showMetadata ? item.caption : undefined}
+                        alt={showMetadata ? item.alt : undefined}
+                        onCaptionChange={showMetadata ? v => handleMetadataChange(item.id, 'caption', v) : undefined}
+                        onAltChange={showMetadata ? v => handleMetadataChange(item.id, 'alt', v) : undefined}
                       />
                     ))}
                   </div>
