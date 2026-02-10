@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { FC, lazy, Suspense, useState } from 'react';
+import { type FC, lazy, Suspense, useState } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 
 import 'react-quill/dist/quill.snow.css';

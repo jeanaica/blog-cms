@@ -1,12 +1,13 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { type FC, useEffect, useRef, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import classNames from 'classnames';
 
 import Icon from 'components/icon/Icon';
 
 import BlockHeader from './BlockHeader';
+import SingleImageBlock from './SingleImageBlock';
 import TextBlock from './TextBlock';
-import { BlockType, BLOCK_TYPE_META, ContentBlock } from './types';
+import { type BlockType, BLOCK_TYPE_META, type ContentBlock } from './types';
 
 const BLOCK_OPTIONS: BlockType[] = ['text', 'gallery', 'image'];
 
@@ -114,6 +115,8 @@ const ContentBlocksEditor: FC = () => {
           <div className='bg-white'>
             {(field as unknown as ContentBlock).type === 'text' ? (
               <TextBlock index={index} />
+            ) : (field as unknown as ContentBlock).type === 'image' ? (
+              <SingleImageBlock index={index} />
             ) : (
               <div className='p-4'>
                 <span className='text-sm text-gray-400 italic'>

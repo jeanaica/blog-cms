@@ -4,6 +4,9 @@ export type ContentBlock = {
   type: BlockType;
   content?: string;
   images?: Array<{ url: string; caption: string; alt: string }>;
+  image?: File | string;
+  caption?: string;
+  alt?: string;
 };
 
 export const BLOCK_TYPE_META: Record<
