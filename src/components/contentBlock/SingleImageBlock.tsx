@@ -82,21 +82,17 @@ const SingleImageBlock: FC<Props> = ({ index }) => {
               )}>
               <div className='flex flex-col items-center justify-center'>
                 {value ? (
-                  <div
-                    className='relative w-full max-w-[300px]'
-                    style={{ paddingTop: 'calc(200 / 300 * 100%)' }}>
-                    <img
-                      src={
-                        typeof value === 'string'
-                          ? value
-                          : value instanceof File
-                          ? URL.createObjectURL(value)
-                          : ''
-                      }
-                      alt='Image Preview'
-                      className='absolute top-0 left-0 w-full h-full object-contain'
-                    />
-                  </div>
+                  <img
+                    src={
+                      typeof value === 'string'
+                        ? value
+                        : value instanceof File
+                        ? URL.createObjectURL(value)
+                        : ''
+                    }
+                    alt='Image Preview'
+                    className='max-h-56 max-w-full object-contain'
+                  />
                 ) : (
                   <>
                     <span className='material-icons-outlined text-gray-400 mb-3 text-[4rem]'>
