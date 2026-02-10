@@ -5,21 +5,21 @@ const meta = {
   title: 'Components/Icon',
   component: Icon,
   args: {
-    icon: 'home',
+    icon: 'settings',
   },
 } satisfies Meta<typeof Icon>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const DefaultOrBase: Story = {};
+
+export const XSmall: Story = {
+  args: { icon: 'settings', size: 'xs' },
+};
 
 export const Small: Story = {
   args: { icon: 'settings', size: 'sm' },
-};
-
-export const Base: Story = {
-  args: { icon: 'settings', size: 'base' },
 };
 
 export const Large: Story = {
