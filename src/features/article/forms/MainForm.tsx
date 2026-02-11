@@ -1,4 +1,4 @@
-import { type FC, useEffect } from 'react';
+import { type FC, useMemo } from 'react';
 import { FormProvider, type UseFormReturn } from 'react-hook-form';
 
 import Container from 'components/container/Container';
@@ -9,8 +9,10 @@ import UnsavedChangesModal from 'components/form/UnsavedChangesModal';
 
 import TitleMenu from './TitleMenu';
 import FormAccordion from './FormAccordion';
-import { ArticleInput } from '../types/ArticleInput';
-import { ContentBlock } from 'components/contentBlock/types';
+import { type ArticleInput } from '../types/ArticleInput';
+import { type ContentBlock } from 'components/contentBlock/types';
+
+const SLUG_INVALID_CHARS = /[^a-zA-Z0-9 -]/g;
 
 type Props = {
   methods: UseFormReturn<ArticleInput, any>;
@@ -66,13 +68,22 @@ const MainForm: FC<Props> = ({
   const {
     watch,
     setValue,
-    formState: { isDirty, isSubmitted },
+    formState: { isDirty },
   } = methods;
 
   const title: string = watch('title');
   const contentBlocks: ContentBlock[] = watch('contentBlocks') || [];
-  const slug: string = watch('slug');
   const status: string | undefined = watch('status');
+
+  const slug = useMemo(() => {
+    const trimmedTitle = title?.trim();
+    if (!trimmedTitle) return '';
+    return trimmedTitle.toLowerCase().replace(SLUG_INVALID_CHARS, '').replaceAll(' ', '-');
+  }, [title]);
+
+  if (methods.getValues('slug') !== slug) {
+    setValue('slug', slug);
+  }
 
   const onPreview = () => {
     if (slug && contentBlocks.length) {
@@ -80,16 +91,6 @@ const MainForm: FC<Props> = ({
       localStorage.setItem(`preview-${slug}`, html);
     }
   };
-
-  useEffect(() => {
-    const regExChars = /[^a-zA-Z0-9 -]/g;
-    const trimmedTitle = title && title.trim();
-    const slug =
-      trimmedTitle &&
-      trimmedTitle.toLowerCase().replace(regExChars, '').replaceAll(' ', '-');
-
-    setValue('slug', slug);
-  }, [title, setValue]);
 
   const previewUrl = `/article/${slug}/preview`;
 
@@ -118,7 +119,7 @@ const MainForm: FC<Props> = ({
             <ContentBlocksEditor />
           </div>
         </div>
-        <LoadingModal isOpen={submitting || (submitting && isSubmitted)} />
+        <LoadingModal isOpen={submitting} />
         <UnsavedChangesModal hasUnsavedChanges={isDirty} />
       </FormProvider>
     </Container>

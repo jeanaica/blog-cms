@@ -6,6 +6,7 @@ import {
   ApolloLink,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { getAuthToken } from 'lib/auth/getAuthToken';
 
 const httpLink = createHttpLink({
   uri: import.meta.env.VITE_API_URL,
@@ -13,18 +14,12 @@ const httpLink = createHttpLink({
 
 // Set the authorization header using the token from session storage:
 const authLink = setContext((_, { headers }) => {
-  if (typeof window !== 'undefined') {
-    const sessionToken = window?.sessionStorage?.getItem('token');
-    const token = sessionToken ? JSON.parse(sessionToken) : '';
-    return {
-      headers: {
-        ...headers,
-        authorization: token ? `Bearer ${token}` : '',
-      },
-    };
-  }
+  const token = getAuthToken();
   return {
-    headers,
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
   };
 });
 

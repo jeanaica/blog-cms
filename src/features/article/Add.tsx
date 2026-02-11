@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { type FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/client';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,7 +11,7 @@ import uploadImage from 'lib/api/uploadImage';
 import formatDate from 'utils/formatDate';
 
 import { ADD_ARTICLE } from './schema/mutations';
-import { ArticleInput } from './types/ArticleInput';
+import { type ArticleInput } from './types/ArticleInput';
 import MainForm from './forms/MainForm';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -56,29 +56,28 @@ const Add: FC = () => {
       tags,
     } = values;
     try {
-      let bannerUrl = '';
+      // Upload banner and content block images in parallel
+      const bannerPromise =
+        banner instanceof File
+          ? uploadImage({ file: banner, folder: `${slug}/banner`, isBanner: true })
+          : Promise.resolve(null);
+      const blocksPromise = uploadContentBlockImages(contentBlocks || [], slug);
 
-      if (banner) {
-        if (banner instanceof File) {
-          const uploadResult = await uploadImage({
-            file: banner,
-            folder: `${slug}/banner`,
-            isBanner: true,
-          });
-          if (!uploadResult.success) {
-            throw new Error(uploadResult.message);
-          }
-          bannerUrl = uploadResult.url!;
-        } else {
-          bannerUrl = banner;
+      const [bannerResult, processedBlocks] = await Promise.all([
+        bannerPromise,
+        blocksPromise,
+      ]);
+
+      let bannerUrl = '';
+      if (bannerResult) {
+        if (!bannerResult.success) {
+          throw new Error(bannerResult.message);
         }
+        bannerUrl = bannerResult.url!;
+      } else if (banner && typeof banner === 'string') {
+        bannerUrl = banner;
       }
 
-      // Upload content block images and serialize
-      const processedBlocks = await uploadContentBlockImages(
-        contentBlocks || [],
-        slug
-      );
       const serializedBlocks = serializeBlocksForMutation(processedBlocks);
 
       // Auto-generate content from text blocks for backward compatibility

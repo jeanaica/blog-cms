@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import {
   createBrowserRouter,
   Navigate,
@@ -15,13 +16,13 @@ import client from 'lib/client/apolloClient';
 import DashboardLayout from 'components/layout/DashboardLayout';
 import SharedLayout from 'components/layout/SharedLayout';
 
-import PostPage from './pages/PostPage';
-import AddArticlePage from './pages/AddArticlePage';
-import EditArticlePage from './pages/EditArticlePage';
-import ViewArticlePage from './pages/ViewArticlePage';
-import PreviewArticlePage from './pages/PreviewArticlePage';
-import LoginPage from './pages/LoginPage';
-import ErrorPage from './pages/ErrorPage';
+const PostPage = lazy(() => import('./pages/PostPage'));
+const AddArticlePage = lazy(() => import('./pages/AddArticlePage'));
+const EditArticlePage = lazy(() => import('./pages/EditArticlePage'));
+const ViewArticlePage = lazy(() => import('./pages/ViewArticlePage'));
+const PreviewArticlePage = lazy(() => import('./pages/PreviewArticlePage'));
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const ErrorPage = lazy(() => import('./pages/ErrorPage'));
 
 function RootLayout() {
   return (
@@ -29,7 +30,9 @@ function RootLayout() {
       <AuthProvider>
         <ToastProvider>
           <ApolloProvider client={client}>
-            <Outlet />
+            <Suspense>
+              <Outlet />
+            </Suspense>
             <ToastContainer />
           </ApolloProvider>
         </ToastProvider>

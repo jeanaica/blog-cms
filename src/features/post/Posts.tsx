@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import useTranslation from 'hooks/useTranslation';
 
@@ -11,7 +11,7 @@ import Item from './components/Item';
 import { UPDATE_POST_STATUS_MUTATION } from './schema/mutations';
 import { GET_POST_BY_STATUS } from './schema/queries';
 
-import { Article } from './types/Article';
+import { type Article } from './types/Article';
 
 const Posts = () => {
   const toast = useToast();
@@ -45,21 +45,14 @@ const Posts = () => {
 
         toast('success', message);
 
-        refetch({
-          status: selectedOption['status'],
-          sort: selectedOption['sort'],
-        });
+        refetch();
       } catch (e) {
         message = t('updateFail');
         toast('error', message);
       }
     },
-    [updatePost, refetch, selectedOption, toast, t]
+    [updatePost, refetch, toast, t]
   );
-
-  useEffect(() => {
-    refetch({ status: selectedOption['status'], sort: selectedOption['sort'] });
-  }, [selectedOption, refetch]);
 
   return (
     <div className='pb-8'>

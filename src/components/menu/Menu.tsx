@@ -32,7 +32,7 @@ const Menu: FC<Props> = ({ text, options, loading = false }) => {
   const visibleOptions = useMemo(() => options.filter(option => !option.hide), [options]);
 
   const handleClick = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(prev => !prev);
   };
 
   const handleOptionClick = (
