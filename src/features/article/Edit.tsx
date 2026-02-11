@@ -96,7 +96,7 @@ const Edit: FC = () => {
 
       if (banner) {
         if (banner instanceof File) {
-          const uploadResult = await uploadImage(banner, 'banners');
+          const uploadResult = await uploadImage({ file: banner, folder: `${slug}/banner`, isBanner: true });
           if (!uploadResult.success) {
             throw new Error(uploadResult.message);
           }
@@ -108,7 +108,8 @@ const Edit: FC = () => {
 
       // Upload content block images and serialize
       const processedBlocks = await uploadContentBlockImages(
-        contentBlocks || []
+        contentBlocks || [],
+        slug
       );
       const serializedBlocks = serializeBlocksForMutation(processedBlocks);
 

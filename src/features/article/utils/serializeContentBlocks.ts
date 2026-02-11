@@ -18,12 +18,13 @@ export type ContentBlockMutationInput = {
  * Returns a new array with Files replaced by their uploaded URLs.
  */
 export async function uploadContentBlockImages(
-  blocks: ContentBlock[]
+  blocks: ContentBlock[],
+  slug: string
 ): Promise<ContentBlock[]> {
   return Promise.all(
     blocks.map(async block => {
       if (block.type === 'image' && block.image instanceof File) {
-        const result = await uploadImage(block.image, 'content');
+        const result = await uploadImage({ file: block.image, folder: `${slug}/images` });
         if (!result.success) {
           throw new Error(result.message);
         }
@@ -42,7 +43,11 @@ export async function uploadContentBlockImages(
         });
 
         if (filesToUpload.length > 0) {
-          const result = await uploadImages(filesToUpload, 'galleries');
+          const galleryName = block.galleryName
+            ? block.galleryName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+            : 'gallery';
+          const galleryFolder = `${slug}/galleries/${galleryName}`;
+          const result = await uploadImages({ files: filesToUpload, folder: galleryFolder });
           if (!result.success) {
             throw new Error(result.message);
           }
