@@ -115,7 +115,14 @@ const MainForm: FC<Props> = ({
           onSubmit={onSubmit}
         />
         <FormAccordion />
-        <ContentBlocksEditor />
+        <div className='px-1 '>
+          <div className='flex items-center w-full py-4'>
+            <span className='font-semibold text-gray-500'>Content Blocks</span>
+          </div>
+          <div className='py-5 p-4 rounded-lg border border-gray-200'>
+            <ContentBlocksEditor />
+          </div>
+        </div>
         <LoadingModal isOpen={submitting || (submitting && isSubmitted)} />
         <UnsavedChangesModal hasUnsavedChanges={isDirty} />
       </FormProvider>
