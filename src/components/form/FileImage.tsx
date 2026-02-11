@@ -15,6 +15,7 @@ type Props = {
   helperText?: string;
   name: string;
   disabled?: boolean;
+  readOnly?: boolean;
   loading?: boolean;
   rules?: RegisterOptions;
 };
@@ -24,6 +25,7 @@ const FileImage: FC<Props> = ({
   helperText = 'PNG, JPG, JPEG or WEBP (MAX. 10MB)',
   name,
   disabled,
+  readOnly,
   loading,
   rules,
 }) => {
@@ -35,7 +37,7 @@ const FileImage: FC<Props> = ({
   const [dragActive, setDragActive] = useState(false);
   const [fileError, setFileError] = useState<string | null>(null);
 
-  const isDisabled = disabled || isSubmitting || loading;
+  const isDisabled = disabled || readOnly || isSubmitting || loading;
 
   const handleDrag = (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
@@ -73,15 +75,15 @@ const FileImage: FC<Props> = ({
           <FieldLabel>{label}</FieldLabel>
           <label
             htmlFor={`${name}-input`}
-            onDragOver={handleDrag}
-            onDragLeave={handleDrag}
-            onDrop={e => {
+            onDragOver={!isDisabled ? handleDrag : undefined}
+            onDragLeave={!isDisabled ? handleDrag : undefined}
+            onDrop={!isDisabled ? e => {
               e.preventDefault();
               e.stopPropagation();
               setDragActive(false);
               const file = e.dataTransfer.files[0];
               if (file && validateFile(file)) onChange(file);
-            }}
+            } : undefined}
             className={classNames(
               'flex flex-col items-center justify-center w-full h-64 border border-dashed cursor-pointer bg-gray-50 rounded-md shadow-sm px-4 py-2',
               {
