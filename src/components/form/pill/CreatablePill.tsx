@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
-import { type MultiValue, type StylesConfig } from 'react-select';
+import { type MultiValue, type MultiValueRemoveProps, type StylesConfig } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
 import toTitleCase from 'utils/toTitleCase';
@@ -10,21 +10,21 @@ import FieldLabel from '../FieldLabel';
 import HelperText from '../HelperText';
 import MultiValueRemove from './MultiValueRemove';
 
+type OptionType = { value: string; label: string };
+type PillStyles = StylesConfig<OptionType, true>;
+
 type Props = {
   label: string;
   helperText?: string;
   name: string;
   disabled?: boolean;
   loading?: boolean;
-  options?: Array<{ value: string; label: string }>;
+  options?: Array<OptionType>;
   readOnly?: boolean;
   hasRemovable?: boolean;
-  onPillChange?(selection: MultiValue<any>): void;
-  onCreateOption?(input: string): void;
+  onPillChange?: (value: MultiValue<OptionType>) => void;
+  onCreateOption?: (value: string) => void;
 };
-
-type OptionType = { value: string; label: string };
-type PillStyles = StylesConfig<OptionType, true>;
 
 const pillStyles: PillStyles = {
   control: styles => ({ ...styles, backgroundColor: 'white' }),
@@ -96,9 +96,13 @@ const CreatablePill: FC<Props> = ({
               onCreateOption={handleCreate}
               options={options}
               hideSelectedOptions
-              filterOption={(option) => option.value !== value}
+              filterOption={(option: {
+                value: string;
+                label: string;
+                data: OptionType;
+              }) => option.value !== value}
               components={{
-                MultiValueRemove: (props: any) => (
+                MultiValueRemove: (props: MultiValueRemoveProps<OptionType, true>) => (
                   <MultiValueRemove
                     {...props}
                     hasRemovable={hasRemovable}

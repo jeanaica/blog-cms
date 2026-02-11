@@ -97,7 +97,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
       !pathname.includes('/view') &&
       !pathname.includes('/preview')
     ) {
-      window.location.href = '/login';
+      window.location.assign('/login');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idToken]);

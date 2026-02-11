@@ -1,3 +1,5 @@
+import { getAuthToken } from 'lib/auth/getAuthToken';
+
 type UploadResult = {
   success: boolean;
   message: string;
@@ -16,8 +18,7 @@ const uploadImage = async ({
   isBanner = false,
 }: UploadImageParams): Promise<UploadResult> => {
   try {
-    const sessionToken = window?.sessionStorage?.getItem('token');
-    const token = sessionToken ? JSON.parse(sessionToken) : '';
+    const token = getAuthToken();
 
     const formData = new FormData();
     formData.append('file', file);

@@ -25,7 +25,7 @@ const Header: FC<Props> = () => {
   };
 
   const handleShowMenu = () => {
-    setShowMenu(!showMenu);
+    setShowMenu(prev => !prev);
   };
 
   if (isClickedOutside && showMenu) {
