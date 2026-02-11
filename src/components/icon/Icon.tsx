@@ -10,11 +10,13 @@ const SIZE_CLASSES = {
   '2xl': 'text-2xl',
 } as const;
 
+export type IconSize = keyof typeof SIZE_CLASSES | number;
+
 type Props = {
   // we want to limit the icons used to material-icons only
   icon: string;
   className?: string;
-  size?: keyof typeof SIZE_CLASSES | number;
+  size?: IconSize;
 };
 
 const Icon: FC<Props> = ({ icon, className, size = 'base' }) => {
