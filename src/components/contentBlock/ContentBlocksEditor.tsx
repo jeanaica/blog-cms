@@ -35,6 +35,7 @@ const ContentBlocksEditor: FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const lastBlockRef = useRef<HTMLDivElement>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
@@ -60,6 +61,9 @@ const ContentBlocksEditor: FC = () => {
   const handleAddBlock = (type: BlockType) => {
     append({ type });
     setIsDropdownOpen(false);
+    requestAnimationFrame(() => {
+      lastBlockRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
   };
 
   const handleDragStart = (event: DragEndEvent) => {
@@ -138,6 +142,7 @@ const ContentBlocksEditor: FC = () => {
 
   return (
     <div className='not-prose space-y-4'>
+      <div>{addButton}</div>
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -149,45 +154,46 @@ const ContentBlocksEditor: FC = () => {
           strategy={verticalListSortingStrategy}>
           {fields.map((field, index) => {
             const blockErrors = errors.contentBlocks?.[index];
+            const isLast = index === fields.length - 1;
             return (
-            <SortableBlock
-              key={field.id}
-              id={field.id}
-              index={index}
-              activeIndex={activeIndex}
-              hasError={!!blockErrors}>
-              {dragHandleProps => (
-                <>
-                  <BlockHeader
-                    type={(field as unknown as ContentBlock).type}
-                    onRemove={() => remove(index)}
-                    hasError={!!blockErrors}
-                    {...dragHandleProps}
-                  />
-                  <div className='bg-white'>
-                    {(field as unknown as ContentBlock).type === 'text' ? (
-                      <TextBlock index={index} />
-                    ) : (field as unknown as ContentBlock).type === 'image' ? (
-                      <SingleImageBlock index={index} />
-                    ) : (field as unknown as ContentBlock).type === 'gallery' ? (
-                      <GalleryBlock index={index} />
-                    ) : (
-                      <div className='p-4'>
-                        <span className='text-sm text-gray-400 italic'>
-                          {BLOCK_TYPE_META[(field as unknown as ContentBlock).type]?.label}{' '}
-                          block content will appear here
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                </>
-              )}
-            </SortableBlock>
+            <div key={field.id} ref={isLast ? lastBlockRef : undefined}>
+              <SortableBlock
+                id={field.id}
+                index={index}
+                activeIndex={activeIndex}
+                hasError={!!blockErrors}>
+                {dragHandleProps => (
+                  <>
+                    <BlockHeader
+                      type={(field as unknown as ContentBlock).type}
+                      onRemove={() => remove(index)}
+                      hasError={!!blockErrors}
+                      {...dragHandleProps}
+                    />
+                    <div className='bg-white'>
+                      {(field as unknown as ContentBlock).type === 'text' ? (
+                        <TextBlock index={index} />
+                      ) : (field as unknown as ContentBlock).type === 'image' ? (
+                        <SingleImageBlock index={index} />
+                      ) : (field as unknown as ContentBlock).type === 'gallery' ? (
+                        <GalleryBlock index={index} />
+                      ) : (
+                        <div className='p-4'>
+                          <span className='text-sm text-gray-400 italic'>
+                            {BLOCK_TYPE_META[(field as unknown as ContentBlock).type]?.label}{' '}
+                            block content will appear here
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
+              </SortableBlock>
+            </div>
           );
           })}
         </SortableContext>
       </DndContext>
-      <div className='pt-2'>{addButton}</div>
     </div>
   );
 };
