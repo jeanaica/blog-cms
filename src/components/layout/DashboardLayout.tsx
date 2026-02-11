@@ -11,8 +11,6 @@ import Header from './Header';
 const DashboardLayout = () => {
   const auth = useAuth();
   const location = useLocation();
-  const lastPath = location.pathname.split('/').pop();
-
   if (!auth.user?.email) {
     return (
       <div className='h-screen w-screen flex justify-center items-center'>

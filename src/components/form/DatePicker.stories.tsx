@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { type ComponentProps, createElement, useEffect } from 'react';
 import { useForm, FormProvider, type FieldValues } from 'react-hook-form';
 
 import DatePicker from './DatePicker';
@@ -7,23 +7,23 @@ import DatePicker from './DatePicker';
 const FormWrapper = ({
   error,
   ...props
-}: React.ComponentProps<typeof DatePicker> & { error?: string }) => {
+}: ComponentProps<typeof DatePicker> & { error?: string }) => {
   const methods = useForm<FieldValues>({
     defaultValues: { [props.name]: '' },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (error) {
       methods.setError(props.name, { message: error });
     }
-  }, [error]);
+  }, [error, methods, props.name]);
 
-  return React.createElement(FormProvider, {
+  return createElement(FormProvider, {
     ...methods,
-    children: React.createElement(
+    children: createElement(
       'form',
       { className: 'max-w-md' },
-      React.createElement(DatePicker, props)
+      createElement(DatePicker, props)
     ),
   });
 };

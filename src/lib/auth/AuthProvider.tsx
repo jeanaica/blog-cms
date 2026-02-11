@@ -36,8 +36,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
           });
 
           setIdToken(verifiedToken);
-        } catch (error) {
-          // NOOP
+        } catch {
           setIdToken('');
         }
       } else {
@@ -57,7 +56,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 
             setIdToken(token);
           }
-        } catch (error) {
+        } catch {
           setIdToken('');
         }
       },

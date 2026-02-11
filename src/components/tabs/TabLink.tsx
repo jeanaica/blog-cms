@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { Link, useLocation } from 'react-router-dom';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 type Props = {
   className?: string;
@@ -8,7 +8,6 @@ type Props = {
   text: string;
   href?: string;
   icon?: string;
-  indexHref?: string;
 };
 
 const TabLink: FC<Props> = ({
@@ -17,7 +16,6 @@ const TabLink: FC<Props> = ({
   disabled = false,
   icon,
   href = '',
-  indexHref = '/',
 }) => {
   const location = useLocation();
 
