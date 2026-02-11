@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -25,7 +25,7 @@ type LoginInput = {
 const LoginPage = () => {
   const [, setIdToken] = useSessionStorage<string>('token', '');
   const [error, setError] = useState<any>('');
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   const methods = useForm<LoginInput>({
     resolver: zodResolver(schema),
@@ -43,18 +43,16 @@ const LoginPage = () => {
 
       setIdToken(token);
 
-      window.location.href = '/post';
+      window.location.assign('/post');
     } catch (err) {
       setIdToken('');
       setError(err);
     }
   };
 
-  useEffect(() => {
-    if (isValidating) {
-      setError('');
-    }
-  }, [isValidating]);
+  if (isValidating && error) {
+    setError('');
+  }
 
   return (
     <div className='h-screen w-screen overflow-hidden prose min-w-[320px] flex justify-center content-center items-center'>

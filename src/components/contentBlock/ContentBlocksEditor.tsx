@@ -26,7 +26,10 @@ import { type BlockType, BLOCK_TYPE_META, type ContentBlock } from './types';
 const BLOCK_OPTIONS: BlockType[] = ['text', 'gallery', 'image'];
 
 const ContentBlocksEditor: FC = () => {
-  const { control, formState: { errors } } = useFormContext<{ contentBlocks: ContentBlock[] }>();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<{ contentBlocks: ContentBlock[] }>();
   const { fields, append, remove, move } = useFieldArray({
     control,
     name: 'contentBlocks',
@@ -62,7 +65,10 @@ const ContentBlocksEditor: FC = () => {
     append({ type });
     setIsDropdownOpen(false);
     requestAnimationFrame(() => {
-      lastBlockRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      lastBlockRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
     });
   };
 
@@ -156,41 +162,49 @@ const ContentBlocksEditor: FC = () => {
             const blockErrors = errors.contentBlocks?.[index];
             const isLast = index === fields.length - 1;
             return (
-            <div key={field.id} ref={isLast ? lastBlockRef : undefined}>
-              <SortableBlock
-                id={field.id}
-                index={index}
-                activeIndex={activeIndex}
-                hasError={!!blockErrors}>
-                {dragHandleProps => (
-                  <>
-                    <BlockHeader
-                      type={(field as unknown as ContentBlock).type}
-                      onRemove={() => remove(index)}
-                      hasError={!!blockErrors}
-                      {...dragHandleProps}
-                    />
-                    <div className='bg-white'>
-                      {(field as unknown as ContentBlock).type === 'text' ? (
-                        <TextBlock index={index} />
-                      ) : (field as unknown as ContentBlock).type === 'image' ? (
-                        <SingleImageBlock index={index} />
-                      ) : (field as unknown as ContentBlock).type === 'gallery' ? (
-                        <GalleryBlock index={index} />
-                      ) : (
-                        <div className='p-4'>
-                          <span className='text-sm text-gray-400 italic'>
-                            {BLOCK_TYPE_META[(field as unknown as ContentBlock).type]?.label}{' '}
-                            block content will appear here
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </>
-                )}
-              </SortableBlock>
-            </div>
-          );
+              <div
+                key={field.id}
+                ref={isLast ? lastBlockRef : undefined}>
+                <SortableBlock
+                  id={field.id}
+                  index={index}
+                  activeIndex={activeIndex}
+                  hasError={!!blockErrors}>
+                  {dragHandleProps => (
+                    <>
+                      <BlockHeader
+                        type={(field as unknown as ContentBlock).type}
+                        onRemove={() => remove(index)}
+                        hasError={!!blockErrors}
+                        {...dragHandleProps}
+                      />
+                      <div className='bg-white'>
+                        {(field as unknown as ContentBlock).type === 'text' ? (
+                          <TextBlock index={index} />
+                        ) : (field as unknown as ContentBlock).type ===
+                          'image' ? (
+                          <SingleImageBlock index={index} />
+                        ) : (field as unknown as ContentBlock).type ===
+                          'gallery' ? (
+                          <GalleryBlock index={index} />
+                        ) : (
+                          <div className='p-4'>
+                            <span className='text-sm text-gray-400 italic'>
+                              {
+                                BLOCK_TYPE_META[
+                                  (field as unknown as ContentBlock).type
+                                ]?.label
+                              }{' '}
+                              block content will appear here
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </SortableBlock>
+              </div>
+            );
           })}
         </SortableContext>
       </DndContext>

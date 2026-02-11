@@ -24,7 +24,10 @@ export async function uploadContentBlockImages(
   return Promise.all(
     blocks.map(async block => {
       if (block.type === 'image' && block.image instanceof File) {
-        const result = await uploadImage({ file: block.image, folder: `${slug}/images` });
+        const result = await uploadImage({
+          file: block.image,
+          folder: `${slug}/images`,
+        });
         if (!result.success) {
           throw new Error(result.message);
         }
@@ -44,10 +47,16 @@ export async function uploadContentBlockImages(
 
         if (filesToUpload.length > 0) {
           const galleryName = block.galleryName
-            ? block.galleryName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+            ? block.galleryName
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/(^-|-$)/g, '')
             : 'gallery';
           const galleryFolder = `${slug}/galleries/${galleryName}`;
-          const result = await uploadImages({ files: filesToUpload, folder: galleryFolder });
+          const result = await uploadImages({
+            files: filesToUpload,
+            folder: galleryFolder,
+          });
           if (!result.success) {
             throw new Error(result.message);
           }

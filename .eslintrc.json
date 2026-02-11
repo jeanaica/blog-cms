@@ -1,6 +1,7 @@
 {
   "extends": [
     "eslint:recommended",
+    "plugin:react-hooks/recommended",
     "plugin:storybook/recommended"
   ],
   "parser": "@typescript-eslint/parser",
@@ -9,13 +10,11 @@
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
-    }
+    },
+    "jsxPragma": null
   },
   "env": {
     "browser": true,
     "es2020": true
-  },
-  "rules": {
-    "no-unused-vars": "off"
   }
 }

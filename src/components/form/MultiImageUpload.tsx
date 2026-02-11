@@ -67,7 +67,7 @@ const MultiImageUpload: FC<Props> = ({
   const validateFiles = useCallback(
     (
       files: FileList | File[],
-      onChange: (value: ImageItem[]) => void,
+      onChange: (items: ImageItem[]) => void,
       current: ImageItem[]
     ) => {
       const errors: string[] = [];

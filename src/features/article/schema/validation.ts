@@ -23,10 +23,13 @@ const contentBlockSchema = z.discriminatedUnion('type', [
   }),
   z.object({
     type: z.literal('image'),
-    image: z.any().refine(
-      val => val instanceof File || (typeof val === 'string' && val.length > 0),
-      'Image is required'
-    ),
+    image: z
+      .any()
+      .refine(
+        val =>
+          val instanceof File || (typeof val === 'string' && val.length > 0),
+        'Image is required'
+      ),
     caption: z.string().optional(),
     alt: z.string().min(1, 'Alt text is required'),
   }),
@@ -41,7 +44,9 @@ const validation = z
   .object({
     title: z.string().min(1, { message: 'Required' }),
     content: z.string().optional().default(''),
-    contentBlocks: contentBlockSchema.array().min(1, 'At least one content block is required'),
+    contentBlocks: contentBlockSchema
+      .array()
+      .min(1, 'At least one content block is required'),
     slug: z
       .string()
       .min(1, { message: 'Required' })

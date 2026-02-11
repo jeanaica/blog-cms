@@ -12,8 +12,8 @@ type Props = {
   disabled?: boolean;
   caption?: string;
   alt?: string;
-  onCaptionChange?: (value: string) => void;
-  onAltChange?: (value: string) => void;
+  onCaptionChange?: (caption: string) => void;
+  onAltChange?: (alt: string) => void;
 };
 
 const SortableImageCard: FC<Props> = ({

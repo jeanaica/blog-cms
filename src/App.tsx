@@ -1,4 +1,9 @@
-import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  Navigate,
+  Outlet,
+  RouterProvider,
+} from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
 import { HelmetProvider } from 'react-helmet-async';
 
@@ -37,7 +42,15 @@ const router = createBrowserRouter([
   {
     element: <RootLayout />,
     children: [
-      { path: '/', element: <Navigate to="/post" replace /> },
+      {
+        path: '/',
+        element: (
+          <Navigate
+            to='/post'
+            replace
+          />
+        ),
+      },
       {
         element: <SharedLayout />,
         children: [

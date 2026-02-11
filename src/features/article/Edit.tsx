@@ -26,7 +26,7 @@ const Edit: FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const toast = useToast();
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
   const [dataStatus, setDataStatus] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -68,8 +68,8 @@ const Edit: FC = () => {
           data?.status === 'PUBLISHED'
             ? formatDate(data.publishedAt)
             : data?.status === 'SCHEDULED'
-            ? formatDate(data.scheduledAt)
-            : today,
+              ? formatDate(data.scheduledAt)
+              : today,
       };
     },
     [today]
@@ -96,7 +96,11 @@ const Edit: FC = () => {
 
       if (banner) {
         if (banner instanceof File) {
-          const uploadResult = await uploadImage({ file: banner, folder: `${slug}/banner`, isBanner: true });
+          const uploadResult = await uploadImage({
+            file: banner,
+            folder: `${slug}/banner`,
+            isBanner: true,
+          });
           if (!uploadResult.success) {
             throw new Error(uploadResult.message);
           }

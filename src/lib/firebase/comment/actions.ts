@@ -11,11 +11,7 @@ import { db } from '../client';
 import { Comment } from './types';
 
 export const deleteComment = async (id: string) => {
-  try {
-    await deleteDoc(doc(db, 'comment', id));
-  } catch (error) {
-    throw error;
-  }
+  await deleteDoc(doc(db, 'comment', id));
 };
 
 export const editComment = async ({
@@ -24,21 +20,17 @@ export const editComment = async ({
   postTitle,
   comment,
 }: Comment) => {
-  try {
-    const commentDocRef = doc(db, 'comment', id);
-    const dateServer = serverTimestamp();
-    await updateDoc(commentDocRef, {
-      name: 'Jeanaica',
-      postId,
-      postTitle,
-      comment,
-      modifiedDate: dateServer,
-      isUnread: false,
-      isReply: true,
-    });
-  } catch (error) {
-    throw error;
-  }
+  const commentDocRef = doc(db, 'comment', id);
+  const dateServer = serverTimestamp();
+  await updateDoc(commentDocRef, {
+    name: 'Jeanaica',
+    postId,
+    postTitle,
+    comment,
+    modifiedDate: dateServer,
+    isUnread: false,
+    isReply: true,
+  });
 };
 
 export const replyComment = async ({
@@ -52,29 +44,25 @@ export const replyComment = async ({
   comment: string;
   commentId: string;
 }) => {
-  try {
-    const newCommentDocRef = collection(db, 'comment');
-    const commentDocRef = doc(db, 'comment', commentId);
+  const newCommentDocRef = collection(db, 'comment');
+  const commentDocRef = doc(db, 'comment', commentId);
 
-    const dateServer = serverTimestamp();
+  const dateServer = serverTimestamp();
 
-    await addDoc(newCommentDocRef, {
-      name: 'Jeanaica',
-      postId,
-      postTitle,
-      comment,
-      modifiedDate: dateServer,
-      publishedDate: dateServer,
-      postedDate: dateServer,
-      isUnread: false,
-      isReply: true,
-    });
+  await addDoc(newCommentDocRef, {
+    name: 'Jeanaica',
+    postId,
+    postTitle,
+    comment,
+    modifiedDate: dateServer,
+    publishedDate: dateServer,
+    postedDate: dateServer,
+    isUnread: false,
+    isReply: true,
+  });
 
-    await updateDoc(commentDocRef, {
-      publishedDate: dateServer,
-      isUnread: false,
-    });
-  } catch (error) {
-    throw error;
-  }
+  await updateDoc(commentDocRef, {
+    publishedDate: dateServer,
+    isUnread: false,
+  });
 };

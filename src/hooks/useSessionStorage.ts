@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-type SessionStorageHook<T> = [T | undefined, (value: T) => void];
+type SessionStorageHook<T> = [T | undefined, (newValue: T) => void];
 
 export default function useSessionStorage<T>(
   key: string,

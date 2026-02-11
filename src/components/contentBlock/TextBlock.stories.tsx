@@ -39,6 +39,7 @@ export const Empty: Story = {
 export const WithContent: Story = {
   render: () =>
     React.createElement(FormWrapper, {
-      content: '<h2>Hello World</h2><p>This is some <strong>rich text</strong> content.</p>',
+      content:
+        '<h2>Hello World</h2><p>This is some <strong>rich text</strong> content.</p>',
     }),
 };
