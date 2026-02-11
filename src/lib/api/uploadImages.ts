@@ -4,10 +4,15 @@ type UploadResult = {
   urls: string[];
 };
 
-const uploadImages = async (
-  files: File[],
-  folder: string = 'images'
-): Promise<UploadResult> => {
+type UploadImagesParams = {
+  files: File[];
+  folder?: string;
+};
+
+const uploadImages = async ({
+  files,
+  folder = 'images',
+}: UploadImagesParams): Promise<UploadResult> => {
   try {
     const sessionToken = window?.sessionStorage?.getItem('token');
     const token = sessionToken ? JSON.parse(sessionToken) : '';

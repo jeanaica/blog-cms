@@ -4,10 +4,17 @@ type UploadResult = {
   url: string | null;
 };
 
-const uploadImage = async (
-  file: File,
-  folder: string = 'images'
-): Promise<UploadResult> => {
+type UploadImageParams = {
+  file: File;
+  folder?: string;
+  isBanner?: boolean;
+};
+
+const uploadImage = async ({
+  file,
+  folder = 'images',
+  isBanner = false,
+}: UploadImageParams): Promise<UploadResult> => {
   try {
     const sessionToken = window?.sessionStorage?.getItem('token');
     const token = sessionToken ? JSON.parse(sessionToken) : '';
@@ -15,6 +22,9 @@ const uploadImage = async (
     const formData = new FormData();
     formData.append('file', file);
     formData.append('folder', folder);
+    if (isBanner) {
+      formData.append('isBanner', 'true');
+    }
 
     const response = await fetch(import.meta.env.VITE_UPLOAD_URL, {
       method: 'POST',
