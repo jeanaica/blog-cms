@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
 import Container from 'components/container/Container';
-import Alert from 'components/Alert';
+import Alert from 'components/alert/Alert';
 import Editor from 'components/form/Editor';
 import LoadingModal from 'components/form/LoadingModal';
 import UnsavedChangesModal from 'components/form/UnsavedChangesModal';

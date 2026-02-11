@@ -2,7 +2,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 
 import Nav from 'components/nav/Nav';
-import Loading from 'components/Loading';
+import Loading from 'components/loading/Loading';
 
 import { useAuth } from 'lib/auth/AuthContext';
 

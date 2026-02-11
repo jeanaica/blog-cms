@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import Input from 'components/form/Input';
-import Menu from 'components/Menu';
+import Menu from 'components/menu/Menu';
 import Button from 'components/button/Button';
 
 type Props = {

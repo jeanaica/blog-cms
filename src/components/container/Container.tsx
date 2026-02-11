@@ -2,7 +2,7 @@ import { FC, ReactElement } from 'react';
 import classNames from 'classnames';
 import useTranslation from 'hooks/useTranslation';
 
-import Loading from 'components/Loading';
+import Loading from 'components/loading/Loading';
 
 import Empty from './Empty';
 
