@@ -1,15 +1,21 @@
 import React, { FC } from 'react';
 
+import { Status } from '../types/Status';
+
+import DateLabel from './DateLabel';
+
 type Props = {
   title: string;
   content: string;
   updatedAt: number;
+  publishedAt?: number;
+  archivedAt?: number;
+  status: Status;
 };
 
 const REGEX = /(<([^>]+)>)/gi;
 
-const Content: FC<Props> = ({ title, content, updatedAt }) => {
-  const formattedDate = new Date(updatedAt).toLocaleString();
+const Content: FC<Props> = ({ title, content, updatedAt, publishedAt, archivedAt, status }) => {
   const strippedContent = content.replace(REGEX, ' ');
 
   return (
@@ -18,8 +24,13 @@ const Content: FC<Props> = ({ title, content, updatedAt }) => {
       <div className='text-ellipsis overflow-hidden whitespace-nowrap flex-col'>
         <span className='font-PoppinsExtraLight'>{strippedContent}</span>
       </div>
-      <div>
-        <span className='font-PoppinsExtraLight text-xs'>{formattedDate}</span>
+      <div className='not-prose font-PoppinsExtraLight text-xs'>
+        <DateLabel
+          updatedAt={updatedAt}
+          publishedAt={publishedAt}
+          archivedAt={archivedAt}
+          status={status}
+        />
       </div>
     </div>
   );

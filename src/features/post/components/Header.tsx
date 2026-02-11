@@ -34,7 +34,7 @@ const Header: FC<Props> = ({ onChange }) => {
         label='Filter by status:'
         options={options}
         onChange={handleStatusChange}
-        defaultValue={options[0]}
+        defaultValue={options[1]}
       />
       <Dropdown
         label='Sort:'

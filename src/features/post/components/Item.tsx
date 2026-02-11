@@ -22,17 +22,21 @@ const Item: FC<Props> = ({ id, post, onUpdate, loading }) => {
   const handlePostClick: MouseEventHandler<HTMLDivElement> = e => {
     e.stopPropagation();
     e.preventDefault();
-    if (!loading && status !== 'archived') {
+    if (!loading) {
       navigate(`/article/${id}/edit`);
     }
   };
 
+  const isMobile = () => window.innerWidth < 768;
+
   const handleHover: MouseEventHandler = e => {
+    if (isMobile()) return;
     e.stopPropagation();
     setShowActions(id);
   };
 
   const handleLeaveHover: MouseEventHandler = e => {
+    if (isMobile()) return;
     e.stopPropagation();
     setShowActions('');
   };
@@ -55,10 +59,26 @@ const Item: FC<Props> = ({ id, post, onUpdate, loading }) => {
     [id, onUpdate]
   );
 
-  const handleDelete: MouseEventHandler = useCallback(
+  const handlePublish: MouseEventHandler = useCallback(
+    e => {
+      e.stopPropagation();
+      onUpdate(id, 'PUBLISHED');
+    },
+    [id, onUpdate]
+  );
+
+  const handleArchive: MouseEventHandler = useCallback(
     e => {
       e.stopPropagation();
       onUpdate(id, 'ARCHIVED');
+    },
+    [id, onUpdate]
+  );
+
+  const handleDelete: MouseEventHandler = useCallback(
+    e => {
+      e.stopPropagation();
+      onUpdate(id, 'DELETED');
     },
     [id, onUpdate]
   );
@@ -70,9 +90,9 @@ const Item: FC<Props> = ({ id, post, onUpdate, loading }) => {
       onClick={handlePostClick}
       title='Edit post'
       className={classNames(
-        'flex border border-slate-300 p-4 my-4 bg-white hover:drop-shadow-md rounded',
+        'flex overflow-visible relative border border-slate-300 p-4 my-4 bg-white hover:drop-shadow-md rounded',
         {
-          'cursor-not-allowed': loading || status === 'archived',
+          'cursor-not-allowed': loading,
           'bg-gray-200': status === 'archived',
         }
       )}
@@ -83,7 +103,9 @@ const Item: FC<Props> = ({ id, post, onUpdate, loading }) => {
       <Actions
         id={post.id}
         status={status}
+        onPublish={handlePublish}
         onMoveToDrafts={handleMoveToDraft}
+        onArchive={handleArchive}
         onDelete={handleDelete}
         onMore={handleClickMore}
         loading={loading}

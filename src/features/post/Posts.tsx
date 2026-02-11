@@ -18,7 +18,7 @@ const Posts = () => {
   const { t } = useTranslation('common');
   const [selectedOption, setSelectedOption] = useState<{
     [option: string]: string | null;
-  }>({ status: null, sort: 'desc' });
+  }>({ status: 'PUBLISHED', sort: 'desc' });
 
   const { loading, data, refetch } = useQuery(GET_POST_BY_STATUS, {
     variables: {
