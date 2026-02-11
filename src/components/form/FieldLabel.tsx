@@ -13,7 +13,10 @@ const FieldLabel: FC<Props> = ({ htmlFor, children, className }) => {
   return (
     <label
       htmlFor={htmlFor}
-      className={classNames('block text-sm font-semibold text-primary', className)}>
+      className={classNames(
+        'block text-sm font-semibold text-primary',
+        className
+      )}>
       {children}
     </label>
   );

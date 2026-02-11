@@ -1,5 +1,9 @@
 import { type DragEvent, type FC, useState } from 'react';
-import { type RegisterOptions, useFormContext, Controller } from 'react-hook-form';
+import {
+  type RegisterOptions,
+  useFormContext,
+  Controller,
+} from 'react-hook-form';
 import classNames from 'classnames';
 
 import Icon from 'components/icon/Icon';
@@ -77,13 +81,17 @@ const FileImage: FC<Props> = ({
             htmlFor={`${name}-input`}
             onDragOver={!isDisabled ? handleDrag : undefined}
             onDragLeave={!isDisabled ? handleDrag : undefined}
-            onDrop={!isDisabled ? e => {
-              e.preventDefault();
-              e.stopPropagation();
-              setDragActive(false);
-              const file = e.dataTransfer.files[0];
-              if (file && validateFile(file)) onChange(file);
-            } : undefined}
+            onDrop={
+              !isDisabled
+                ? e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setDragActive(false);
+                    const file = e.dataTransfer.files[0];
+                    if (file && validateFile(file)) onChange(file);
+                  }
+                : undefined
+            }
             className={classNames(
               'flex flex-col items-center justify-center w-full h-64 border border-dashed cursor-pointer bg-gray-50 rounded-md shadow-sm px-4 py-2',
               {
@@ -100,15 +108,19 @@ const FileImage: FC<Props> = ({
                     typeof value === 'string'
                       ? value
                       : value instanceof File
-                      ? URL.createObjectURL(value)
-                      : ''
+                        ? URL.createObjectURL(value)
+                        : ''
                   }
                   alt='Image Preview'
                   className='max-h-56 max-w-full object-contain'
                 />
               ) : (
                 <>
-                  <Icon icon='cloud_upload' size={64} className='text-gray-400 mb-3' />
+                  <Icon
+                    icon='cloud_upload'
+                    size={64}
+                    className='text-gray-400 mb-3'
+                  />
                   <p className='mb-2 text-sm text-gray-500 text-center'>
                     <span className='font-semibold'>Click to upload</span> or
                     drag and drop

@@ -61,7 +61,12 @@ export const Disabled: Story = {
 };
 
 export const Password: Story = {
-  args: { label: 'Password', name: 'password', type: 'password', placeholder: 'Enter password' },
+  args: {
+    label: 'Password',
+    name: 'password',
+    type: 'password',
+    placeholder: 'Enter password',
+  },
 };
 
 export const Number: Story = {

@@ -44,7 +44,12 @@ type Props = {
   showMetadata?: boolean;
 };
 
-const MultiImageUpload: FC<Props> = ({ name, disabled, maxImages, showMetadata }) => {
+const MultiImageUpload: FC<Props> = ({
+  name,
+  disabled,
+  maxImages,
+  showMetadata,
+}) => {
   const {
     control,
     formState: { isSubmitting },
@@ -71,9 +76,7 @@ const MultiImageUpload: FC<Props> = ({ name, disabled, maxImages, showMetadata }
 
       Array.from(files).forEach(file => {
         if (newItems.length >= remaining) {
-          errors.push(
-            `"${file.name}" — Maximum ${maxImages} images allowed.`
-          );
+          errors.push(`"${file.name}" — Maximum ${maxImages} images allowed.`);
           return;
         }
 
@@ -153,8 +156,16 @@ const MultiImageUpload: FC<Props> = ({ name, disabled, maxImages, showMetadata }
           }
         };
 
-        const handleMetadataChange = (id: string, field: 'caption' | 'alt', value: string) => {
-          onChange(items.map(item => item.id === id ? { ...item, [field]: value } : item));
+        const handleMetadataChange = (
+          id: string,
+          field: 'caption' | 'alt',
+          value: string
+        ) => {
+          onChange(
+            items.map(item =>
+              item.id === id ? { ...item, [field]: value } : item
+            )
+          );
         };
 
         const atMaxCapacity = maxImages ? items.length >= maxImages : false;
@@ -162,50 +173,57 @@ const MultiImageUpload: FC<Props> = ({ name, disabled, maxImages, showMetadata }
         return (
           <div className='w-full space-y-3'>
             {!atMaxCapacity && (
-            <label
-              htmlFor={`${name}-input`}
-              onDragOver={handleDrag}
-              onDragLeave={handleDrag}
-              onDrop={handleDrop}
-              className={classNames(
-                'flex flex-col items-center justify-center w-full h-40 border border-dashed cursor-pointer bg-gray-50 rounded-md px-4 py-2',
-                {
-                  'border-secondary-700 bg-secondary-100': dragActive,
-                  'border-error-300': error || fileErrors.length > 0,
-                  'border-secondary-300':
-                    !error && fileErrors.length === 0 && !dragActive,
-                  'opacity-50 cursor-not-allowed': isDisabled,
-                }
-              )}>
-              <Icon icon='add_photo_alternate' size={48} className='text-gray-400 mb-2' />
-              <p className='text-sm text-gray-500 text-center'>
-                <span className='font-semibold'>Click to upload</span> or drag
-                and drop
-              </p>
-              <p className='text-xs text-gray-500 text-center'>
-                PNG, JPG, JPEG or WEBP (MAX. 10MB each)
-              </p>
-              <input
-                className='hidden'
-                id={`${name}-input`}
-                type='file'
-                multiple
-                accept='image/jpeg,image/png,image/webp'
-                onChange={e => {
-                  if (e.target.files && e.target.files.length > 0) {
-                    validateFiles(e.target.files, onChange, items);
-                    e.target.value = '';
+              <label
+                htmlFor={`${name}-input`}
+                onDragOver={handleDrag}
+                onDragLeave={handleDrag}
+                onDrop={handleDrop}
+                className={classNames(
+                  'flex flex-col items-center justify-center w-full h-40 border border-dashed cursor-pointer bg-gray-50 rounded-md px-4 py-2',
+                  {
+                    'border-secondary-700 bg-secondary-100': dragActive,
+                    'border-error-300': error || fileErrors.length > 0,
+                    'border-secondary-300':
+                      !error && fileErrors.length === 0 && !dragActive,
+                    'opacity-50 cursor-not-allowed': isDisabled,
                   }
-                }}
-                disabled={isDisabled}
-              />
-            </label>
+                )}>
+                <Icon
+                  icon='add_photo_alternate'
+                  size={48}
+                  className='text-gray-400 mb-2'
+                />
+                <p className='text-sm text-gray-500 text-center'>
+                  <span className='font-semibold'>Click to upload</span> or drag
+                  and drop
+                </p>
+                <p className='text-xs text-gray-500 text-center'>
+                  PNG, JPG, JPEG or WEBP (MAX. 10MB each)
+                </p>
+                <input
+                  className='hidden'
+                  id={`${name}-input`}
+                  type='file'
+                  multiple
+                  accept='image/jpeg,image/png,image/webp'
+                  onChange={e => {
+                    if (e.target.files && e.target.files.length > 0) {
+                      validateFiles(e.target.files, onChange, items);
+                      e.target.value = '';
+                    }
+                  }}
+                  disabled={isDisabled}
+                />
+              </label>
             )}
 
             {fileErrors.length > 0 && (
               <div className='space-y-1'>
                 {fileErrors.map((err, i) => (
-                  <FieldError key={i} message={err} />
+                  <FieldError
+                    key={i}
+                    message={err}
+                  />
                 ))}
               </div>
             )}
@@ -228,8 +246,16 @@ const MultiImageUpload: FC<Props> = ({ name, disabled, maxImages, showMetadata }
                         disabled={isDisabled}
                         caption={showMetadata ? item.caption : undefined}
                         alt={showMetadata ? item.alt : undefined}
-                        onCaptionChange={showMetadata ? v => handleMetadataChange(item.id, 'caption', v) : undefined}
-                        onAltChange={showMetadata ? v => handleMetadataChange(item.id, 'alt', v) : undefined}
+                        onCaptionChange={
+                          showMetadata
+                            ? v => handleMetadataChange(item.id, 'caption', v)
+                            : undefined
+                        }
+                        onAltChange={
+                          showMetadata
+                            ? v => handleMetadataChange(item.id, 'alt', v)
+                            : undefined
+                        }
                       />
                     ))}
                   </div>
@@ -237,7 +263,10 @@ const MultiImageUpload: FC<Props> = ({ name, disabled, maxImages, showMetadata }
               </DndContext>
             )}
 
-            <FieldError message={error?.message} className='block' />
+            <FieldError
+              message={error?.message}
+              className='block'
+            />
           </div>
         );
       }}

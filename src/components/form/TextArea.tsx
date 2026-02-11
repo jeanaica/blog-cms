@@ -25,7 +25,6 @@ const TextArea: FC<Props> = ({
   isSubmitting,
   ...rest
 }) => {
-
   const {
     register,
     formState: { errors },
