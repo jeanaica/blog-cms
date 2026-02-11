@@ -46,7 +46,7 @@ const Posts = () => {
         toast('success', message);
 
         refetch();
-      } catch (e) {
+      } catch {
         message = t('updateFail');
         toast('error', message);
       }

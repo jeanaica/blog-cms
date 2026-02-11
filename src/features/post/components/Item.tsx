@@ -1,4 +1,4 @@
-import React, { FC, MouseEventHandler, useCallback, useState } from 'react';
+import { type FC, type MouseEventHandler, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 

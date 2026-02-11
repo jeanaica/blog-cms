@@ -1,4 +1,4 @@
-import { ReactNode, useLayoutEffect, useState } from 'react';
+import { ReactNode, useSyncExternalStore, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 
 type Props = {
@@ -14,30 +14,32 @@ function createWrapperAndAppendToBody(wrapperId: string) {
 }
 
 function ReactPortal({ children, wrapperId = 'portal-root' }: Props) {
-  const [wrapperElement, setWrapperElement] = useState<HTMLElement | null>(
-    null
+  const elementRef = useRef<HTMLElement | null>(null);
+
+  const subscribe = useCallback(
+    (onStoreChange: () => void) => {
+      let element = document.getElementById(wrapperId);
+      let systemCreated = false;
+
+      if (!element) {
+        systemCreated = true;
+        element = createWrapperAndAppendToBody(wrapperId);
+      }
+      elementRef.current = element;
+      onStoreChange();
+
+      return () => {
+        if (systemCreated && element && element.parentNode) {
+          element.parentNode.removeChild(element);
+        }
+        elementRef.current = null;
+      };
+    },
+    [wrapperId]
   );
 
-  useLayoutEffect(() => {
-    let element = document.getElementById(wrapperId);
-    let systemCreated = false;
-    // if element is not found with wrapperId or wrapperId is not provided,
-    // create and append to body
-    if (!element) {
-      systemCreated = true;
-      element = createWrapperAndAppendToBody(wrapperId);
-    }
-    setWrapperElement(element);
+  const wrapperElement = useSyncExternalStore(subscribe, () => elementRef.current);
 
-    return () => {
-      // delete the programatically created element
-      if (systemCreated && element && element.parentNode) {
-        element.parentNode.removeChild(element);
-      }
-    };
-  }, [wrapperId]);
-
-  // wrapperElement state will be null on the very first render.
   if (wrapperElement === null) return null;
 
   return createPortal(children, wrapperElement);

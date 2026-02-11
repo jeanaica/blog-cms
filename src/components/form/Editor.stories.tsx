@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import React from 'react';
+import { type ComponentProps, createElement, useEffect } from 'react';
 import { useForm, FormProvider, type FieldValues } from 'react-hook-form';
 
 import Editor from './Editor';
@@ -8,7 +8,7 @@ const FormWrapper = ({
   error,
   defaultContent,
   ...props
-}: React.ComponentProps<typeof Editor> & {
+}: ComponentProps<typeof Editor> & {
   error?: string;
   defaultContent?: string;
 }) => {
@@ -16,18 +16,18 @@ const FormWrapper = ({
     defaultValues: { [props.name]: defaultContent ?? '' },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (error) {
       methods.setError(props.name, { message: error });
     }
-  }, [error]);
+  }, [error, methods, props.name]);
 
-  return React.createElement(FormProvider, {
+  return createElement(FormProvider, {
     ...methods,
-    children: React.createElement(
+    children: createElement(
       'form',
       { className: 'max-w-2xl' },
-      React.createElement(Editor, props)
+      createElement(Editor, props)
     ),
   });
 };
