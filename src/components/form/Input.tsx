@@ -46,7 +46,11 @@ const Input: FC<Props> = ({
   return (
     <div className='w-full mb-4'>
       {label && (
-        <FieldLabel htmlFor={name} className='mb-1'>{label}</FieldLabel>
+        <FieldLabel
+          htmlFor={name}
+          className='mb-1'>
+          {label}
+        </FieldLabel>
       )}
       <div className='relative w-full h-full'>
         <input
@@ -65,10 +69,13 @@ const Input: FC<Props> = ({
           )}
           placeholder={placeholder}
           aria-describedby={name}
-          disabled={disabled || isSubmitting}
+          disabled={disabled || readOnly || isSubmitting}
           autoComplete={
-            type === 'password' && autoComplete ? autoComplete : 'password'
+            readOnly
+              ? 'off'
+              : autoComplete ?? (type === 'password' ? 'current-password' : undefined)
           }
+          data-lpignore={disabled || readOnly || undefined}
         />
 
         {error && <FieldErrorIcon />}

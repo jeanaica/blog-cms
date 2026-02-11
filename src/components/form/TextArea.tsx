@@ -14,17 +14,17 @@ type Props = {
   isSubmitting?: boolean;
 } & TextareaHTMLAttributes<HTMLTextAreaElement>;
 
-const TextArea: FC<Props> = props => {
-  const {
-    label,
-    helperText = '',
-    name,
-    className,
-    rows = 5,
-    readOnly,
-    disabled,
-    isSubmitting,
-  } = props;
+const TextArea: FC<Props> = ({
+  label,
+  helperText = '',
+  name,
+  className,
+  rows = 5,
+  readOnly,
+  disabled,
+  isSubmitting,
+  ...rest
+}) => {
 
   const {
     register,
@@ -34,12 +34,16 @@ const TextArea: FC<Props> = props => {
   return (
     <div className='w-full mb-4'>
       {label && (
-        <FieldLabel htmlFor={name} className='text-left mb-1'>{label}</FieldLabel>
+        <FieldLabel
+          htmlFor={name}
+          className='text-left mb-1'>
+          {label}
+        </FieldLabel>
       )}
       <div className='relative w-full h-full'>
         <textarea
           {...register(name)}
-          {...props}
+          {...rest}
           rows={rows}
           id={name}
           readOnly={readOnly}
@@ -54,8 +58,10 @@ const TextArea: FC<Props> = props => {
           disabled={disabled || isSubmitting}
         />
       </div>
-      <HelperText text={helperText} />
-      <FieldError message={errors[name]?.message as string} />
+      <div className='-mt-[6px]'>
+        <HelperText text={helperText} />
+        <FieldError message={errors[name]?.message as string} />
+      </div>
     </div>
   );
 };
