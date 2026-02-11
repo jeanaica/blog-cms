@@ -1,6 +1,14 @@
-import { DragEvent, FC, useState } from 'react';
-import { useFormContext, Controller } from 'react-hook-form';
+import { type DragEvent, type FC, useState } from 'react';
+import { type RegisterOptions, useFormContext, Controller } from 'react-hook-form';
 import classNames from 'classnames';
+
+import Icon from 'components/icon/Icon';
+
+import FieldError from './FieldError';
+import FieldLabel from './FieldLabel';
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 type Props = {
   label: string;
@@ -8,26 +16,26 @@ type Props = {
   name: string;
   disabled?: boolean;
   loading?: boolean;
-  defaultValue?: string;
+  rules?: RegisterOptions;
 };
 
 const FileImage: FC<Props> = ({
   label,
-  helperText = '',
+  helperText = 'PNG, JPG, JPEG or WEBP (MAX. 10MB)',
   name,
   disabled,
   loading,
+  rules,
 }) => {
   const {
     control,
-    register,
-    watch,
-    setValue,
-    setError,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = useFormContext();
-  const fileUploaded = watch(name);
+
   const [dragActive, setDragActive] = useState(false);
+  const [fileError, setFileError] = useState<string | null>(null);
+
+  const isDisabled = disabled || isSubmitting || loading;
 
   const handleDrag = (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
@@ -40,116 +48,92 @@ const FileImage: FC<Props> = ({
     }
   };
 
-  // triggers when file is dropped
-  const handleDrop = (e: DragEvent<HTMLElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    handleFile(e.dataTransfer.files[0]);
-  };
-
-  const handleFile = (file?: File) => {
-    if (!file) return;
-
-    const maxFileSize = 10 * 1024 * 1024;
-    const allowedTypes = ['image/jpeg', 'image/png'];
-
-    if (!allowedTypes.includes(file.type)) {
-      setError(name, {
-        message: 'Only .jpg, .jpeg, and .png formats are supported.',
-      });
-      return;
+  const validateFile = (file: File): boolean => {
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setFileError('Only .jpg, .png, and .webp formats are supported.');
+      return false;
     }
 
-    if (file.size > maxFileSize) {
-      setError(name, { message: 'Max image size is 10MB.' });
-      return;
+    if (file.size > MAX_FILE_SIZE) {
+      setFileError('Max image size is 10MB.');
+      return false;
     }
 
-    setValue(name, file, { shouldValidate: true, shouldDirty: true });
+    setFileError(null);
+    return true;
   };
 
   return (
-    <div className='flex-col items-center justify-center w-full mb-4'>
-      <div className='block text-sm font-semibold text-primary'>{label}</div>
-      <label
-        htmlFor={name}
-        onDragOver={handleDrag}
-        onDragLeave={handleDrag}
-        onDrop={handleDrop}
-        className={classNames(
-          'flex flex-col items-center justify-center w-full h-64 border border-dashed cursor-pointer bg-gray-50 border-secondary-300 rounded-md shadow-sm px-4 py-2',
-          {
-            'focus:ring-primary-900 border-secondary-700 bg-secondary-100 focus:border-primary-900':
-              dragActive,
-            'focus:ring-error-300 border-error-300 focus:border-error-300':
-              errors[name],
-            'focus:ring-primary-500 border-secondary-300 focus:border-primary-500':
-              !errors[name],
-          }
-        )}>
-        <div className='flex flex-col items-center justify-center'>
-          {fileUploaded ? (
-            <div
-              style={{
-                width: '300px',
-                paddingTop: 'calc(200 / 300 * 100%)',
-                position: 'relative',
-              }}>
-              <img
-                id={`${name}-preview`}
-                src={
-                  typeof fileUploaded === 'string'
-                    ? fileUploaded
-                    : fileUploaded instanceof File
-                    ? URL.createObjectURL(fileUploaded)
-                    : ''
-                }
-                alt='Image Preview'
-                className='absolute top-0 left-0 w-full h-full object-contain m-0'
-              />
+    <Controller
+      control={control}
+      name={name}
+      rules={rules}
+      render={({ field: { onChange, value }, fieldState: { error } }) => (
+        <div className='flex-col items-center justify-center w-full mb-4'>
+          <FieldLabel>{label}</FieldLabel>
+          <label
+            htmlFor={`${name}-input`}
+            onDragOver={handleDrag}
+            onDragLeave={handleDrag}
+            onDrop={e => {
+              e.preventDefault();
+              e.stopPropagation();
+              setDragActive(false);
+              const file = e.dataTransfer.files[0];
+              if (file && validateFile(file)) onChange(file);
+            }}
+            className={classNames(
+              'flex flex-col items-center justify-center w-full h-64 border border-dashed cursor-pointer bg-gray-50 rounded-md shadow-sm px-4 py-2',
+              {
+                'border-secondary-700 bg-secondary-100': dragActive,
+                'border-error-300': error || fileError,
+                'border-secondary-300': !error && !fileError && !dragActive,
+                'opacity-50 cursor-not-allowed': isDisabled,
+              }
+            )}>
+            <div className='flex flex-col items-center justify-center'>
+              {value ? (
+                <img
+                  src={
+                    typeof value === 'string'
+                      ? value
+                      : value instanceof File
+                      ? URL.createObjectURL(value)
+                      : ''
+                  }
+                  alt='Image Preview'
+                  className='max-h-56 max-w-full object-contain'
+                />
+              ) : (
+                <>
+                  <Icon icon='cloud_upload' size={64} className='text-gray-400 mb-3' />
+                  <p className='mb-2 text-sm text-gray-500 text-center'>
+                    <span className='font-semibold'>Click to upload</span> or
+                    drag and drop
+                  </p>
+                  <p className='text-xs text-gray-500 text-center'>
+                    {helperText}
+                  </p>
+                </>
+              )}
             </div>
-          ) : (
-            <>
-              <span className='material-icons-outlined text-gray-400 mb-3 text-[4rem]'>
-                cloud_upload
-              </span>
-              <p className='mb-2 text-sm text-gray-500 text-center'>
-                <span className='font-semibold'>Click to upload</span> or drag
-                and drop
-              </p>
-              <p className='text-xs text-gray-500 text-center'>{helperText}</p>
-            </>
-          )}
-        </div>
-
-        <Controller
-          control={control}
-          name={name}
-          render={({ field: { ref } }) => (
             <input
-              {...register(name)}
               className='hidden'
-              aria-describedby='file_input_help'
-              ref={ref}
-              id={name}
-              name={name}
+              id={`${name}-input`}
               type='file'
-              accept='image/*'
-              onChange={event => {
-                if (event.target.files && event.target.files[0]) {
-                  handleFile(event.target.files[0]);
-                }
+              accept='image/jpeg,image/png,image/webp'
+              onChange={e => {
+                const file = e.target.files?.[0];
+                if (file && validateFile(file)) onChange(file);
+                e.target.value = '';
               }}
-              disabled={disabled || isSubmitting || loading}
+              disabled={isDisabled}
             />
-          )}
-        />
-      </label>
-      {errors[name] && (
-        <span className='text-sm text-error-300'>{`${errors[name]?.message}`}</span>
+          </label>
+          <FieldError message={fileError || error?.message} />
+        </div>
       )}
-    </div>
+    />
   );
 };
 

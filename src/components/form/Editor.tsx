@@ -4,6 +4,10 @@ import { useFormContext, Controller, type RegisterOptions } from 'react-hook-for
 
 import { getNestedError } from 'utils/getNestedError';
 
+import FieldError from './FieldError';
+import FieldLabel from './FieldLabel';
+import HelperText from './HelperText';
+
 import 'react-quill/dist/quill.snow.css';
 
 const ReactQuill = lazy(() => import('react-quill'));
@@ -54,13 +58,7 @@ const Editor: FC<Props> = ({
 
   return (
     <div className={classNames('w-full mb-4', className)}>
-      {label && (
-        <label
-          htmlFor={name}
-          className='block text-sm font-semibold text-primary'>
-          {label}
-        </label>
-      )}
+      {label && <FieldLabel htmlFor={name}>{label}</FieldLabel>}
       <div className='relative mt-1 w-full'>
         <Controller
           control={control}
@@ -86,12 +84,8 @@ const Editor: FC<Props> = ({
         />
       </div>
       <div>
-        {helperText !== '' && (
-          <p className='text-xs text-secondary-500'>{helperText}</p>
-        )}
-        {error && (
-          <span className='text-sm text-error-300'>{`${error?.message}`}</span>
-        )}
+        <HelperText text={helperText} />
+        <FieldError message={error?.message} />
       </div>
     </div>
   );

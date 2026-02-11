@@ -1,10 +1,13 @@
-import { FC } from 'react';
+import { type FC } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
-import { MultiValue, StylesConfig } from 'react-select';
+import { type MultiValue, type StylesConfig } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
 import toTitleCase from 'utils/toTitleCase';
 
+import FieldError from '../FieldError';
+import FieldLabel from '../FieldLabel';
+import HelperText from '../HelperText';
 import MultiValueRemove from './MultiValueRemove';
 
 type Props = {
@@ -69,11 +72,7 @@ const CreatablePill: FC<Props> = ({
 
   return (
     <div className='w-full mb-4'>
-      <label
-        htmlFor={name}
-        className='block text-sm font-semibold text-primary'>
-        {label}
-      </label>
+      <FieldLabel htmlFor={name}>{label}</FieldLabel>
       <div className='relative mt-1 w-full'>
         <Controller
           control={control}
@@ -113,12 +112,8 @@ const CreatablePill: FC<Props> = ({
         />
       </div>
       <div>
-        {helperText !== '' && (
-          <p className='text-xs text-secondary-500'>{helperText}</p>
-        )}
-        {errors[name] && (
-          <span className='text-sm text-error-300'>{`${errors[name]?.message}`}</span>
-        )}
+        <HelperText text={helperText} />
+        <FieldError message={errors[name]?.message as string} />
       </div>
     </div>
   );

@@ -1,6 +1,10 @@
-import { FC, TextareaHTMLAttributes } from 'react';
+import { type FC, type TextareaHTMLAttributes } from 'react';
 import { useFormContext } from 'react-hook-form';
 import classNames from 'classnames';
+
+import FieldError from './FieldError';
+import FieldLabel from './FieldLabel';
+import HelperText from './HelperText';
 
 type Props = {
   label: string;
@@ -30,11 +34,7 @@ const TextArea: FC<Props> = props => {
   return (
     <div className='w-full mb-4'>
       {label && (
-        <label
-          htmlFor={name}
-          className='block text-sm font-semibold text-primary text-left mb-1'>
-          {label}
-        </label>
+        <FieldLabel htmlFor={name} className='text-left mb-1'>{label}</FieldLabel>
       )}
       <div className='relative w-full h-full'>
         <textarea
@@ -54,13 +54,8 @@ const TextArea: FC<Props> = props => {
           disabled={disabled || isSubmitting}
         />
       </div>
-      {helperText !== '' && (
-        <p className='text-xs text-secondary-500'>{helperText}</p>
-      )}
-
-      {errors[name] && (
-        <span className='text-sm text-error-300'>{`${errors[name]?.message}`}</span>
-      )}
+      <HelperText text={helperText} />
+      <FieldError message={errors[name]?.message as string} />
     </div>
   );
 };

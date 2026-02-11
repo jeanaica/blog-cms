@@ -17,6 +17,7 @@ import classNames from 'classnames';
 
 import Icon from 'components/icon/Icon';
 
+import FieldError from './FieldError';
 import SortableImageCard from './SortableImageCard';
 
 export type ImageItem = {
@@ -204,11 +205,7 @@ const MultiImageUpload: FC<Props> = ({ name, disabled, maxImages, showMetadata }
             {fileErrors.length > 0 && (
               <div className='space-y-1'>
                 {fileErrors.map((err, i) => (
-                  <p
-                    key={i}
-                    className='text-sm text-error-300'>
-                    {err}
-                  </p>
+                  <FieldError key={i} message={err} />
                 ))}
               </div>
             )}
@@ -240,11 +237,7 @@ const MultiImageUpload: FC<Props> = ({ name, disabled, maxImages, showMetadata }
               </DndContext>
             )}
 
-            {error && (
-              <span className='text-sm text-error-300 block'>
-                {error.message}
-              </span>
-            )}
+            <FieldError message={error?.message} className='block' />
           </div>
         );
       }}
