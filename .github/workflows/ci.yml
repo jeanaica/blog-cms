@@ -1,0 +1,82 @@
+name: CI
+
+env:
+  NODE_VERSION: 24
+  VITE_API_URL: ''
+  VITE_UPLOAD_URL: ''
+  VITE_MULTIPLE_UPLOAD_URL: ''
+  VITE_FIREBASE_PUBLIC_API_KEY: ''
+  VITE_FIREBASE_AUTH_DOMAIN: ''
+  VITE_FIREBASE_PROJECT_ID: ''
+  VITE_FIREBASE_STORAGE_BUCKET: ''
+  VITE_DOMAIN: ''
+  VITE_APP_ENV: ''
+
+on:
+  pull_request:
+    branches: ['main']
+    types: [opened, synchronize, reopened]
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Cache node_modules
+        uses: actions/cache/save@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+
+  lint:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Restore node_modules
+        uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+
+      - name: Run ESLint
+        run: npm run lint
+
+  build:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Restore node_modules
+        uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+
+      - name: Build
+        run: npm run build
