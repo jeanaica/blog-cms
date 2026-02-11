@@ -73,7 +73,8 @@ const Input: FC<Props> = ({
           autoComplete={
             readOnly
               ? 'off'
-              : autoComplete ?? (type === 'password' ? 'current-password' : undefined)
+              : (autoComplete ??
+                (type === 'password' ? 'current-password' : undefined))
           }
           data-lpignore={disabled || readOnly || undefined}
         />

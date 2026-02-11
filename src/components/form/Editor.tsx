@@ -1,6 +1,10 @@
 import classNames from 'classnames';
 import { type FC, lazy, Suspense } from 'react';
-import { useFormContext, Controller, type RegisterOptions } from 'react-hook-form';
+import {
+  useFormContext,
+  Controller,
+  type RegisterOptions,
+} from 'react-hook-form';
 
 import { getNestedError } from 'utils/getNestedError';
 
@@ -65,20 +69,23 @@ const Editor: FC<Props> = ({
           name={name}
           rules={rules}
           render={({ field: { onChange, value } }) => (
-            <Suspense fallback={<div className='min-h-[250px] bg-gray-100 animate-pulse' />}>
-            <ReactQuill
-              theme='snow'
-              placeholder={placeholder}
-              value={value}
-              readOnly={readOnly || isSubmitting || isLoading || disabled}
-              modules={modules}
-              className={classNames('min-h-[250px]', {
-                error: error,
-              })}
-              onChange={text => {
-                onChange(text);
-              }}
-            />
+            <Suspense
+              fallback={
+                <div className='min-h-[250px] bg-gray-100 animate-pulse' />
+              }>
+              <ReactQuill
+                theme='snow'
+                placeholder={placeholder}
+                value={value}
+                readOnly={readOnly || isSubmitting || isLoading || disabled}
+                modules={modules}
+                className={classNames('min-h-[250px]', {
+                  error: error,
+                })}
+                onChange={text => {
+                  onChange(text);
+                }}
+              />
             </Suspense>
           )}
         />

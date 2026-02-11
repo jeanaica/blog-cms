@@ -53,7 +53,11 @@ const SortableImageCard: FC<Props> = ({
           'opacity-50': isDragging,
         }
       )}>
-      <div className={classNames('relative', { 'h-full': !hasMetadata, 'aspect-square': hasMetadata })}>
+      <div
+        className={classNames('relative', {
+          'h-full': !hasMetadata,
+          'aspect-square': hasMetadata,
+        })}>
         <img
           src={preview}
           alt=''
@@ -67,14 +71,20 @@ const SortableImageCard: FC<Props> = ({
               className='absolute top-1 left-1 p-1 rounded bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing'
               {...attributes}
               {...listeners}>
-              <Icon icon='drag_indicator' size='sm' />
+              <Icon
+                icon='drag_indicator'
+                size='sm'
+              />
             </button>
 
             <button
               type='button'
               className='absolute top-1 right-1 p-1 rounded bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity'
               onClick={onRemove}>
-              <Icon icon='close' size='sm' />
+              <Icon
+                icon='close'
+                size='sm'
+              />
             </button>
           </>
         )}

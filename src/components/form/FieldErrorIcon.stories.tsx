@@ -7,7 +7,7 @@ const meta = {
   title: 'Components/Form/FieldErrorIcon',
   component: FieldErrorIcon,
   decorators: [
-    (Story) =>
+    Story =>
       React.createElement(
         'div',
         { className: 'relative h-10 w-64 border border-gray-300 rounded' },

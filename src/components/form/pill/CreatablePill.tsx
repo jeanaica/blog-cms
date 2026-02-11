@@ -96,9 +96,10 @@ const CreatablePill: FC<Props> = ({
               onCreateOption={handleCreate}
               options={options}
               hideSelectedOptions
-              filterOption={(option: { value: string; label: string }, _inputValue: string) =>
-                option.value !== value
-              }
+              filterOption={(
+                option: { value: string; label: string },
+                _inputValue: string
+              ) => option.value !== value}
               components={{
                 MultiValueRemove: (props: any) => (
                   <MultiValueRemove
