@@ -3,6 +3,8 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import classNames from 'classnames';
 
+import Icon from 'components/icon/Icon';
+
 type Props = {
   id: string;
   preview: string;
@@ -45,10 +47,13 @@ const SortableImageCard: FC<Props> = ({
       ref={setNodeRef}
       style={style}
       className={classNames(
-        'rounded overflow-hidden border border-gray-200 group',
-        { 'aspect-square': !hasMetadata, 'opacity-50': isDragging }
+        'relative rounded overflow-hidden border border-gray-200 group',
+        {
+          'aspect-square': !hasMetadata,
+          'opacity-50': isDragging,
+        }
       )}>
-      <div className={classNames('relative', { 'aspect-square': hasMetadata })}>
+      <div className={classNames('relative', { 'h-full': !hasMetadata, 'aspect-square': hasMetadata })}>
         <img
           src={preview}
           alt=''
@@ -62,16 +67,14 @@ const SortableImageCard: FC<Props> = ({
               className='absolute top-1 left-1 p-1 rounded bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing'
               {...attributes}
               {...listeners}>
-              <span className='material-icons-outlined text-sm'>
-                drag_indicator
-              </span>
+              <Icon icon='drag_indicator' size='sm' />
             </button>
 
             <button
               type='button'
               className='absolute top-1 right-1 p-1 rounded bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity'
               onClick={onRemove}>
-              <span className='material-icons-outlined text-sm'>close</span>
+              <Icon icon='close' size='sm' />
             </button>
           </>
         )}

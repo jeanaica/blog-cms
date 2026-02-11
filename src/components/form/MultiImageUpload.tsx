@@ -15,6 +15,8 @@ import {
 } from '@dnd-kit/sortable';
 import classNames from 'classnames';
 
+import Icon from 'components/icon/Icon';
+
 import SortableImageCard from './SortableImageCard';
 
 export type ImageItem = {
@@ -174,9 +176,7 @@ const MultiImageUpload: FC<Props> = ({ name, disabled, maxImages, showMetadata }
                   'opacity-50 cursor-not-allowed': isDisabled,
                 }
               )}>
-              <span className='material-icons-outlined text-gray-400 mb-2 text-[3rem]'>
-                add_photo_alternate
-              </span>
+              <Icon icon='add_photo_alternate' size={48} className='text-gray-400 mb-2' />
               <p className='text-sm text-gray-500 text-center'>
                 <span className='font-semibold'>Click to upload</span> or drag
                 and drop

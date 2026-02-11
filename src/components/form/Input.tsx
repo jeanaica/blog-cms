@@ -1,6 +1,10 @@
-import { FC } from 'react';
+import { type FC } from 'react';
 import classNames from 'classnames';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, type RegisterOptions } from 'react-hook-form';
+
+import Icon from 'components/icon/Icon';
+
+import { getNestedError } from 'utils/getNestedError';
 
 type Props = {
   label: string;
@@ -13,6 +17,7 @@ type Props = {
   defaultValue?: string;
   disabled?: boolean;
   autoComplete?: string;
+  rules?: RegisterOptions;
 };
 
 const Input: FC<Props> = ({
@@ -26,11 +31,14 @@ const Input: FC<Props> = ({
   defaultValue,
   disabled,
   autoComplete,
+  rules,
 }) => {
   const {
     register,
     formState: { errors, isSubmitting },
   } = useFormContext();
+
+  const error = getNestedError(errors, name);
 
   return (
     <div className='w-full mb-4'>
@@ -43,7 +51,7 @@ const Input: FC<Props> = ({
       )}
       <div className='relative w-full h-full'>
         <input
-          {...register(name)}
+          {...register(name, rules)}
           type={type}
           name={name}
           id={name}
@@ -53,7 +61,7 @@ const Input: FC<Props> = ({
             'border-b-secondary-300 border-b w-full md:px-4 py-2 outline-none focus:ring-0 focus:text-black disabled:cursor-not-allowed disabled:bg-gray-100 disabled:rounded-md read-only:bg-gray-100 ',
             className,
             {
-              'border-b-error-300 text-error-300': !readOnly && errors[name],
+              'border-b-error-300 text-error-300': !readOnly && error,
             }
           )}
           placeholder={placeholder}
@@ -64,11 +72,13 @@ const Input: FC<Props> = ({
           }
         />
 
-        {errors[name] && (
+        {error && (
           <div className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
-            <span className='material-icons-outlined text-xl text-error-300'>
-              error_outline
-            </span>
+            <Icon
+              icon='error_outline'
+              size='xl'
+              className='text-error-300'
+            />
           </div>
         )}
       </div>
@@ -77,8 +87,8 @@ const Input: FC<Props> = ({
           <p className='text-xs text-secondary-500'>{helperText}</p>
         )}
 
-        {errors[name] && (
-          <span className='text-sm text-error-300'>{`${errors[name]?.message}`}</span>
+        {error && (
+          <span className='text-sm text-error-300'>{`${error?.message}`}</span>
         )}
       </div>
     </div>
