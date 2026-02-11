@@ -10,10 +10,16 @@ type Props = {
   index: number;
   activeIndex: number | null;
   hasError?: boolean;
-  children: (dragHandleProps: DragHandleProps) => ReactNode;
+  children: (props: DragHandleProps) => ReactNode;
 };
 
-const SortableBlock: FC<Props> = ({ id, index, activeIndex, hasError, children }) => {
+const SortableBlock: FC<Props> = ({
+  id,
+  index,
+  activeIndex,
+  hasError,
+  children,
+}) => {
   const {
     attributes,
     listeners,
@@ -36,28 +42,21 @@ const SortableBlock: FC<Props> = ({ id, index, activeIndex, hasError, children }
 
   return (
     <>
-      {showTopIndicator && (
-        <div className='h-2 bg-gray-200 rounded' />
-      )}
+      {showTopIndicator && <div className='h-2 bg-gray-200 rounded' />}
       <div
         ref={setNodeRef}
         style={style}
-        className={classNames(
-          'rounded border overflow-hidden',
-          {
-            'opacity-50': isDragging,
-            'border-error-300': hasError,
-            'border-gray-200': !hasError,
-          }
-        )}>
+        className={classNames('rounded border overflow-hidden', {
+          'opacity-50': isDragging,
+          'border-error-300': hasError,
+          'border-gray-200': !hasError,
+        })}>
         {children({
           dragHandleListeners: listeners,
           dragHandleAttributes: attributes,
         })}
       </div>
-      {showBottomIndicator && (
-        <div className='h-2 bg-gray-200 rounded' />
-      )}
+      {showBottomIndicator && <div className='h-2 bg-gray-200 rounded' />}
     </>
   );
 };

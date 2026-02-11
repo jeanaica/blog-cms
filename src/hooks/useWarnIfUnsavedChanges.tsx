@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useBlocker } from 'react-router-dom';
 
 export const useWarnIfUnsavedChanges = (isDirty: boolean) => {
@@ -9,11 +9,9 @@ export const useWarnIfUnsavedChanges = (isDirty: boolean) => {
       isDirty && currentLocation.pathname !== nextLocation.pathname
   );
 
-  useEffect(() => {
-    if (blocker.state === 'blocked') {
-      setShouldWarn(true);
-    }
-  }, [blocker.state]);
+  if (blocker.state === 'blocked' && !shouldWarn) {
+    setShouldWarn(true);
+  }
 
   const navigate = useCallback(() => {
     setShouldWarn(false);

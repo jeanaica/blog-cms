@@ -1,5 +1,5 @@
-import React, { useEffect, useId, useState } from 'react';
-import Select, { SingleValue } from 'react-select';
+import { type FC, useId, useState } from 'react';
+import Select, { type SingleValue } from 'react-select';
 
 export interface OptionType {
   value: string | null;
@@ -8,13 +8,13 @@ export interface OptionType {
 
 interface Props {
   options: OptionType[];
-  onChange: (value: string | null) => void;
+  onChange: (val: string | null) => void;
   placeholder?: string;
   defaultValue?: SingleValue<OptionType>;
   label?: string;
 }
 
-const Dropdown: React.FC<Props> = ({
+const Dropdown: FC<Props> = ({
   options,
   placeholder,
   onChange,
@@ -22,18 +22,12 @@ const Dropdown: React.FC<Props> = ({
   label,
 }) => {
   const [selectedOption, setSelectedOption] =
-    useState<SingleValue<OptionType>>(null);
+    useState<SingleValue<OptionType>>(defaultValue ?? null);
 
   const handleChange = (option: SingleValue<OptionType>) => {
     setSelectedOption(option);
     onChange(option?.value ?? null);
   };
-
-  useEffect(() => {
-    if (defaultValue) {
-      setSelectedOption(defaultValue);
-    }
-  }, [defaultValue]);
 
   return (
     <div className='flex flex-col flex-1 md:w-40'>

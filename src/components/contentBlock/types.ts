@@ -3,7 +3,13 @@ export type BlockType = 'text' | 'gallery' | 'image';
 export type ContentBlock = {
   type: BlockType;
   content?: string;
-  images?: Array<{ id: string; file?: File; url?: string; caption?: string; alt?: string }>;
+  images?: Array<{
+    id: string;
+    file?: File;
+    url?: string;
+    caption?: string;
+    alt?: string;
+  }>;
   image?: File | string;
   caption?: string;
   alt?: string;

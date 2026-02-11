@@ -19,8 +19,8 @@ type Props = {
   options?: Array<{ value: string; label: string }>;
   readOnly?: boolean;
   hasRemovable?: boolean;
-  onPillChange?(val: MultiValue<any>): void;
-  onCreateOption?(inputValue: string): void;
+  onPillChange?(selection: MultiValue<any>): void;
+  onCreateOption?(input: string): void;
 };
 
 type OptionType = { value: string; label: string };
@@ -96,10 +96,7 @@ const CreatablePill: FC<Props> = ({
               onCreateOption={handleCreate}
               options={options}
               hideSelectedOptions
-              filterOption={(
-                option: { value: string; label: string },
-                _inputValue: string
-              ) => option.value !== value}
+              filterOption={(option) => option.value !== value}
               components={{
                 MultiValueRemove: (props: any) => (
                   <MultiValueRemove

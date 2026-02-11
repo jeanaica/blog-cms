@@ -21,7 +21,7 @@ const Container: FC<Props> = ({
   full,
   className,
 }) => {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   return (
     <div

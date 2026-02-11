@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import { type FC, type ReactNode } from 'react';
 import classNames from 'classnames';
 
 import AccordionItem from './AccordionItem';

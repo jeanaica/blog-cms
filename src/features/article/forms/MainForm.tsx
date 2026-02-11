@@ -1,5 +1,5 @@
-import { FC, useEffect, useState } from 'react';
-import { FormProvider, UseFormReturn } from 'react-hook-form';
+import { type FC, useEffect } from 'react';
+import { FormProvider, type UseFormReturn } from 'react-hook-form';
 
 import Container from 'components/container/Container';
 import Alert from 'components/alert/Alert';
@@ -63,8 +63,6 @@ const MainForm: FC<Props> = ({
   submitting,
   error,
 }) => {
-  const [previewUrl, setPreviewUrl] = useState('');
-
   const {
     watch,
     setValue,
@@ -93,10 +91,7 @@ const MainForm: FC<Props> = ({
     setValue('slug', slug);
   }, [title, setValue]);
 
-  useEffect(() => {
-    const id = slug;
-    setPreviewUrl(`/article/${id}/preview`);
-  }, [slug, setPreviewUrl]);
+  const previewUrl = `/article/${slug}/preview`;
 
   return (
     <Container

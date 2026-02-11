@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useState } from 'react';
+import { type FC, type ReactNode, useCallback, useEffect, useState } from 'react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ type Props = {
   children: ReactNode;
 };
 
-export const AuthProvider: React.FC<Props> = ({ children }) => {
+export const AuthProvider: FC<Props> = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { pathname } = location;
@@ -48,18 +48,21 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 
   // force refresh the token every 10 minutes
   useEffect(() => {
-    const handle = setInterval(async () => {
-      const user = auth.currentUser;
-      try {
-        if (user) {
-          const token: string = await user.getIdToken(true);
+    const handle = setInterval(
+      async () => {
+        const user = auth.currentUser;
+        try {
+          if (user) {
+            const token: string = await user.getIdToken(true);
 
-          setIdToken(token);
+            setIdToken(token);
+          }
+        } catch (error) {
+          setIdToken('');
         }
-      } catch (error) {
-        setIdToken('');
-      }
-    }, 10 * 60 * 1000);
+      },
+      10 * 60 * 1000
+    );
     return () => clearInterval(handle);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

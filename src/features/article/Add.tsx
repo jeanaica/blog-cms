@@ -23,7 +23,7 @@ const Add: FC = () => {
   const navigate = useNavigate();
   const today = formatDate();
   const toast = useToast();
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
   const [submitting, setSubmitting] = useState(false);
 
   const methods = useForm<ArticleInput>({
@@ -60,7 +60,11 @@ const Add: FC = () => {
 
       if (banner) {
         if (banner instanceof File) {
-          const uploadResult = await uploadImage({ file: banner, folder: `${slug}/banner`, isBanner: true });
+          const uploadResult = await uploadImage({
+            file: banner,
+            folder: `${slug}/banner`,
+            isBanner: true,
+          });
           if (!uploadResult.success) {
             throw new Error(uploadResult.message);
           }

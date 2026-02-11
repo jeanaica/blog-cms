@@ -17,7 +17,10 @@ const ViewArticlePage = () => {
   return (
     <>
       <Meta {...post?.meta} />
-      <Container loading={loading} isEmpty={!post?.id} full>
+      <Container
+        loading={loading}
+        isEmpty={!post?.id}
+        full>
         <View content={post?.content} />
       </Container>
     </>

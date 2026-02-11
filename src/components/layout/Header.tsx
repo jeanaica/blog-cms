@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { FC, useEffect, useRef, useState } from 'react';
+import { type FC, useRef, useState } from 'react';
 import { signOut } from 'firebase/auth';
 import classNames from 'classnames';
 
@@ -28,11 +28,9 @@ const Header: FC<Props> = () => {
     setShowMenu(!showMenu);
   };
 
-  useEffect(() => {
-    if (isClickedOutside) {
-      setShowMenu(false);
-    }
-  }, [isClickedOutside]);
+  if (isClickedOutside && showMenu) {
+    setShowMenu(false);
+  }
 
   return (
     <header

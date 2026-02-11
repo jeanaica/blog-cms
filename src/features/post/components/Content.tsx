@@ -15,7 +15,14 @@ type Props = {
 
 const REGEX = /(<([^>]+)>)/gi;
 
-const Content: FC<Props> = ({ title, content, updatedAt, publishedAt, archivedAt, status }) => {
+const Content: FC<Props> = ({
+  title,
+  content,
+  updatedAt,
+  publishedAt,
+  archivedAt,
+  status,
+}) => {
   const strippedContent = content.replace(REGEX, ' ');
 
   return (

@@ -15,7 +15,7 @@ import { Article } from './types/Article';
 
 const Posts = () => {
   const toast = useToast();
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
   const [selectedOption, setSelectedOption] = useState<{
     [option: string]: string | null;
   }>({ status: 'PUBLISHED', sort: 'desc' });

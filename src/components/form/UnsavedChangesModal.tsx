@@ -10,7 +10,7 @@ type Props = {
 };
 
 const UnsavedChangesModal: FC<Props> = ({ hasUnsavedChanges }) => {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
   const { navigate, shouldWarn, cancelNavigate } =
     useWarnIfUnsavedChanges(hasUnsavedChanges);
 

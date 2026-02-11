@@ -9,7 +9,7 @@ type Props = {
 };
 
 const LoadingModal: FC<Props> = ({ isOpen }) => {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   return (
     <Modal showModal={isOpen}>

@@ -49,9 +49,24 @@ export const WithImages: Story = {
     React.createElement(FormWrapper, {
       galleryName: 'Vacation Photos',
       images: [
-        { id: '1', url: 'https://placehold.co/400x400/e2e8f0/64748b?text=Image+1', caption: 'Beach sunset', alt: 'Golden sunset over the ocean' },
-        { id: '2', url: 'https://placehold.co/400x400/fecaca/991b1b?text=Image+2', caption: 'Mountain trail', alt: 'Hiking trail through the mountains' },
-        { id: '3', url: 'https://placehold.co/400x400/bbf7d0/166534?text=Image+3', caption: 'City skyline', alt: 'Skyline at dusk' },
+        {
+          id: '1',
+          url: 'https://placehold.co/400x400/e2e8f0/64748b?text=Image+1',
+          caption: 'Beach sunset',
+          alt: 'Golden sunset over the ocean',
+        },
+        {
+          id: '2',
+          url: 'https://placehold.co/400x400/fecaca/991b1b?text=Image+2',
+          caption: 'Mountain trail',
+          alt: 'Hiking trail through the mountains',
+        },
+        {
+          id: '3',
+          url: 'https://placehold.co/400x400/bbf7d0/166534?text=Image+3',
+          caption: 'City skyline',
+          alt: 'Skyline at dusk',
+        },
       ],
     }),
 };
