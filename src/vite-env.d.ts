@@ -3,6 +3,7 @@
 interface ImportMetaEnv {
   readonly VITE_API_URL: string;
   readonly VITE_UPLOAD_URL: string;
+  readonly VITE_MULTIPLE_UPLOAD_URL: string;
   readonly VITE_FIREBASE_PUBLIC_API_KEY: string;
   readonly VITE_FIREBASE_AUTH_DOMAIN: string;
   readonly VITE_FIREBASE_PROJECT_ID: string;

@@ -15,6 +15,11 @@ import { UPDATE_ARTICLE } from './schema/mutations';
 import { GET_ARTICLE_BY_ID } from './schema/queries';
 import { ArticleInput } from './types/ArticleInput';
 import MainForm from './forms/MainForm';
+import {
+  uploadContentBlockImages,
+  serializeBlocksForMutation,
+  mapContentBlocksFromQuery,
+} from './utils/serializeContentBlocks';
 
 const Edit: FC = () => {
   const today = formatDate();
@@ -38,6 +43,8 @@ const Edit: FC = () => {
     defaultValues: {
       scheduledAt: today,
       author: 'Jeanaica Suplido-Alinsub',
+      contentBlocks: [],
+      content: '',
     },
   });
 
@@ -49,13 +56,14 @@ const Edit: FC = () => {
     (data: any): ArticleInput => {
       if (!data) return {} as ArticleInput;
 
-      const { meta, ...restData } = data;
+      const { meta, contentBlocks, ...restData } = data;
 
       setDataStatus(data.status);
 
       return {
         ...restData,
         ...meta,
+        contentBlocks: mapContentBlocksFromQuery(contentBlocks, data.content),
         scheduledAt:
           data?.status === 'PUBLISHED'
             ? formatDate(data.publishedAt)
@@ -71,7 +79,7 @@ const Edit: FC = () => {
     setSubmitting(true);
     const {
       title,
-      content,
+      contentBlocks,
       slug,
       description,
       banner,
@@ -98,6 +106,19 @@ const Edit: FC = () => {
         }
       }
 
+      // Upload content block images and serialize
+      const processedBlocks = await uploadContentBlockImages(
+        contentBlocks || []
+      );
+      const serializedBlocks = serializeBlocksForMutation(processedBlocks);
+
+      // Auto-generate content from text blocks for backward compatibility
+      const content =
+        processedBlocks
+          .filter(b => b.type === 'text')
+          .map(b => b.content || '')
+          .join('') || '';
+
       const meta = {
         slug,
         url: `${import.meta.env.VITE_DOMAIN}/${slug}`,
@@ -113,6 +134,7 @@ const Edit: FC = () => {
           post: {
             title,
             content,
+            contentBlocks: serializedBlocks,
             banner: bannerUrl,
             caption,
             scheduledAt,
@@ -158,7 +180,7 @@ const Edit: FC = () => {
   };
 
   const onSave = async () => {
-    const isValid = await trigger('content');
+    const isValid = await trigger('contentBlocks');
 
     if (isValid) {
       const values = getValues();

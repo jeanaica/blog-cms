@@ -1,3 +1,4 @@
+import { ContentBlock } from 'components/contentBlock/types';
 import { Option } from 'lib/firebase/comment/types';
 
 export interface ArticleInput {
@@ -6,6 +7,7 @@ export interface ArticleInput {
   banner: string | File;
   caption: string;
   content: string;
+  contentBlocks?: ContentBlock[];
   createdDate: string;
   category: Array<Option>;
   tags: Array<Option>;
@@ -19,4 +21,4 @@ export interface ArticleInput {
 }
 
 export type FormKeys = keyof ArticleInput;
-export type FormValues = string | File | Option[] | null;
+export type FormValues = string | File | Option[] | ContentBlock[] | null;
