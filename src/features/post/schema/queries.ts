@@ -7,6 +7,8 @@ export const GET_POST_BY_STATUS = gql`
       title
       content
       updatedAt
+      publishedAt
+      archivedAt
       status
     }
   }

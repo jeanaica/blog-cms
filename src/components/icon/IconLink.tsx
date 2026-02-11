@@ -3,12 +3,14 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import Loading from 'components/loading/Loading';
-import Icon from './Icon';
+import Icon, { type IconSize } from './Icon';
 
 type Props = {
   href: string;
   icon: string;
+  size?: IconSize;
   className?: string;
+  iconClassName?: string;
   disabled?: boolean;
   isLoading?: boolean;
   target?: string;
@@ -18,7 +20,9 @@ type Props = {
 const IconLink: FC<Props> = ({
   href,
   icon,
+  size,
   className,
+  iconClassName,
   disabled,
   isLoading,
   target,
@@ -38,7 +42,11 @@ const IconLink: FC<Props> = ({
       {!isLoading && (
         <Icon
           icon={icon}
-          className='px-2 py-1 text-3xl text-sky-700 rounded-md hover:bg-slate-100'
+          size={size}
+          className={classNames(
+            'px-2 py-1 text-sky-700 rounded-md hover:bg-slate-100',
+            iconClassName
+          )}
         />
       )}
     </Link>
