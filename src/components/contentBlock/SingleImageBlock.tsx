@@ -2,6 +2,9 @@ import { type DragEvent, type FC, useState } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import classNames from 'classnames';
 
+import Icon from 'components/icon/Icon';
+import Input from 'components/form/Input';
+
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
@@ -12,7 +15,6 @@ type Props = {
 const SingleImageBlock: FC<Props> = ({ index }) => {
   const {
     control,
-    register,
     formState: { isSubmitting },
   } = useFormContext();
 
@@ -95,9 +97,7 @@ const SingleImageBlock: FC<Props> = ({ index }) => {
                   />
                 ) : (
                   <>
-                    <span className='material-icons-outlined text-gray-400 mb-3 text-[4rem]'>
-                      cloud_upload
-                    </span>
+                    <Icon icon='cloud_upload' size={64} className='text-gray-400 mb-3' />
                     <p className='mb-2 text-sm text-gray-500 text-center'>
                       <span className='font-semibold'>Click to upload</span> or
                       drag and drop
@@ -130,37 +130,17 @@ const SingleImageBlock: FC<Props> = ({ index }) => {
         )}
       />
 
-      <div>
-        <label
-          htmlFor={`${captionField}-input`}
-          className='block text-sm font-semibold text-primary mb-1'>
-          Caption
-        </label>
-        <input
-          {...register(captionField)}
-          id={`${captionField}-input`}
-          type='text'
-          placeholder='Image caption (optional)'
-          className='border-b-secondary-300 border-b w-full md:px-4 py-2 outline-none focus:ring-0 focus:text-black'
-          disabled={isSubmitting}
-        />
-      </div>
+      <Input
+        label='Caption'
+        name={captionField}
+        placeholder='Image caption (optional)'
+      />
 
-      <div>
-        <label
-          htmlFor={`${altField}-input`}
-          className='block text-sm font-semibold text-primary mb-1'>
-          Alt text
-        </label>
-        <input
-          {...register(altField)}
-          id={`${altField}-input`}
-          type='text'
-          placeholder='Describe the image for accessibility (optional)'
-          className='border-b-secondary-300 border-b w-full md:px-4 py-2 outline-none focus:ring-0 focus:text-black'
-          disabled={isSubmitting}
-        />
-      </div>
+      <Input
+        label='Alt text'
+        name={altField}
+        placeholder='Describe the image for accessibility (optional)'
+      />
     </div>
   );
 };
