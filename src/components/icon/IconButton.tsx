@@ -3,12 +3,13 @@ import classNames from 'classnames';
 
 import Loading from 'components/loading/Loading';
 
-import Icon from './Icon';
+import Icon, { type IconSize } from './Icon';
 
 type Props = {
   onClick?: MouseEventHandler;
   // we want to limit the icons used to icons in repository only
   icon: string;
+  size?: IconSize;
   className?: string;
   iconClassName?: string;
   disabled?: boolean;
@@ -20,6 +21,7 @@ const IconButton: FC<Props> = ({
   onClick,
   type = 'button',
   icon,
+  size,
   className,
   iconClassName,
   disabled,
@@ -41,8 +43,9 @@ const IconButton: FC<Props> = ({
         {!isLoading && (
           <Icon
             icon={icon}
+            size={size}
             className={classNames(
-              'px-2 py-1 text-3xl text-sky-700 rounded-md hover:bg-slate-100',
+              'px-2 py-1 text-sky-700 rounded-md hover:bg-slate-100',
               iconClassName
             )}
           />

@@ -3,13 +3,18 @@ import * as z from 'zod';
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 
-const galleryImageSchema = z.object({
-  id: z.string(),
-  file: z.any().optional(),
-  url: z.string().optional(),
-  caption: z.string().optional(),
-  alt: z.string().optional(),
-});
+const galleryImageSchema = z
+  .object({
+    id: z.string(),
+    file: z.any().optional(),
+    url: z.string().optional(),
+    caption: z.string().optional(),
+    alt: z.string().min(1, 'Alt text is required'),
+  })
+  .refine(data => data.file || data.url, {
+    message: 'Image is required',
+    path: ['file'],
+  });
 
 const contentBlockSchema = z.discriminatedUnion('type', [
   z.object({
@@ -23,7 +28,7 @@ const contentBlockSchema = z.discriminatedUnion('type', [
       'Image is required'
     ),
     caption: z.string().optional(),
-    alt: z.string().optional(),
+    alt: z.string().min(1, 'Alt text is required'),
   }),
   z.object({
     type: z.literal('gallery'),

@@ -15,12 +15,14 @@ export type DragHandleProps = {
 type Props = DragHandleProps & {
   type: BlockType;
   onRemove: () => void;
+  hasError?: boolean;
   className?: string;
 };
 
 const BlockHeader: FC<Props> = ({
   type,
   onRemove,
+  hasError,
   className,
   dragHandleListeners,
   dragHandleAttributes,
@@ -31,7 +33,8 @@ const BlockHeader: FC<Props> = ({
     <div
       className={classNames(
         'flex items-center justify-between px-3 py-2 bg-slate-100 border-b border-gray-200',
-        className
+        className,
+        { 'bg-error-100': hasError }
       )}>
       <div className='flex items-center gap-2'>
         <button
@@ -51,14 +54,15 @@ const BlockHeader: FC<Props> = ({
         </button>
         <Icon
           icon={icon}
-          size='sm'
+          size='2xl'
         />
         <span className='text-sm font-semibold text-primary'>{label}</span>
       </div>
       <IconButton
         icon='delete'
+        size='2xl'
         tooltip='Remove block'
-        iconClassName='text-xl text-error-300 hover:text-error'
+        iconClassName='text-error-300 hover:text-error'
         onClick={onRemove}
       />
     </div>

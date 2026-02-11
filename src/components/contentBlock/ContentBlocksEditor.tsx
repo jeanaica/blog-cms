@@ -26,7 +26,7 @@ import { type BlockType, BLOCK_TYPE_META, type ContentBlock } from './types';
 const BLOCK_OPTIONS: BlockType[] = ['text', 'gallery', 'image'];
 
 const ContentBlocksEditor: FC = () => {
-  const { control } = useFormContext<{ contentBlocks: ContentBlock[] }>();
+  const { control, formState: { errors } } = useFormContext<{ contentBlocks: ContentBlock[] }>();
   const { fields, append, remove, move } = useFieldArray({
     control,
     name: 'contentBlocks',
@@ -147,17 +147,21 @@ const ContentBlocksEditor: FC = () => {
         <SortableContext
           items={fields.map(f => f.id)}
           strategy={verticalListSortingStrategy}>
-          {fields.map((field, index) => (
+          {fields.map((field, index) => {
+            const blockErrors = errors.contentBlocks?.[index];
+            return (
             <SortableBlock
               key={field.id}
               id={field.id}
               index={index}
-              activeIndex={activeIndex}>
+              activeIndex={activeIndex}
+              hasError={!!blockErrors}>
               {dragHandleProps => (
                 <>
                   <BlockHeader
                     type={(field as unknown as ContentBlock).type}
                     onRemove={() => remove(index)}
+                    hasError={!!blockErrors}
                     {...dragHandleProps}
                   />
                   <div className='bg-white'>
@@ -179,7 +183,8 @@ const ContentBlocksEditor: FC = () => {
                 </>
               )}
             </SortableBlock>
-          ))}
+          );
+          })}
         </SortableContext>
       </DndContext>
       <div className='pt-2'>{addButton}</div>

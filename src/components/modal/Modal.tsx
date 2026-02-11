@@ -29,8 +29,8 @@ const Modal: FC<Props> = ({ showModal, children, onClose, disabled }) => (
           {onClose && (
             <IconButton
               icon='close'
+              size='2xl'
               className='absolute top-3 right-2.5 rounded-full hover:bg-gray-200'
-              iconClassName='text-2xl'
               tooltip='Close Modal'
               disabled={disabled}
               onClick={onClose}
