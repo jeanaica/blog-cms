@@ -25,26 +25,31 @@ const IconButton: FC<Props> = ({
   disabled,
   isLoading,
   tooltip,
-}) => (
-  <button
-    type={type}
-    title={tooltip}
-    className={classNames('flex items-center cursor-pointer', className, {
-      'cursor-not-allowed opacity-50': disabled || isLoading,
-    })}
-    onClick={onClick}
-    disabled={disabled || isLoading}>
-    {isLoading && <Loading className='w-[44px]' />}
-    {!isLoading && (
-      <Icon
-        icon={icon}
-        className={classNames(
-          'px-2 py-1 text-3xl text-sky-700 rounded-md hover:bg-slate-100',
-          iconClassName
+}) => {
+  return (
+    <div className={classNames(className)}>
+      <button
+        type={type}
+        title={tooltip}
+        className={classNames('flex items-center', {
+          'cursor-not-allowed opacity-50': disabled || isLoading,
+          'cursor-pointer': !disabled && !isLoading,
+        })}
+        onClick={onClick}
+        disabled={disabled || isLoading}>
+        {isLoading && <Loading className='w-[44px]' />}
+        {!isLoading && (
+          <Icon
+            icon={icon}
+            className={classNames(
+              'px-2 py-1 text-3xl text-sky-700 rounded-md hover:bg-slate-100',
+              iconClassName
+            )}
+          />
         )}
-      />
-    )}
-  </button>
-);
+      </button>
+    </div>
+  );
+};
 
 export default IconButton;

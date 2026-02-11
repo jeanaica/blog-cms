@@ -31,10 +31,14 @@ const Button: FC<Props> = ({
   <button
     type={type}
     className={classNames(
-      'flex items-center rounded border duration-300 font-semibold justify-center px-4 py-2 enabled:hover:bg-slate-300 enabled:hover:text-slate-800 enabled:focus:ring-4 enabled:focus:ring-slate-200 h-[50px] flex-1 disabled:cursor-not-allowed disabled:opacity-50',
+      'flex items-center rounded border duration-300 font-semibold justify-center px-4 py-2 h-[50px] flex-1',
       className,
       {
-        'bg-slate-500 text-white enabled:hover:text-sky-700': primary,
+        'bg-slate-500 text-white': primary,
+        'cursor-not-allowed opacity-50': disabled || isLoading,
+        'hover:text-sky-700': primary && !disabled,
+        'hover:bg-slate-300 hover:text-slate-800 focus:ring-4 focus:ring-slate-200':
+          !disabled,
       }
     )}
     onClick={onClick}
