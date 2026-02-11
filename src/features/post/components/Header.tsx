@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import Dropdown from 'components/Dropdown';
+import Dropdown from 'components/dropdown/Dropdown';
 
 const options = [
   { value: null, label: 'All' },

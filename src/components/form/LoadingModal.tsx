@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import useTranslation from 'hooks/useTranslation';
 
-import Loading from 'components/Loading';
+import Loading from 'components/loading/Loading';
 import Modal from 'components/modal/Modal';
 
 type Props = {

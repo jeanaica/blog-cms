@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes, FC, MouseEventHandler } from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
-import Loading from 'components/Loading';
+import Loading from 'components/loading/Loading';
 import Icon from './Icon';
 
 type Props = {

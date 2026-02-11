@@ -5,7 +5,7 @@ import classNames from 'classnames';
 
 import { auth } from 'lib/firebase/client';
 
-import Logo from 'components/Logo';
+import Logo from 'components/logo/Logo';
 import Icon from 'components/icon/Icon';
 
 import useDetectOutsideClick from 'hooks/useDetectOutsideClick';

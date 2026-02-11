@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes, FC, ReactNode } from 'react';
 import classNames from 'classnames';
 
-import Loading from 'components/Loading';
+import Loading from 'components/loading/Loading';
 import Icon from 'components/icon/Icon';
 
 type Props = {

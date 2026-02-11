@@ -6,7 +6,7 @@ import * as z from 'zod';
 
 import Input from 'components/form/Input';
 import Button from 'components/button/Button';
-import Alert from 'components/Alert';
+import Alert from 'components/alert/Alert';
 
 import { auth } from 'lib/firebase/client';
 import useSessionStorage from 'hooks/useSessionStorage';

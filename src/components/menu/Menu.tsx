@@ -2,7 +2,7 @@ import { FC, MouseEventHandler, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 
 import Icon from 'components/icon/Icon';
-import Loading from 'components/Loading';
+import Loading from 'components/loading/Loading';
 import useDetectOutsideClick from 'hooks/useDetectOutsideClick';
 
 type MenuOptions = Array<{
