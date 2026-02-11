@@ -10,9 +10,9 @@ const FieldError: FC<Props> = ({ message, className }) => {
   if (!message) return null;
 
   return (
-    <span className={classNames('text-sm text-error-300', className)}>
+    <p className={classNames('text-xs text-error-300', className)}>
       {message}
-    </span>
+    </p>
   );
 };
 
