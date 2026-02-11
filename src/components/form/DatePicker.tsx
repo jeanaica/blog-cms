@@ -1,6 +1,11 @@
 import classNames from 'classnames';
-import { FC } from 'react';
+import { type FC } from 'react';
 import { useFormContext } from 'react-hook-form';
+
+import FieldError from './FieldError';
+import FieldErrorIcon from './FieldErrorIcon';
+import FieldLabel from './FieldLabel';
+import HelperText from './HelperText';
 
 import formatDate from 'utils/formatDate';
 
@@ -32,11 +37,7 @@ const DatePicker: FC<Props> = ({
 
   return (
     <div className='mb-4'>
-      <label
-        htmlFor={name}
-        className='block text-sm font-semibold text-primary'>
-        {label}
-      </label>
+      <FieldLabel htmlFor={name}>{label}</FieldLabel>
       <div className='relative mt-1 w-full'>
         <div className='absolute left-0 flex items-center content-center py-2 pl-4'>
           <span className='self-center material-icons-outlined text-xl text-gray-500'>
@@ -68,22 +69,11 @@ const DatePicker: FC<Props> = ({
           disabled={isSubmitting}
         />
 
-        {errors[name] && (
-          <div className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
-            <span className='material-icons-outlined text-xl text-error-300'>
-              error_outline
-            </span>
-          </div>
-        )}
+        {errors[name] && <FieldErrorIcon />}
       </div>
       <div>
-        {helperText !== '' && (
-          <p className='text-xs text-secondary-500'>{helperText}</p>
-        )}
-
-        {errors[name] && (
-          <span className='text-sm text-error-300'>{`${errors[name]?.message}`}</span>
-        )}
+        <HelperText text={helperText} />
+        <FieldError message={errors[name]?.message as string} />
       </div>
     </div>
   );

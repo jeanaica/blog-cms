@@ -2,9 +2,12 @@ import { type FC } from 'react';
 import classNames from 'classnames';
 import { useFormContext, type RegisterOptions } from 'react-hook-form';
 
-import Icon from 'components/icon/Icon';
-
 import { getNestedError } from 'utils/getNestedError';
+
+import FieldError from './FieldError';
+import FieldErrorIcon from './FieldErrorIcon';
+import FieldLabel from './FieldLabel';
+import HelperText from './HelperText';
 
 type Props = {
   label: string;
@@ -43,11 +46,7 @@ const Input: FC<Props> = ({
   return (
     <div className='w-full mb-4'>
       {label && (
-        <label
-          htmlFor={name}
-          className='block text-sm font-semibold text-primary mb-1'>
-          {label}
-        </label>
+        <FieldLabel htmlFor={name} className='mb-1'>{label}</FieldLabel>
       )}
       <div className='relative w-full h-full'>
         <input
@@ -72,24 +71,11 @@ const Input: FC<Props> = ({
           }
         />
 
-        {error && (
-          <div className='absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none'>
-            <Icon
-              icon='error_outline'
-              size='xl'
-              className='text-error-300'
-            />
-          </div>
-        )}
+        {error && <FieldErrorIcon />}
       </div>
       <div>
-        {helperText !== '' && (
-          <p className='text-xs text-secondary-500'>{helperText}</p>
-        )}
-
-        {error && (
-          <span className='text-sm text-error-300'>{`${error?.message}`}</span>
-        )}
+        <HelperText text={helperText} />
+        <FieldError message={error?.message} />
       </div>
     </div>
   );
