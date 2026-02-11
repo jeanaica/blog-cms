@@ -5,6 +5,30 @@ export const UPDATE_ARTICLE = gql`
     updatePost(id: $id, post: $post) {
       id
       content
+      contentBlocks {
+        ... on TextBlock {
+          type
+          order
+          content
+        }
+        ... on ImageBlock {
+          type
+          order
+          url
+          alt
+          caption
+        }
+        ... on GalleryBlock {
+          type
+          order
+          galleryName
+          images {
+            url
+            alt
+            caption
+          }
+        }
+      }
       title
       banner
       caption
@@ -36,6 +60,30 @@ export const ADD_ARTICLE = gql`
     createPost(post: $post) {
       id
       content
+      contentBlocks {
+        ... on TextBlock {
+          type
+          order
+          content
+        }
+        ... on ImageBlock {
+          type
+          order
+          url
+          alt
+          caption
+        }
+        ... on GalleryBlock {
+          type
+          order
+          galleryName
+          images {
+            url
+            alt
+            caption
+          }
+        }
+      }
       title
       banner
       caption

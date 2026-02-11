@@ -125,7 +125,7 @@ const ContentBlocksEditor: FC = () => {
 
   if (fields.length === 0) {
     return (
-      <div className='flex flex-col items-center justify-center p-12'>
+      <div className='not-prose flex flex-col items-center justify-center p-12'>
         <Icon
           icon='dashboard_customize'
           className='text-9xl text-gray-300'
@@ -137,7 +137,7 @@ const ContentBlocksEditor: FC = () => {
   }
 
   return (
-    <div className='space-y-4'>
+    <div className='not-prose space-y-4'>
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}

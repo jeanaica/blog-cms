@@ -14,6 +14,30 @@ export const GET_ARTICLE_BY_ID = gql`
       id
       createdAt
       content
+      contentBlocks {
+        ... on TextBlock {
+          type
+          order
+          content
+        }
+        ... on ImageBlock {
+          type
+          order
+          url
+          alt
+          caption
+        }
+        ... on GalleryBlock {
+          type
+          order
+          galleryName
+          images {
+            url
+            alt
+            caption
+          }
+        }
+      }
       title
       banner
       caption

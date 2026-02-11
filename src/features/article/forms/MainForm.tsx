@@ -3,13 +3,14 @@ import { FormProvider, UseFormReturn } from 'react-hook-form';
 
 import Container from 'components/container/Container';
 import Alert from 'components/alert/Alert';
-import Editor from 'components/form/Editor';
+import ContentBlocksEditor from 'components/contentBlock/ContentBlocksEditor';
 import LoadingModal from 'components/form/LoadingModal';
 import UnsavedChangesModal from 'components/form/UnsavedChangesModal';
 
 import TitleMenu from './TitleMenu';
 import FormAccordion from './FormAccordion';
 import { ArticleInput } from '../types/ArticleInput';
+import { ContentBlock } from 'components/contentBlock/types';
 
 type Props = {
   methods: UseFormReturn<ArticleInput, any>;
@@ -19,6 +20,40 @@ type Props = {
   submitting?: boolean;
   error?: string;
 };
+
+function blocksToPreviewHtml(blocks: ContentBlock[]): string {
+  return blocks
+    .map(block => {
+      switch (block.type) {
+        case 'text':
+          return block.content || '';
+        case 'image': {
+          const src =
+            block.image instanceof File
+              ? URL.createObjectURL(block.image)
+              : block.image || '';
+          const alt = block.alt || '';
+          const caption = block.caption
+            ? `<figcaption>${block.caption}</figcaption>`
+            : '';
+          return `<figure><img src="${src}" alt="${alt}" />${caption}</figure>`;
+        }
+        case 'gallery': {
+          const imgs = (block.images || [])
+            .map(img => {
+              const src =
+                img.url || (img.file ? URL.createObjectURL(img.file) : '');
+              return `<img src="${src}" alt="${img.alt || ''}" />`;
+            })
+            .join('');
+          return `<div class="gallery">${imgs}</div>`;
+        }
+        default:
+          return '';
+      }
+    })
+    .join('');
+}
 
 const MainForm: FC<Props> = ({
   methods,
@@ -37,13 +72,14 @@ const MainForm: FC<Props> = ({
   } = methods;
 
   const title: string = watch('title');
-  const content: string = watch('content');
+  const contentBlocks: ContentBlock[] = watch('contentBlocks') || [];
   const slug: string = watch('slug');
   const status: string | undefined = watch('status');
 
   const onPreview = () => {
-    if (slug && content) {
-      localStorage.setItem(`preview-${slug}`, content);
+    if (slug && contentBlocks.length) {
+      const html = blocksToPreviewHtml(contentBlocks);
+      localStorage.setItem(`preview-${slug}`, html);
     }
   };
 
@@ -79,10 +115,7 @@ const MainForm: FC<Props> = ({
           onSubmit={onSubmit}
         />
         <FormAccordion />
-        <Editor
-          label=''
-          name='content'
-        />
+        <ContentBlocksEditor />
         <LoadingModal isOpen={submitting || (submitting && isSubmitted)} />
         <UnsavedChangesModal hasUnsavedChanges={isDirty} />
       </FormProvider>

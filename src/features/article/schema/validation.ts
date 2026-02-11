@@ -3,10 +3,40 @@ import * as z from 'zod';
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 
+const galleryImageSchema = z.object({
+  id: z.string(),
+  file: z.any().optional(),
+  url: z.string().optional(),
+  caption: z.string().optional(),
+  alt: z.string().optional(),
+});
+
+const contentBlockSchema = z.discriminatedUnion('type', [
+  z.object({
+    type: z.literal('text'),
+    content: z.string().min(1, 'Content is required'),
+  }),
+  z.object({
+    type: z.literal('image'),
+    image: z.any().refine(
+      val => val instanceof File || (typeof val === 'string' && val.length > 0),
+      'Image is required'
+    ),
+    caption: z.string().optional(),
+    alt: z.string().optional(),
+  }),
+  z.object({
+    type: z.literal('gallery'),
+    galleryName: z.string().min(1, 'Gallery name is required'),
+    images: galleryImageSchema.array().min(1, 'At least one image is required'),
+  }),
+]);
+
 const validation = z
   .object({
     title: z.string().min(1, { message: 'Required' }),
-    content: z.string().min(1, { message: 'Required' }),
+    content: z.string().optional().default(''),
+    contentBlocks: contentBlockSchema.array().min(1, 'At least one content block is required'),
     slug: z
       .string()
       .min(1, { message: 'Required' })
