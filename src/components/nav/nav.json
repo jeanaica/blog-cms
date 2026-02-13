@@ -6,6 +6,12 @@
     "isAction": false
   },
   {
+    "icon": "collections",
+    "text": "Galleries",
+    "href": "/galleries",
+    "isAction": false
+  },
+  {
     "icon": "post_add",
     "text": "Add Post",
     "href": "/article/add",
