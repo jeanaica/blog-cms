@@ -17,6 +17,9 @@ import DashboardLayout from 'components/layout/DashboardLayout';
 import SharedLayout from 'components/layout/SharedLayout';
 
 const PostPage = lazy(() => import('./pages/PostPage'));
+const GalleryPage = lazy(() => import('./pages/GalleryPage'));
+const AddGalleryPage = lazy(() => import('./pages/AddGalleryPage'));
+const EditGalleryPage = lazy(() => import('./pages/EditGalleryPage'));
 const AddArticlePage = lazy(() => import('./pages/AddArticlePage'));
 const EditArticlePage = lazy(() => import('./pages/EditArticlePage'));
 const ViewArticlePage = lazy(() => import('./pages/ViewArticlePage'));
@@ -67,6 +70,9 @@ const router = createBrowserRouter([
         element: <DashboardLayout />,
         children: [
           { path: '/post', element: <PostPage /> },
+          { path: '/galleries', element: <GalleryPage /> },
+          { path: '/gallery/add', element: <AddGalleryPage /> },
+          { path: '/gallery/:id/edit', element: <EditGalleryPage /> },
           { path: '/article/add', element: <AddArticlePage /> },
           { path: '/article/:id/edit', element: <EditArticlePage /> },
         ],
