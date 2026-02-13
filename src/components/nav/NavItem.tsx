@@ -43,7 +43,10 @@ const NavItem: FC<Props> = ({
         'flex-1 justify-center py-4 hover:bg-gray-300 border-r-0 flex md:flex-none md:justify-start md:content-center md:items-center md:px-8 transition-all duration-300',
         className,
         {
-          'bg-gray-200': location.pathname === href,
+          'bg-gray-200':
+            href &&
+            (location.pathname === href ||
+              location.pathname.startsWith(href + '/')),
           'border-x md:border-y md:border-x-0': isAction,
         }
       )}>

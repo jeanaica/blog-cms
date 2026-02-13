@@ -27,8 +27,12 @@ const DashboardLayout = () => {
       <Header />
       <div
         className={classNames('bg-white md:col-start-2 overflow-y-auto', {
-          'bg-white': !location.pathname.includes('post'),
-          'bg-slate-50': location.pathname.includes('post'),
+          'bg-white':
+            !location.pathname.includes('post') &&
+            !location.pathname.includes('galleries'),
+          'bg-slate-50':
+            location.pathname.includes('post') ||
+            location.pathname.includes('galleries'),
         })}>
         <Outlet />
       </div>
