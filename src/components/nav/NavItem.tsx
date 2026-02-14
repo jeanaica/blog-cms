@@ -45,6 +45,7 @@ const NavItem: FC<Props> = ({
         {
           'bg-gray-200': location.pathname === href,
           'border-x md:border-y md:border-x-0': isAction,
+          'md:hidden': isAction, // Hide action items on desktop (they're in FAB)
         }
       )}>
       <span

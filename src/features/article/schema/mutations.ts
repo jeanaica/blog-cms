@@ -18,14 +18,19 @@ export const UPDATE_ARTICLE = gql`
           alt
           caption
         }
-        ... on GalleryBlock {
+        ... on GalleryRefBlock {
           type
           order
-          galleryName
-          images {
-            url
-            alt
-            caption
+          gallery {
+            id
+            title
+            description
+            images {
+              url
+              alt
+              caption
+              order
+            }
           }
         }
       }
@@ -73,14 +78,19 @@ export const ADD_ARTICLE = gql`
           alt
           caption
         }
-        ... on GalleryBlock {
+        ... on GalleryRefBlock {
           type
           order
-          galleryName
-          images {
-            url
-            alt
-            caption
+          gallery {
+            id
+            title
+            description
+            images {
+              url
+              alt
+              caption
+              order
+            }
           }
         }
       }

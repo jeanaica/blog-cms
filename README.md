@@ -1,5 +1,12 @@
 # Blog CMS
 
+<a href="https://gitmoji.dev">
+  <img
+    src="https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg?style=flat-square"
+    alt="Gitmoji"
+  />
+</a>
+
 Admin dashboard for managing blog posts and articles. Built with React, Vite, and Tailwind CSS, backed by a GraphQL API and Firebase.
 
 ## Requirements

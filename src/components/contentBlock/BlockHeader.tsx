@@ -1,4 +1,4 @@
-import { type FC, type HTMLAttributes } from 'react';
+import { type FC, type HTMLAttributes, memo } from 'react';
 import { type SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 import classNames from 'classnames';
 
@@ -69,4 +69,4 @@ const BlockHeader: FC<Props> = ({
   );
 };
 
-export default BlockHeader;
+export default memo(BlockHeader);

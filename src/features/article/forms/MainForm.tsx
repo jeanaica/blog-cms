@@ -1,4 +1,4 @@
-import { type FC, useMemo } from 'react';
+import { type FC, useMemo, useEffect } from 'react';
 import { FormProvider, type UseFormReturn } from 'react-hook-form';
 
 import Container from 'components/container/Container';
@@ -78,12 +78,18 @@ const MainForm: FC<Props> = ({
   const slug = useMemo(() => {
     const trimmedTitle = title?.trim();
     if (!trimmedTitle) return '';
-    return trimmedTitle.toLowerCase().replace(SLUG_INVALID_CHARS, '').replaceAll(' ', '-');
+    return trimmedTitle
+      .toLowerCase()
+      .replace(SLUG_INVALID_CHARS, '')
+      .replaceAll(' ', '-');
   }, [title]);
 
-  if (methods.getValues('slug') !== slug) {
-    setValue('slug', slug);
-  }
+  // Update slug field when computed slug changes (moved to effect to avoid state update during render)
+  useEffect(() => {
+    if (methods.getValues('slug') !== slug) {
+      setValue('slug', slug);
+    }
+  }, [slug, setValue, methods]);
 
   const onPreview = () => {
     if (slug && contentBlocks.length) {

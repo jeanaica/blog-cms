@@ -59,7 +59,7 @@ const Actions: FC<Props> = ({
         onClick={onPublish}
       />
       <IconButton
-        icon='send_and_archive'
+        icon='move_to_inbox'
         tooltip='Move to drafts'
         size='2xl'
         disabled={loading || status === 'draft'}

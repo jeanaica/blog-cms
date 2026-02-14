@@ -1,4 +1,4 @@
-import { type FC } from 'react';
+import { type FC, memo } from 'react';
 
 import FileImage from 'components/form/FileImage';
 import Input from 'components/form/Input';
@@ -35,4 +35,4 @@ const SingleImageBlock: FC<Props> = ({ index }) => {
   );
 };
 
-export default SingleImageBlock;
+export default memo(SingleImageBlock);

@@ -9,8 +9,7 @@ export type ContentBlockMutationInput = {
   url?: string;
   alt?: string;
   caption?: string;
-  galleryName?: string;
-  images?: Array<{ url: string; alt: string; caption?: string }>;
+  galleryId?: string;
 };
 
 /**
@@ -100,14 +99,11 @@ export function serializeBlocksForMutation(
           caption: block.caption,
         };
       case 'gallery':
+        // Backend expects type 'gallery_ref' for reference architecture
         return {
-          ...base,
-          galleryName: block.galleryName || '',
-          images: (block.images || []).map(img => ({
-            url: img.url || '',
-            alt: img.alt || '',
-            caption: img.caption,
-          })),
+          type: 'gallery_ref',
+          order: index,
+          galleryId: block.galleryId || '',
         };
       default:
         return base;
@@ -138,9 +134,28 @@ export function mapContentBlocksFromQuery(
               caption: block.caption,
             };
           case 'gallery':
+          case 'gallery_ref':
+            // Handle new nested gallery structure from GraphQL
+            if (block.gallery) {
+              return {
+                type: 'gallery' as const,
+                galleryId: block.gallery.id || '',
+                galleryName: block.gallery.title || '',
+                images: (block.gallery.images || []).map(
+                  (img: { url: string; alt: string; caption?: string }) => ({
+                    id: crypto.randomUUID(),
+                    url: img.url,
+                    alt: img.alt,
+                    caption: img.caption,
+                  })
+                ),
+              };
+            }
+            // Handle legacy inline gallery structure (backward compatibility)
             return {
               type: 'gallery' as const,
-              galleryName: block.galleryName,
+              galleryId: block.galleryId || '',
+              galleryName: block.galleryName || '',
               images: (block.images || []).map(
                 (img: { url: string; alt: string; caption?: string }) => ({
                   id: crypto.randomUUID(),

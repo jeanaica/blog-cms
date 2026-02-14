@@ -27,14 +27,19 @@ export const GET_ARTICLE_BY_ID = gql`
           alt
           caption
         }
-        ... on GalleryBlock {
+        ... on GalleryRefBlock {
           type
           order
-          galleryName
-          images {
-            url
-            alt
-            caption
+          gallery {
+            id
+            title
+            description
+            images {
+              url
+              alt
+              caption
+              order
+            }
           }
         }
       }

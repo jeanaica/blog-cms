@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, FC, ReactNode } from 'react';
+import { ButtonHTMLAttributes, FC, ReactNode, memo } from 'react';
 import classNames from 'classnames';
 
 import Loading from 'components/loading/Loading';
@@ -66,4 +66,4 @@ const Button: FC<Props> = ({
   </button>
 );
 
-export default Button;
+export default memo(Button);

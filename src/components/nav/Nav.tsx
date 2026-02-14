@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 
 import NavItem from 'components/nav/NavItem';
@@ -12,14 +13,26 @@ interface NavItems {
   isAction: boolean;
 }
 
-type Props = {};
+type Props = {
+  isEditOrAddPage?: boolean;
+};
 
-const Nav: FC<Props> = () => {
+const Nav: FC<Props> = ({ isEditOrAddPage = false }) => {
   const [collapseMenu, setCollapseMenu] = useState(false);
+  const navigate = useNavigate();
 
   const handleCollapse = () => {
     setCollapseMenu(!collapseMenu);
   };
+
+  const handleHome = () => {
+    navigate('/post');
+  };
+
+  // Filter items: on mobile edit/add pages, hide action buttons and show home button instead
+  const navItems = isEditOrAddPage
+    ? navJson.filter(item => !item.isAction) // Hide action buttons on edit/add pages
+    : navJson;
 
   return (
     <div
@@ -30,7 +43,17 @@ const Nav: FC<Props> = () => {
           'md:w-[200px]': !collapseMenu,
         }
       )}>
-      {navJson.map(({ text, icon, href, isAction }: NavItems) => (
+      {/* Show home button on mobile when on edit/add pages (leftmost position) */}
+      {isEditOrAddPage && (
+        <NavItem
+          icon='home'
+          text='Home'
+          onClick={handleHome}
+          className='md:hidden'
+        />
+      )}
+
+      {navItems.map(({ text, icon, href, isAction }: NavItems) => (
         <NavItem
           key={text}
           icon={icon}
@@ -40,6 +63,7 @@ const Nav: FC<Props> = () => {
           collapsed={collapseMenu}
         />
       ))}
+
       <NavItem
         icon={
           collapseMenu

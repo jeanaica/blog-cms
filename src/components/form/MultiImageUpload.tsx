@@ -60,6 +60,7 @@ const MultiImageUpload: FC<Props> = ({
 
   const isDisabled = disabled || isSubmitting;
 
+  // DnD sensor configuration
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );
@@ -107,7 +108,7 @@ const MultiImageUpload: FC<Props> = ({
     [maxImages]
   );
 
-  const handleDrag = (e: DragEvent<HTMLElement>) => {
+  const handleDrag = useCallback((e: DragEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -116,7 +117,7 @@ const MultiImageUpload: FC<Props> = ({
     } else if (e.type === 'dragleave') {
       setDragActive(false);
     }
-  };
+  }, []);
 
   return (
     <Controller

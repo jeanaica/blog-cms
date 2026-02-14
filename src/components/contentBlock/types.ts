@@ -14,6 +14,7 @@ export type ContentBlock = {
   caption?: string;
   alt?: string;
   galleryName?: string;
+  galleryId?: string;
 };
 
 export const BLOCK_TYPE_META: Record<
