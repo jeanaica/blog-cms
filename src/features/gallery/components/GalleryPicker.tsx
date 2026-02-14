@@ -1,4 +1,4 @@
-import { type FC, useState, useEffect } from 'react';
+import { type FC, useState, useEffect, useRef } from 'react';
 import { useQuery } from '@apollo/client';
 import classNames from 'classnames';
 
@@ -11,6 +11,7 @@ type Props = {
   onSelect: (gallery: Gallery) => void;
   selectedId?: string;
   className?: string;
+  onCreateClick?: () => void;
 };
 
 /**
@@ -37,20 +38,24 @@ type Props = {
  * />
  * ```
  */
-const GalleryPicker: FC<Props> = ({ onSelect, selectedId, className }) => {
+const GalleryPicker: FC<Props> = ({ onSelect, selectedId, className, onCreateClick }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const { loading, data } = useQuery(GET_GALLERIES, {
-    variables: { status: 'PUBLISHED' },
-  });
+  const hasAutoSelected = useRef(false);
+
+  const { loading, data } = useQuery(GET_GALLERIES);
 
   const galleries: Gallery[] = data?.galleries || [];
-  const filteredGalleries = galleries.filter(gallery =>
-    gallery.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter out archived galleries and apply search
+  const filteredGalleries = galleries
+    .filter(gallery => gallery.status !== 'ARCHIVED')
+    .filter(gallery =>
+      gallery.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   useEffect(() => {
-    // Auto-select first gallery if none selected
-    if (!selectedId && filteredGalleries.length > 0) {
+    // Auto-select first gallery if none selected (only once)
+    if (!selectedId && filteredGalleries.length > 0 && !hasAutoSelected.current) {
+      hasAutoSelected.current = true;
       onSelect(filteredGalleries[0]);
     }
   }, [filteredGalleries, selectedId, onSelect]);
@@ -79,35 +84,60 @@ const GalleryPicker: FC<Props> = ({ onSelect, selectedId, className }) => {
         <div className='text-center text-gray-500 py-8'>
           {searchTerm
             ? 'No galleries match your search'
-            : 'No published galleries available'}
+            : 'No galleries available'}
         </div>
       ) : (
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto'>
+        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-96 overflow-y-auto'>
+          {/* Create Gallery Card */}
+          {onCreateClick && (
+            <button
+              type='button'
+              onClick={onCreateClick}
+              className='relative flex flex-col border-2 border-dashed border-gray-300 rounded overflow-hidden hover:border-blue-400 hover:bg-blue-50 transition-all'>
+              <div className='relative w-full pb-[100%] flex items-center justify-center'>
+                <div className='absolute inset-0 flex flex-col items-center justify-center gap-2 text-gray-400'>
+                  <span className='material-icons-outlined text-4xl'>
+                    add_circle_outline
+                  </span>
+                  <span className='text-sm font-medium'>Create Gallery</span>
+                </div>
+              </div>
+            </button>
+          )}
+
+          {/* Gallery Cards */}
           {filteredGalleries.map(gallery => (
             <button
               key={gallery.id}
               type='button'
               onClick={() => onSelect(gallery)}
               className={classNames(
-                'flex flex-col p-3 border rounded hover:shadow-md transition-shadow text-left',
+                'relative flex flex-col border-2 rounded overflow-hidden hover:shadow-md transition-all',
                 {
-                  'border-secondary-700 bg-secondary-50':
-                    gallery.id === selectedId,
+                  'border-blue-600': gallery.id === selectedId,
                   'border-gray-200': gallery.id !== selectedId,
                 }
               )}>
-              {gallery.images?.[0]?.url && (
-                <img
-                  src={gallery.images[0].url}
-                  alt={gallery.images[0].alt}
-                  className='w-full h-32 object-cover rounded mb-2'
-                />
+              {gallery.id === selectedId && (
+                <span className='material-icons-outlined absolute top-2 right-2 text-blue-600 bg-white rounded-full shadow-md z-10 text-xl'>
+                  check_circle
+                </span>
               )}
-              <h4 className='font-semibold text-sm'>{gallery.title}</h4>
-              <p className='text-xs text-gray-500'>
-                {gallery.images?.length || 0} image
-                {gallery.images?.length !== 1 ? 's' : ''}
-              </p>
+              <div className='relative w-full pb-[100%]'>
+                {gallery.images?.[0]?.url && (
+                  <img
+                    src={gallery.images[0].url}
+                    alt={gallery.images[0].alt}
+                    className='absolute inset-0 w-full h-full object-cover'
+                  />
+                )}
+              </div>
+              <div className='p-2 bg-white text-left'>
+                <h4 className='font-semibold text-xs truncate'>{gallery.title}</h4>
+                <p className='text-xs text-gray-500'>
+                  {gallery.images?.length || 0} image{gallery.images?.length !== 1 ? 's' : ''}
+                </p>
+              </div>
             </button>
           ))}
         </div>

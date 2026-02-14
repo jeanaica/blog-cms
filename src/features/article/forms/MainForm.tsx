@@ -78,7 +78,10 @@ const MainForm: FC<Props> = ({
   const slug = useMemo(() => {
     const trimmedTitle = title?.trim();
     if (!trimmedTitle) return '';
-    return trimmedTitle.toLowerCase().replace(SLUG_INVALID_CHARS, '').replaceAll(' ', '-');
+    return trimmedTitle
+      .toLowerCase()
+      .replace(SLUG_INVALID_CHARS, '')
+      .replaceAll(' ', '-');
   }, [title]);
 
   if (methods.getValues('slug') !== slug) {

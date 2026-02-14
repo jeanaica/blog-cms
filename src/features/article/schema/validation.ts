@@ -8,7 +8,7 @@ const galleryImageSchema = z
     id: z.string(),
     file: z.any().optional(),
     url: z.string().optional(),
-    caption: z.string().optional(),
+    caption: z.string().nullish(), // Allow null, undefined, or string
     alt: z.string().min(1, 'Alt text is required'),
   })
   .refine(data => data.file || data.url, {
@@ -30,13 +30,14 @@ const contentBlockSchema = z.discriminatedUnion('type', [
           val instanceof File || (typeof val === 'string' && val.length > 0),
         'Image is required'
       ),
-    caption: z.string().optional(),
+    caption: z.string().nullish(), // Allow null, undefined, or string
     alt: z.string().min(1, 'Alt text is required'),
   }),
   z.object({
     type: z.literal('gallery'),
-    galleryName: z.string().min(1, 'Gallery name is required'),
-    images: galleryImageSchema.array().min(1, 'At least one image is required'),
+    galleryId: z.string().min(1, 'Gallery selection is required'),
+    galleryName: z.string().optional(),
+    images: galleryImageSchema.array().optional(),
   }),
 ]);
 

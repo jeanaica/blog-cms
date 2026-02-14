@@ -189,7 +189,7 @@ const Edit: FC = () => {
 
       // if status is not already in draft
       if (dataStatus !== 'DRAFT') {
-        handleSubmit(onSubmit);
+        handleSubmit(onSubmit)(); // Fixed: need to invoke the returned function
       } else {
         // if it is still in draft
         handleArticle({ ...values, scheduledAt: null }, 'DRAFT');

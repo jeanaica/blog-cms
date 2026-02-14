@@ -155,12 +155,8 @@ const Edit: FC = () => {
 
   const onSave = async () => {
     const values = getValues();
-
-    if (dataStatus !== 'DRAFT') {
-      handleSubmit(onSubmit)();
-    } else {
-      handleGallery({ ...values, scheduledAt: null }, 'DRAFT');
-    }
+    // "Save Draft" should always save as DRAFT, regardless of current status
+    handleGallery({ ...values, scheduledAt: null }, 'DRAFT');
   };
 
   useEffect(() => {
@@ -178,6 +174,7 @@ const Edit: FC = () => {
       loading={loading}
       submitting={submitting}
       error={error?.message || queryError?.message}
+      status={dataStatus}
     />
   );
 };

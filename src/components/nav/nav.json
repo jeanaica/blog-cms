@@ -1,6 +1,6 @@
 [
   {
-    "icon": "auto_awesome",
+    "icon": "article",
     "text": "Posts",
     "href": "/post",
     "isAction": false
@@ -15,6 +15,12 @@
     "icon": "post_add",
     "text": "Add Post",
     "href": "/article/add",
+    "isAction": true
+  },
+  {
+    "icon": "add_photo_alternate",
+    "text": "Add Gallery",
+    "href": "/gallery/add",
     "isAction": true
   }
 ]

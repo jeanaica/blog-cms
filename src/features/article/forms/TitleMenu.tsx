@@ -47,8 +47,8 @@ const TitleMenu: FC<Props> = ({
               onClick: onPreview,
             },
             {
-              text: 'Save',
-              icon: 'save',
+              text: 'Draft',
+              icon: 'move_to_inbox',
               onClick: onSave,
               hide: !!status && status !== 'DRAFT',
               disabled: (!!status && status !== 'DRAFT') || !isDirty,

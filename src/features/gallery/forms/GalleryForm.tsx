@@ -20,6 +20,7 @@ type Props = {
   loading?: boolean;
   submitting?: boolean;
   error?: string;
+  status?: string;
 };
 
 const GalleryForm: FC<Props> = ({
@@ -29,10 +30,11 @@ const GalleryForm: FC<Props> = ({
   loading,
   submitting,
   error,
+  status,
 }) => {
   const {
     watch,
-    formState: { isDirty, errors },
+    formState: { isDirty, isSubmitting, errors },
   } = methods;
 
   return (
@@ -40,71 +42,70 @@ const GalleryForm: FC<Props> = ({
       className='p-4 pt-0 relative'
       loading={loading}>
       <FormProvider {...methods}>
-        <form
-          onSubmit={onSubmit}
-          className='space-y-6'>
-          <div className='sticky top-0 z-10 bg-slate-50 pt-8 pb-4 border-b border-slate-200'>
-            <div className='flex justify-between items-center gap-4'>
-              <h1 className='text-2xl font-PoppinsSemiBold'>
-                {methods.getValues('title') || 'New Gallery'}
-              </h1>
-              <div className='flex gap-2'>
-                <Button
-                  type='button'
-                  onClick={onSave}
-                  disabled={submitting || !isDirty}>
-                  Save Draft
-                </Button>
-                <Button
-                  type='submit'
-                  primary
-                  disabled={submitting}>
-                  {submitting ? 'Publishing...' : 'Publish'}
-                </Button>
-              </div>
-            </div>
-          </div>
+        {error && (
+          <Alert
+            type='error'
+            message={error}
+          />
+        )}
 
-          {error && (
-            <Alert
-              type='error'
-              message={error}
-            />
-          )}
-
-          <div className='space-y-6 max-w-4xl mx-auto'>
+        {/* Inline editable title header - matches post edit page style */}
+        <div className='flex gap-2 sticky top-0 bg-white z-20 pt-4 mb-6'>
+          <div className='flex flex-[2]'>
             <Input
-              label='Title'
+              label=''
               name='title'
-              placeholder='Enter gallery title'
-            />
-
-            <TextArea
-              label='Description'
-              name='description'
-              placeholder='Optional description for this gallery'
-              rows={3}
-            />
-
-            <div>
-              <label className='block text-sm font-medium mb-2'>Images</label>
-              <ImageUploader
-                name='images'
-                disabled={submitting}
-              />
-              {errors.images?.message && typeof errors.images.message === 'string' && (
-                <p className='text-red-500 text-sm mt-1'>
-                  {errors.images.message}
-                </p>
-              )}
-            </div>
-
-            <DatePicker
-              label='Publish Date'
-              name='scheduledAt'
-              helperText='Leave as today to publish immediately, or set a future date to schedule'
+              className='h-full p-0 font-PoppinsSemiBold md:text-2xl'
+              placeholder='Enter gallery title...'
             />
           </div>
+
+          <div className='flex flex-1 gap-2 mb-4'>
+            {status !== 'PUBLISHED' && (
+              <Button
+                type='button'
+                onClick={onSave}
+                icon='move_to_inbox'
+                disabled={submitting || !isDirty}>
+                Draft
+              </Button>
+            )}
+            <Button
+              onClick={onSubmit}
+              primary
+              icon='send'
+              disabled={isSubmitting || !isDirty}>
+              Publish
+            </Button>
+          </div>
+        </div>
+
+        <form className='space-y-6 max-w-4xl mx-auto'>
+          <TextArea
+            label='Description'
+            name='description'
+            placeholder='Optional description for this gallery'
+            rows={3}
+          />
+
+          <div>
+            <label className='block text-sm font-medium mb-2'>Images</label>
+            <ImageUploader
+              name='images'
+              disabled={submitting}
+            />
+            {errors.images?.message && typeof errors.images.message === 'string' && (
+              <p className='text-red-500 text-sm mt-1'>
+                {errors.images.message}
+              </p>
+            )}
+          </div>
+
+          <DatePicker
+            label='Publish Date'
+            name='scheduledAt'
+            helperText='Leave as today to publish immediately, or set a future date to schedule'
+          />
         </form>
 
         <LoadingModal isOpen={submitting} />

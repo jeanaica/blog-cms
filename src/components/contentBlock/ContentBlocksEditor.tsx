@@ -178,7 +178,7 @@ const ContentBlocksEditor: FC = () => {
                         hasError={!!blockErrors}
                         {...dragHandleProps}
                       />
-                      <div className='bg-white'>
+                      <div className='bg-gray-50'>
                         {(field as unknown as ContentBlock).type === 'text' ? (
                           <TextBlock index={index} />
                         ) : (field as unknown as ContentBlock).type ===
