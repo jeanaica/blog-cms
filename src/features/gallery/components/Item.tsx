@@ -107,8 +107,7 @@ const Item: FC<Props> = ({ id, gallery, onUpdate, onDelete, loading }) => {
         publishedAt={gallery.publishedAt}
         scheduledAt={gallery.scheduledAt}
         status={gallery.status}
-        thumbnail={gallery.images?.[0]?.url}
-        thumbnailAlt={gallery.images?.[0]?.alt}
+        images={gallery.images || []}
       />
 
       <Actions

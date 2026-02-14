@@ -1,4 +1,4 @@
-import { type FC, useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { type FC, useEffect, useRef, useState, useCallback } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import {
   DndContext,
@@ -40,13 +40,9 @@ const ContentBlocksEditor: FC = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const lastBlockRef = useRef<HTMLDivElement>(null);
 
-  // Memoize DnD sensor configuration
-  const sensors = useMemo(
-    () =>
-      useSensors(
-        useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
-      ),
-    []
+  // DnD sensor configuration
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );
 
   useEffect(() => {
