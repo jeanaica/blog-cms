@@ -1,6 +1,9 @@
-import { type FC } from 'react';
+import { type FC, lazy, Suspense } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
-import Select, { type MultiValue, type StylesConfig } from 'react-select';
+import { type MultiValue, type StylesConfig } from 'react-select';
+
+// Lazy load react-select to reduce initial bundle size
+const Select = lazy(() => import('react-select').then(module => ({ default: module.default })));
 
 import FieldError from '../FieldError';
 import FieldLabel from '../FieldLabel';
@@ -63,33 +66,35 @@ const Pill: FC<Props> = ({
           control={control}
           name={name}
           render={({ field: { onChange, value, ref } }) => (
-            <Select
-              ref={ref}
-              instanceId={name}
-              isMulti
-              value={value}
-              isDisabled={disabled || readOnly || isSubmitting}
-              isLoading={loading}
-              closeMenuOnSelect={false}
-              styles={pillStyles}
-              onChange={(val: MultiValue<any>) => {
-                if (onPillChange) {
-                  onPillChange(val);
-                }
+            <Suspense fallback={<div className='h-10 bg-gray-100 animate-pulse rounded' />}>
+              <Select
+                ref={ref}
+                instanceId={name}
+                isMulti
+                value={value}
+                isDisabled={disabled || readOnly || isSubmitting}
+                isLoading={loading}
+                closeMenuOnSelect={false}
+                styles={pillStyles}
+                onChange={(val: MultiValue<any>) => {
+                  if (onPillChange) {
+                    onPillChange(val);
+                  }
 
-                onChange(val);
-              }}
-              options={options}
-              hideSelectedOptions
-              components={{
-                MultiValueRemove: (props: any) => (
-                  <MultiValueRemove
-                    {...props}
-                    hasRemovable={hasRemovable}
-                  />
-                ),
-              }}
-            />
+                  onChange(val);
+                }}
+                options={options}
+                hideSelectedOptions
+                components={{
+                  MultiValueRemove: (props: any) => (
+                    <MultiValueRemove
+                      {...props}
+                      hasRemovable={hasRemovable}
+                    />
+                  ),
+                }}
+              />
+            </Suspense>
           )}
         />
       </div>

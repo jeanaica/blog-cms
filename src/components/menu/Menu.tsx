@@ -1,4 +1,4 @@
-import { type FC, type MouseEvent, type MouseEventHandler, useMemo, useRef, useState } from 'react';
+import { type FC, type MouseEvent, type MouseEventHandler, useMemo, useRef, useState, useCallback } from 'react';
 import classNames from 'classnames';
 
 import Icon from 'components/icon/Icon';
@@ -31,26 +31,29 @@ const Menu: FC<Props> = ({ text, options, loading = false }) => {
 
   const visibleOptions = useMemo(() => options.filter(option => !option.hide), [options]);
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     setIsOpen(prev => !prev);
-  };
+  }, []);
 
-  const handleOptionClick = (
-    optionClickHandler: MouseEventHandler<
-      HTMLAnchorElement | HTMLButtonElement
-    >,
-    disabled?: boolean
-  ) => {
-    return (
-      event: MouseEvent<HTMLAnchorElement | HTMLButtonElement>
+  const handleOptionClick = useCallback(
+    (
+      optionClickHandler: MouseEventHandler<
+        HTMLAnchorElement | HTMLButtonElement
+      >,
+      disabled?: boolean
     ) => {
-      setIsOpen(false);
+      return (
+        event: MouseEvent<HTMLAnchorElement | HTMLButtonElement>
+      ) => {
+        setIsOpen(false);
 
-      if (!disabled) {
-        optionClickHandler(event);
-      }
-    };
-  };
+        if (!disabled) {
+          optionClickHandler(event);
+        }
+      };
+    },
+    []
+  );
 
   return (
     <div

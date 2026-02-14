@@ -1,4 +1,4 @@
-import { type FC, type TextareaHTMLAttributes } from 'react';
+import { type FC, type TextareaHTMLAttributes, memo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import classNames from 'classnames';
 
@@ -65,4 +65,4 @@ const TextArea: FC<Props> = ({
   );
 };
 
-export default TextArea;
+export default memo(TextArea);

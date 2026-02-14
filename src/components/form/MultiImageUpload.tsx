@@ -1,4 +1,4 @@
-import { type DragEvent, type FC, useCallback, useState } from 'react';
+import { type DragEvent, type FC, useCallback, useState, useMemo } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import {
   DndContext,
@@ -60,8 +60,13 @@ const MultiImageUpload: FC<Props> = ({
 
   const isDisabled = disabled || isSubmitting;
 
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+  // Memoize DnD sensor configuration
+  const sensors = useMemo(
+    () =>
+      useSensors(
+        useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+      ),
+    []
   );
 
   const validateFiles = useCallback(
@@ -107,7 +112,7 @@ const MultiImageUpload: FC<Props> = ({
     [maxImages]
   );
 
-  const handleDrag = (e: DragEvent<HTMLElement>) => {
+  const handleDrag = useCallback((e: DragEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -116,7 +121,7 @@ const MultiImageUpload: FC<Props> = ({
     } else if (e.type === 'dragleave') {
       setDragActive(false);
     }
-  };
+  }, []);
 
   return (
     <Controller

@@ -43,7 +43,7 @@ const CreateGalleryModal: FC<Props> = ({ isOpen, onClose, onGalleryCreated }) =>
 
   const [createGallery] = useMutation(CREATE_GALLERY, {
     refetchQueries: [{ query: GET_GALLERIES }],
-    awaitRefetchQueries: true,
+    awaitRefetchQueries: false, // Allow refetch to happen in background for better UX
   });
 
   const onSubmit = async (values: GalleryInput) => {

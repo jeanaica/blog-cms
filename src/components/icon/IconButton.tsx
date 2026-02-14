@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, FC, MouseEventHandler } from 'react';
+import { ButtonHTMLAttributes, FC, MouseEventHandler, memo } from 'react';
 import classNames from 'classnames';
 
 import Loading from 'components/loading/Loading';
@@ -55,4 +55,4 @@ const IconButton: FC<Props> = ({
   );
 };
 
-export default IconButton;
+export default memo(IconButton);

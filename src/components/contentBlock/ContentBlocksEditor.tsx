@@ -1,4 +1,4 @@
-import { type FC, useEffect, useRef, useState } from 'react';
+import { type FC, useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import {
   DndContext,
@@ -40,8 +40,13 @@ const ContentBlocksEditor: FC = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const lastBlockRef = useRef<HTMLDivElement>(null);
 
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+  // Memoize DnD sensor configuration
+  const sensors = useMemo(
+    () =>
+      useSensors(
+        useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+      ),
+    []
   );
 
   useEffect(() => {
@@ -61,31 +66,40 @@ const ContentBlocksEditor: FC = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isDropdownOpen]);
 
-  const handleAddBlock = (type: BlockType) => {
-    append({ type });
-    setIsDropdownOpen(false);
-    requestAnimationFrame(() => {
-      lastBlockRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
+  const handleAddBlock = useCallback(
+    (type: BlockType) => {
+      append({ type });
+      setIsDropdownOpen(false);
+      requestAnimationFrame(() => {
+        lastBlockRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
       });
-    });
-  };
+    },
+    [append]
+  );
 
-  const handleDragStart = (event: DragEndEvent) => {
-    const idx = fields.findIndex(f => f.id === event.active.id);
-    setActiveIndex(idx);
-  };
+  const handleDragStart = useCallback(
+    (event: DragEndEvent) => {
+      const idx = fields.findIndex(f => f.id === event.active.id);
+      setActiveIndex(idx);
+    },
+    [fields]
+  );
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    setActiveIndex(null);
-    if (over && active.id !== over.id) {
-      const oldIndex = fields.findIndex(f => f.id === active.id);
-      const newIndex = fields.findIndex(f => f.id === over.id);
-      move(oldIndex, newIndex);
-    }
-  };
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event;
+      setActiveIndex(null);
+      if (over && active.id !== over.id) {
+        const oldIndex = fields.findIndex(f => f.id === active.id);
+        const newIndex = fields.findIndex(f => f.id === over.id);
+        move(oldIndex, newIndex);
+      }
+    },
+    [fields, move]
+  );
 
   const addButton = (
     <div

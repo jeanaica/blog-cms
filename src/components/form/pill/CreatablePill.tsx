@@ -1,7 +1,9 @@
-import { type FC } from 'react';
+import { type FC, lazy, Suspense } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { type MultiValue, type MultiValueRemoveProps, type StylesConfig } from 'react-select';
-import CreatableSelect from 'react-select/creatable';
+
+// Lazy load react-select/creatable to reduce initial bundle size
+const CreatableSelect = lazy(() => import('react-select/creatable'));
 
 import toTitleCase from 'utils/toTitleCase';
 
@@ -78,38 +80,40 @@ const CreatablePill: FC<Props> = ({
           control={control}
           name={name}
           render={({ field: { value, onChange, ref } }) => (
-            <CreatableSelect
-              ref={ref}
-              instanceId={name}
-              isMulti
-              value={value}
-              isDisabled={disabled || readOnly || isSubmitting}
-              isLoading={loading}
-              closeMenuOnSelect={false}
-              styles={pillStyles}
-              onChange={(val: MultiValue<OptionType>) => {
-                if (onPillChange) {
-                  onPillChange(val);
-                }
-                onChange(val);
-              }}
-              onCreateOption={handleCreate}
-              options={options}
-              hideSelectedOptions
-              filterOption={(option: {
-                value: string;
-                label: string;
-                data: OptionType;
-              }) => option.value !== value}
-              components={{
-                MultiValueRemove: (props: MultiValueRemoveProps<OptionType, true>) => (
-                  <MultiValueRemove
-                    {...props}
-                    hasRemovable={hasRemovable}
-                  />
-                ),
-              }}
-            />
+            <Suspense fallback={<div className='h-10 bg-gray-100 animate-pulse rounded' />}>
+              <CreatableSelect
+                ref={ref}
+                instanceId={name}
+                isMulti
+                value={value}
+                isDisabled={disabled || readOnly || isSubmitting}
+                isLoading={loading}
+                closeMenuOnSelect={false}
+                styles={pillStyles}
+                onChange={(val: MultiValue<OptionType>) => {
+                  if (onPillChange) {
+                    onPillChange(val);
+                  }
+                  onChange(val);
+                }}
+                onCreateOption={handleCreate}
+                options={options}
+                hideSelectedOptions
+                filterOption={(option: {
+                  value: string;
+                  label: string;
+                  data: OptionType;
+                }) => option.value !== value}
+                components={{
+                  MultiValueRemove: (props: MultiValueRemoveProps<OptionType, true>) => (
+                    <MultiValueRemove
+                      {...props}
+                      hasRemovable={hasRemovable}
+                    />
+                  ),
+                }}
+              />
+            </Suspense>
           )}
         />
       </div>

@@ -1,4 +1,4 @@
-import { type FC } from 'react';
+import { type FC, memo } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import classNames from 'classnames';
@@ -114,4 +114,4 @@ const SortableImageCard: FC<Props> = ({
   );
 };
 
-export default SortableImageCard;
+export default memo(SortableImageCard);

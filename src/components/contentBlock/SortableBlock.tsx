@@ -1,4 +1,4 @@
-import { type FC, type ReactNode } from 'react';
+import { type FC, type ReactNode, memo } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import classNames from 'classnames';
@@ -61,4 +61,4 @@ const SortableBlock: FC<Props> = ({
   );
 };
 
-export default SortableBlock;
+export default memo(SortableBlock);

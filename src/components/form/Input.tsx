@@ -1,4 +1,4 @@
-import { type FC } from 'react';
+import { type FC, memo } from 'react';
 import classNames from 'classnames';
 import { useFormContext, type RegisterOptions } from 'react-hook-form';
 
@@ -89,4 +89,4 @@ const Input: FC<Props> = ({
   );
 };
 
-export default Input;
+export default memo(Input);

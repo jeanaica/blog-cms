@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, memo } from 'react';
 import classNames from 'classnames';
 
 import IconButton from 'components/icon/IconButton';
@@ -43,4 +43,4 @@ const Modal: FC<Props> = ({ showModal, children, onClose, disabled }) => (
   </ReactPortal>
 );
 
-export default Modal;
+export default memo(Modal);

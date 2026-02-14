@@ -1,4 +1,4 @@
-import { type DragEvent, type FC, useState } from 'react';
+import { type DragEvent, type FC, useState, useCallback } from 'react';
 import {
   type RegisterOptions,
   useFormContext,
@@ -43,7 +43,7 @@ const FileImage: FC<Props> = ({
 
   const isDisabled = disabled || readOnly || isSubmitting || loading;
 
-  const handleDrag = (e: DragEvent<HTMLElement>) => {
+  const handleDrag = useCallback((e: DragEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -52,9 +52,9 @@ const FileImage: FC<Props> = ({
     } else if (e.type === 'dragleave') {
       setDragActive(false);
     }
-  };
+  }, []);
 
-  const validateFile = (file: File): boolean => {
+  const validateFile = useCallback((file: File): boolean => {
     if (!ALLOWED_TYPES.includes(file.type)) {
       setFileError('Only .jpg, .png, and .webp formats are supported.');
       return false;
@@ -67,7 +67,7 @@ const FileImage: FC<Props> = ({
 
     setFileError(null);
     return true;
-  };
+  }, []);
 
   return (
     <Controller

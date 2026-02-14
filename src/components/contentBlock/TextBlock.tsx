@@ -1,4 +1,4 @@
-import { type FC } from 'react';
+import { type FC, memo } from 'react';
 
 import Editor from 'components/form/Editor';
 
@@ -27,4 +27,4 @@ const TextBlock: FC<Props> = ({ index }) => {
   );
 };
 
-export default TextBlock;
+export default memo(TextBlock);
