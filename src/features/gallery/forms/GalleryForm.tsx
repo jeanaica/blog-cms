@@ -33,7 +33,6 @@ const GalleryForm: FC<Props> = ({
   status,
 }) => {
   const {
-    watch,
     formState: { isDirty, isSubmitting, errors },
   } = methods;
 

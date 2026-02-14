@@ -23,7 +23,6 @@ const Edit: FC = () => {
   const { id } = useParams<{ id: string }>();
   const toast = useToast();
   const { t } = useTranslation();
-  const [dataStatus, setDataStatus] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   const {
@@ -33,6 +32,9 @@ const Edit: FC = () => {
   } = useQuery(GET_GALLERY, {
     variables: { id },
   });
+
+  // Derive status from data instead of storing in state
+  const dataStatus = data?.gallery?.status || 'DRAFT';
 
   const methods = useForm<GalleryInput>({
     resolver: zodResolver(validation),
@@ -161,7 +163,6 @@ const Edit: FC = () => {
 
   useEffect(() => {
     if (data?.gallery) {
-      setDataStatus(data.gallery.status);
       reset(formatDataForForm(data.gallery));
     }
   }, [data, reset, formatDataForForm]);

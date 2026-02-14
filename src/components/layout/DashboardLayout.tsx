@@ -1,4 +1,4 @@
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 
 import Nav from 'components/nav/Nav';
@@ -12,7 +12,6 @@ import Header from './Header';
 const DashboardLayout = () => {
   const auth = useAuth();
   const location = useLocation();
-  const navigate = useNavigate();
 
   if (!auth.user?.email) {
     return (
