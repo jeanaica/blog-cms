@@ -24,6 +24,9 @@ const PreviewArticlePage = lazy(() => import('./pages/PreviewArticlePage'));
 const GalleryPage = lazy(() => import('./pages/GalleryPage'));
 const AddGalleryPage = lazy(() => import('./pages/AddGalleryPage'));
 const EditGalleryPage = lazy(() => import('./pages/EditGalleryPage'));
+const ThoughtPage = lazy(() => import('./pages/ThoughtPage'));
+const AddThoughtPage = lazy(() => import('./pages/AddThoughtPage'));
+const EditThoughtPage = lazy(() => import('./pages/EditThoughtPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const ErrorPage = lazy(() => import('./pages/ErrorPage'));
 
@@ -75,6 +78,9 @@ const router = createBrowserRouter([
           { path: '/galleries', element: <GalleryPage /> },
           { path: '/gallery/add', element: <AddGalleryPage /> },
           { path: '/gallery/:id/edit', element: <EditGalleryPage /> },
+          { path: '/thought', element: <ThoughtPage /> },
+          { path: '/thought/add', element: <AddThoughtPage /> },
+          { path: '/thought/:id/edit', element: <EditThoughtPage /> },
         ],
       },
     ],

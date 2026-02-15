@@ -12,6 +12,12 @@
     "isAction": false
   },
   {
+    "icon": "chat_bubble",
+    "text": "Thoughts",
+    "href": "/thought",
+    "isAction": false
+  },
+  {
     "icon": "post_add",
     "text": "Add Post",
     "href": "/article/add",
