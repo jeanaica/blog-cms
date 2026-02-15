@@ -80,7 +80,6 @@ const ThoughtForm: FC<Props> = ({ onSubmit, onSave, submitting, isEdit }) => {
         name='image.alt'
         placeholder='Describe the image for accessibility'
         helperText='Used for screen readers and when image fails to load'
-        required
       />
 
       <Input
