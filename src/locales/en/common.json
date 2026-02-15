@@ -6,5 +6,7 @@
   "submit": "Submit",
   "updateSuccess": "Changes saved successfully!",
   "updateFail": "Sorry, we encountered an error while saving your changes. Please check your internet connection and try again.",
+  "deleteSuccess": "Thought deleted successfully!",
+  "deleteFail": "Sorry, we encountered an error while deleting. Please check your internet connection and try again.",
   "unsavedChanges": "You have unsaved changes. Are you sure you want to leave?"
 }
