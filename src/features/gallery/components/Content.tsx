@@ -32,10 +32,10 @@ const Content: FC<Props> = ({
   const remainingCount = images.length - MAX_PREVIEW;
 
   return (
-    <div className='flex gap-6 flex-1 overflow-hidden'>
-      {/* Image collage on the left */}
+    <div className='flex flex-col md:flex-row gap-4 md:gap-6 flex-1 overflow-hidden'>
+      {/* Image collage */}
       {previewImages.length > 0 && (
-        <div className='w-72 h-48 flex-shrink-0'>
+        <div className='w-full h-48 md:w-72 flex-shrink-0'>
           {previewImages.length === 1 ? (
             // Single image: full width
             <div className='relative h-full rounded overflow-hidden shadow-sm'>
@@ -80,7 +80,7 @@ const Content: FC<Props> = ({
 
       {/* Content on the right */}
       <div className='flex-1 overflow-hidden flex flex-col text-left justify-center'>
-        <h3 className='text-l font-PoppinsSemiBold mb-2'>{title}</h3>
+        <h3 className='text-l font-PoppinsSemiBold mb-2 mt-0'>{title}</h3>
         <div className='text-ellipsis overflow-hidden whitespace-nowrap'>
           <span className='font-PoppinsExtraLight text-sm text-gray-600'>
             {imageCount} image{imageCount !== 1 ? 's' : ''}

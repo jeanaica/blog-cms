@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import Button from 'components/button/Button';
 import TextArea from 'components/form/TextArea';
 import Input from 'components/form/Input';
-import DatePicker from 'components/form/DatePicker';
+import FileImage from 'components/form/FileImage';
 
 import { type ThoughtInput } from '../types';
 
@@ -16,28 +16,28 @@ type Props = {
 };
 
 const ThoughtForm: FC<Props> = ({ onSubmit, onSave, submitting, isEdit }) => {
-  const { register, watch } = useFormContext<ThoughtInput>();
-
-  const status = watch('status');
+  const { register } = useFormContext<ThoughtInput>();
 
   return (
-    <div className='max-w-2xl mx-auto p-8'>
-      <div className='flex justify-between items-center mb-8 sticky top-0 bg-slate-50 py-4 z-10'>
-        <h1 className='text-2xl font-semibold'>
+    <div className='max-w-2xl mx-auto px-4 pt-2 pb-2'>
+      <div className='flex gap-2 sticky top-0 bg-white z-20 py-2 mb-6 shadow-sm -mx-8 px-8'>
+        <h1 className='flex flex-[2] items-center text-lg md:text-2xl font-PoppinsSemiBold'>
           {isEdit ? 'Edit Thought' : 'New Thought'}
         </h1>
-        <div className='flex gap-2'>
+        <div className='flex flex-1 gap-2'>
           <Button
-            text='Save Draft'
             onClick={onSave}
-            disabled={submitting}
-          />
+            icon='move_to_inbox'
+            disabled={submitting}>
+            Draft
+          </Button>
           <Button
-            text='Publish'
             primary
+            icon='send'
             onClick={onSubmit}
-            isLoading={submitting}
-          />
+            isLoading={submitting}>
+            Publish
+          </Button>
         </div>
       </div>
 
@@ -45,7 +45,7 @@ const ThoughtForm: FC<Props> = ({ onSubmit, onSave, submitting, isEdit }) => {
         label='Text'
         name='text'
         rows={4}
-        placeholder='What&apos;s on your mind?'
+        placeholder="What's on your mind?"
         isSubmitting={submitting}
       />
 
@@ -56,7 +56,9 @@ const ThoughtForm: FC<Props> = ({ onSubmit, onSave, submitting, isEdit }) => {
             {...register('isQuote')}
             className='w-4 h-4 rounded border-gray-300'
           />
-          <span className='text-sm font-medium text-gray-700'>This is a quote</span>
+          <span className='text-sm font-medium text-gray-700'>
+            This is a quote
+          </span>
         </label>
       </div>
 
@@ -67,10 +69,18 @@ const ThoughtForm: FC<Props> = ({ onSubmit, onSave, submitting, isEdit }) => {
         helperText='Separate tags with commas'
       />
 
+      <FileImage
+        label='Image (Optional)'
+        name='imageFile'
+        disabled={submitting}
+      />
+
       <Input
-        label='Image URL'
-        name='image.url'
-        placeholder='https://example.com/image.jpg'
+        label='Image Alt Text'
+        name='image.alt'
+        placeholder='Describe the image for accessibility'
+        helperText='Used for screen readers and when image fails to load'
+        required
       />
 
       <Input
@@ -78,26 +88,6 @@ const ThoughtForm: FC<Props> = ({ onSubmit, onSave, submitting, isEdit }) => {
         name='image.caption'
         placeholder='Optional caption for the image'
       />
-
-      <div className='mb-4'>
-        <label className='block text-sm font-medium text-gray-700 mb-1'>Status</label>
-        <select
-          {...register('status')}
-          className='border-b border-b-gray-300 w-full py-2 outline-none focus:ring-0'
-          disabled={submitting}>
-          <option value='draft'>Draft</option>
-          <option value='published'>Published</option>
-          <option value='scheduled'>Scheduled</option>
-        </select>
-      </div>
-
-      {status === 'scheduled' && (
-        <DatePicker
-          label='Publish Date'
-          name='publishDate'
-          minDate={new Date()}
-        />
-      )}
     </div>
   );
 };

@@ -31,7 +31,7 @@ const Button: FC<Props> = ({
   <button
     type={type}
     className={classNames(
-      'flex items-center rounded border duration-300 font-semibold justify-center px-4 py-2 h-[50px] flex-1',
+      'flex items-center gap-2 rounded border duration-300 font-semibold justify-center px-4 py-2 h-[50px] flex-1',
       className,
       {
         'bg-slate-500 text-white': primary,

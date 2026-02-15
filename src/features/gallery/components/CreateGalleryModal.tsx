@@ -156,8 +156,8 @@ const CreateGalleryModal: FC<Props> = ({ isOpen, onClose, onGalleryCreated }) =>
       <div
         className='bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto'
         onClick={(e) => e.stopPropagation()}>
-        <div className='p-6'>
-          <div className='flex justify-between items-center mb-4'>
+        <div className='sticky top-0 bg-white z-10 px-6 pt-6 pb-4 border-b rounded-t-lg'>
+          <div className='flex justify-between items-center'>
             <h2 className='text-xl font-semibold'>Create New Gallery</h2>
             <button
               type='button'
@@ -167,7 +167,9 @@ const CreateGalleryModal: FC<Props> = ({ isOpen, onClose, onGalleryCreated }) =>
               ×
             </button>
           </div>
+        </div>
 
+        <div className='p-6'>
           {error && (
             <Alert type='error' message={error} />
           )}
@@ -206,13 +208,15 @@ const CreateGalleryModal: FC<Props> = ({ isOpen, onClose, onGalleryCreated }) =>
                 <Button
                   type='button'
                   onClick={handleClose}
-                  disabled={submitting}>
+                  disabled={submitting}
+                  className='whitespace-nowrap'>
                   Cancel
                 </Button>
                 <Button
                   type='submit'
                   primary
-                  disabled={submitting}>
+                  disabled={submitting}
+                  className='whitespace-nowrap'>
                   {submitting ? 'Creating...' : 'Create Gallery'}
                 </Button>
               </div>

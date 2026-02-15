@@ -42,7 +42,8 @@ const ThoughtList = () => {
     },
   });
 
-  const [deleteThought, { loading: deleteLoading }] = useMutation(DELETE_THOUGHT);
+  const [deleteThought, { loading: deleteLoading }] =
+    useMutation(DELETE_THOUGHT);
   const [updateThought] = useMutation(UPDATE_THOUGHT);
 
   const handleStatusChange = (selectedOption: string | null) =>
@@ -93,11 +94,11 @@ const ThoughtList = () => {
         />
         <div className='flex items-end'>
           <Button
-            icon='add'
-            text='New Thought'
+            icon='add_comment'
             primary
-            onClick={() => navigate('/thought/add')}
-          />
+            onClick={() => navigate('/thought/add')}>
+            New Thought
+          </Button>
         </div>
       </div>
 

@@ -2,6 +2,7 @@ export type ThoughtStatus = 'draft' | 'published' | 'scheduled';
 
 export interface ThoughtImage {
   url: string;
+  alt: string;
   caption?: string;
 }
 

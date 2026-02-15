@@ -7,6 +7,7 @@ export const GET_THOUGHTS = gql`
       text
       image {
         url
+        alt
         caption
       }
       tags
@@ -26,6 +27,7 @@ export const GET_THOUGHT_BY_ID = gql`
       text
       image {
         url
+        alt
         caption
       }
       tags
