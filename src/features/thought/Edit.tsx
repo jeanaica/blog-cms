@@ -1,14 +1,17 @@
 import { type FC, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useMutation, useQuery } from '@apollo/client';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate, useParams } from 'react-router-dom';
 import useTranslation from 'hooks/useTranslation';
 
 import useToast from 'components/toast/hook';
 import Loading from 'components/loading/Loading';
+import uploadImage from 'lib/api/uploadImage';
 
 import { UPDATE_THOUGHT } from './schema/mutations';
 import { GET_THOUGHT_BY_ID } from './schema/queries';
+import validation from './schema/validation';
 import { type ThoughtInput } from './types';
 import ThoughtForm from './components/ThoughtForm';
 
@@ -23,7 +26,8 @@ const Edit: FC = () => {
     variables: { id },
   });
 
-  const methods = useForm<ThoughtInput & { tagsInput: string }>({
+  const methods = useForm<ThoughtInput & { tagsInput: string; imageFile?: File | string | null }>({
+    resolver: zodResolver(validation),
     defaultValues: {
       text: '',
       isQuote: false,
@@ -31,6 +35,7 @@ const Edit: FC = () => {
       tags: [],
       tagsInput: '',
       image: null,
+      imageFile: null,
       publishDate: null,
     },
   });
@@ -49,6 +54,7 @@ const Edit: FC = () => {
         tags: thought.tags || [],
         tagsInput: (thought.tags || []).join(', '),
         image: thought.image || null,
+        imageFile: thought.image?.url || null,
         publishDate: thought.publishDate
           ? new Date(thought.publishDate).toISOString().split('T')[0]
           : null,
@@ -63,11 +69,41 @@ const Edit: FC = () => {
       .filter(tag => tag.length > 0);
   };
 
-  const handleUpdate = async (values: ThoughtInput & { tagsInput: string }, status: string) => {
+  const handleUpdate = async (
+    values: ThoughtInput & { tagsInput: string; imageFile?: File | string | null },
+    status: string
+  ) => {
     setSubmitting(true);
     try {
       const tags = prepareTags(values.tagsInput);
-      const image = values.image?.url ? { url: values.image.url, caption: values.image.caption || undefined } : null;
+
+      let image = null;
+
+      // If there's a new file to upload
+      if (values.imageFile instanceof File) {
+        // Use a date-based folder structure: thoughts/YYYY-MM
+        const now = new Date();
+        const folder = `thoughts/${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+        const uploadResult = await uploadImage({ file: values.imageFile, folder });
+        if (uploadResult.success && uploadResult.url) {
+          image = {
+            url: uploadResult.url,
+            alt: values.image?.alt || '',
+            caption: values.image?.caption || undefined,
+          };
+        } else {
+          console.error('Upload failed:', uploadResult.message);
+          throw new Error(`Image upload failed: ${uploadResult.message}`);
+        }
+      }
+      // If there's an existing image URL
+      else if (values.image?.url) {
+        image = {
+          url: values.image.url,
+          alt: values.image.alt || '',
+          caption: values.image.caption || undefined,
+        };
+      }
 
       const input = {
         text: values.text,
@@ -91,7 +127,7 @@ const Edit: FC = () => {
     }
   };
 
-  const onSubmit = async (values: ThoughtInput & { tagsInput: string }) => {
+  const onSubmit = async (values: ThoughtInput & { tagsInput: string; imageFile?: File | string | null }) => {
     const status = values.status === 'scheduled' ? 'scheduled' : 'published';
     handleUpdate(values, status);
   };

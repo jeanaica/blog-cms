@@ -7,6 +7,7 @@ export const ADD_THOUGHT = gql`
       text
       image {
         url
+        alt
         caption
       }
       tags
@@ -24,6 +25,7 @@ export const UPDATE_THOUGHT = gql`
       text
       image {
         url
+        alt
         caption
       }
       tags

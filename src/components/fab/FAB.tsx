@@ -23,6 +23,12 @@ const fabActions: FabAction[] = [
     href: '/gallery/add',
     color: 'bg-green-500 hover:bg-green-600',
   },
+  {
+    icon: 'add_comment',
+    text: 'Add Thought',
+    href: '/thought/add',
+    color: 'bg-purple-500 hover:bg-purple-600',
+  },
 ];
 
 type Props = {

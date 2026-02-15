@@ -12,21 +12,9 @@
     "isAction": false
   },
   {
-    "icon": "chat_bubble",
+    "icon": "chat_bubble_outline",
     "text": "Thoughts",
     "href": "/thought",
     "isAction": false
-  },
-  {
-    "icon": "post_add",
-    "text": "Add Post",
-    "href": "/article/add",
-    "isAction": true
-  },
-  {
-    "icon": "add_photo_alternate",
-    "text": "Add Gallery",
-    "href": "/gallery/add",
-    "isAction": true
   }
 ]

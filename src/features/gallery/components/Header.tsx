@@ -1,5 +1,7 @@
 import type { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import Button from 'components/button/Button';
 import Dropdown from 'components/dropdown/Dropdown';
 
 const options = [
@@ -20,6 +22,8 @@ type Props = {
 };
 
 const Header: FC<Props> = ({ onChange }) => {
+  const navigate = useNavigate();
+
   const handleStatusChange = (selectedOption: string | null) => {
     onChange('status', selectedOption);
   };
@@ -42,6 +46,14 @@ const Header: FC<Props> = ({ onChange }) => {
         onChange={handleSortingChange}
         defaultValue={sortOptions[0]}
       />
+      <div className='flex items-end'>
+        <Button
+          icon='add_photo_alternate'
+          primary
+          onClick={() => navigate('/gallery/add')}>
+          New Gallery
+        </Button>
+      </div>
     </div>
   );
 };
