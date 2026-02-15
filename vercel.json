@@ -2,6 +2,7 @@
   "framework": "vite",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "ignoreCommand": "bash -c 'if [[ \"$VERCEL_GIT_COMMIT_REF\" == \"main\" ]] || [[ \"$VERCEL_GIT_COMMIT_REF\" == \"development\" ]]; then exit 1; else exit 0; fi'",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
